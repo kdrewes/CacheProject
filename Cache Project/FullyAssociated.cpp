@@ -22,6 +22,7 @@ void FullyAssociated :: Configure()
     for(int i = 0; i < this -> slots; i++)
         cacheStorage.push_back(CacheData(*this));
     
+    /*
     // For test purposes
     for(int i = 0; i < cacheStorage.size(); i++)
     {
@@ -38,6 +39,7 @@ void FullyAssociated :: Configure()
         std::cout << "\n----------------------------------------------------------\n";
 
     }
+     */
 }
 
 // -------------------------------------------------------------------------------------------
@@ -83,14 +85,6 @@ void FullyAssociated :: LFU()
 std::vector<FullyAssociated::CacheData> FullyAssociated :: getCacheStorage()
 {
     return cacheStorage;
-}
-
-// -------------------------------------------------------------------------------------------
-
-// Retreive addressList
-std::vector <std::string> FullyAssociated :: getAddressList() 
-{
-    return addressList;
 }
 
 // -------------------------------------------------------------------------------------------
