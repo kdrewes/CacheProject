@@ -17,8 +17,9 @@ protected:
     
     // unit = unit of measurements
     // input = variables uesd to select data
-    // iterator = traverses through content
-    typedef int unit, input, iterator;
+    // iterator = traverses through data set
+    // hashValue = used as hash value for hash table algorithm
+    typedef int unit, input, iterator, hashValue;
     
     // binary = binary data stored in each cache block
     // hex = hex data stored in each cache block
@@ -32,8 +33,9 @@ protected:
     typedef std::ofstream file;
     
     // binaryHexMap = Represents a map inside a map
-    typedef std::map<binary, std::map<binary,hex>> binaryHexMap;
+    typedef std::map<binary, std::map<binary,hex>> multiMap;
     
+    // Condenses string into a single variable
     typedef std::ostringstream condensedString;
     
     // ---------------------------- File data ----------------------------
@@ -58,17 +60,18 @@ protected:
     
     binaryVector wordVector,                // Contains predifed word in binary form
     
-                 addressList,               // Temporary storage for all existing addresses
-    
                  addressTable;              // Store address in hash table
     
-    binaryHexMap addressMap;                // Key = Address, Value = Map ( Key = binary word, Value = Hexadecimal Word )
+    multiMap addressMap;                    // Key = Address, Value = Map ( Key = binary word, Value = Hexadecimal Word )
     
     condensedString console,                // Contains entire string to be printed to console
     
                     spreadsheet,            // Contains entired string to be print to spreadsheet
     
                     consoleToFile;          // Contains entire string to be printed to console but will printed to file
+    
+       binaryVector addressList;            // Dataset that stores all existing addresses
+
 
 public:
     

@@ -12,7 +12,7 @@ class DirectMapped : public Cache
     
     // ---------- Typedef for organizational purposes ----------
     
-    // unit = unit of measurements, input = 
+    // unit = unit of measurements, input = input values
     typedef int unit, input;
     
     // Binary values

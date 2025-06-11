@@ -2,22 +2,30 @@
 #include <cstdlib>
 #include "Miscellaneous_Data.h"
 
-// ------------------------ Typedef used for organizational purposes ------------------------
+// -------------- Typedef used for organizational purposes -------------
 
 // unit = unit of measurements
 // input = variables uesd to select data
-// iterator = traverses through content
-typedef int unit, input, iterator;
+// iterator = traverses through data set
+// hashValue = used as hash value for hash table algorithm
+typedef int unit, input, iterator, hashValue;
 
 // binary = binary data stored in each cache block
 // hex = hex data stored in each cache block
-typedef std::string binary, hex;
+// menu = consist of entire menu
+typedef std::string binary, hex, menu;
 
-// inputSet = Stores input values
-typedef std::vector<std::string> inputSet;
+// inputSet = Stores input values, binaryVector = Stores binary values
+typedef std::vector<std::string> inputSet, binaryVector;
 
 // Write file
 typedef std::ofstream file;
+
+// binaryHexMap = Represents a map inside a map
+typedef std::map<binary, std::map<binary,hex>> multiMap;
+
+// Condenses string into a single variable
+typedef std::ostringstream condensedString;
 
 // -------------------------------------------------------------------------------------------
 Cache :: Cache(PLACEMENT_POLICY policy)
@@ -626,13 +634,13 @@ enum CACHING_ALGORITHM  Cache :: CachingEnum(input select)
 // -------------------------------------------------------------------------------------------
 
 // Create memory address for each cache block
-std::vector <std::string> Cache :: GenerateAddresses()
+binaryVector Cache :: GenerateAddresses()
 {
     // Collect each address
-    std::string address = "";
+    binary address = "";
     
-    // Store all addresses
-    std::vector <std::string> cacheAddresses;
+    // Store all addresses: key = binary address, value = hash value
+    binaryVector cacheAddresses;
    
     // Amount of addresses should be half the # of slots for demonstration purposes
     for(int i = 0; i < this -> slots / 2; i++)
@@ -640,7 +648,9 @@ std::vector <std::string> Cache :: GenerateAddresses()
                 
         for(int x = 0; x < this -> mainMemorySize; x++)
         {
-            address += std::to_string(rand() % 2);
+            int randomValue = rand() % 2;
+            
+            address += std::to_string(randomValue);
         }
 
         cacheAddresses.push_back(address);
