@@ -1,5 +1,5 @@
-#ifndef Miscellaneous_Data_h
-#define Miscellaneous_Data_h
+#ifndef Enums_h
+#define Enums_h
 
 #include<iostream>
 #include<sstream>
@@ -13,10 +13,14 @@ enum PLACEMENT_POLICY
 
 // Stores all data in enum format
 enum INPUT
-{ CACHE_SIZE, BLOCK_SIZE, WAYS, MAIN_MEMORY, CACHING_ALGORITHM, INPUT_ERROR};
+{ CACHE_SIZE, BLOCK_SIZE, WAYS, MAIN_MEMORY, CACHING_ALGORITHM, INPUT_ERROR };
 
 // Caching algorithms in enum format
 enum CACHING_ALGORITHM
 { LRU, LFU, FIFO, ALGORITHMIC_ERROR };
+
+// Fully Associative, Set associative and Direct Mapped column headers used in table
+enum COLUMN_HEADERS
+{ ADDRESS, WAY, TAG, INDEX, OFFSET, HIT_MISS, EVICTIONS, WORD, INSTRUCTION_RETREIVED };
 
 #endif

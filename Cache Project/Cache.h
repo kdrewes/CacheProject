@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 #include <fstream>
-#include "Miscellaneous_Data.h"
+#include "Enums.h"
 
 // Interface for all cache placement policies
 class Cache
@@ -60,18 +60,15 @@ protected:
     
     binaryVector wordVector,                // Contains predifed word in binary form
     
-                 addressTable;              // Store address in hash table
+                 addressList;               // Dataset that stores all existing addresses
     
-    multiMap addressMap;                    // Key = Address, Value = Map ( Key = binary word, Value = Hexadecimal Word )
+        multiMap addressMap;                // Key = Address, Value = Map ( Key = binary word, Value = Hexadecimal Word )
     
-    condensedString console,                // Contains entire string to be printed to console
+ condensedString console,                   // Contains entire string to be printed to console
     
-                    spreadsheet,            // Contains entired string to be print to spreadsheet
+                 spreadsheet,               // Contains entired string to be print to spreadsheet
     
-                    consoleToFile;          // Contains entire string to be printed to console but will printed to file
-    
-       binaryVector addressList;            // Dataset that stores all existing addresses
-
+                 consoleToFile;             // Contains entire string to be printed to console but will printed to file
 
 public:
     
