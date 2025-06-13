@@ -1,50 +1,47 @@
 #include <time.h>
 #include "Cache.h"
 #include "FullyAssociated.hpp"
-#include "Miscellaneous_Data.h"
+#include "Enums.h"
 #include <vector>
 
 // -------------------------------------------------------------------------------------------
 
 FullyAssociated :: ~FullyAssociated() = default;
 
-void FullyAssociated :: Configure()
+// Configure binary data
+void FullyAssociated :: Router()
 {
-    // Calculate # of slots
-    this -> slots = this -> cacheSize / this -> blockSize;
-
+    
     // Determine word quantity binary words used
     ConfigureWord();
-    
-    std::cout << "\n# of slots = " << this -> slots << '\n';
 
     // Insert CacheData properties into cacheStorage vector
     for(int i = 0; i < this -> slots; i++)
         cacheStorage.push_back(CacheData(*this));
-    
-    /*
-    // For test purposes
-    for(int i = 0; i < cacheStorage.size(); i++)
-    {
-        std::cout << "\nAddress = " << cacheStorage[i].address << std::endl;
-        std::cout << "\nBlock = " << cacheStorage[i].blockSize << std::endl;
-        std::cout << "\nOffset = " << cacheStorage[i].offset << std::endl;
-        std::cout << "\nTag = " << cacheStorage[i].tag << std::endl;
-        std::cout << "\nWord Size = " << cacheStorage[i].wordSize << std::endl << std::endl;
-        for(auto & [binary,hex] : cacheStorage[i].instructionMap)
-        {
-            std::cout << "binary = " << binary << ", hex = " << hex << std::endl;
-        }
-        
-        std::cout << "\n----------------------------------------------------------\n";
-
-    }
-     */
 }
 
 // -------------------------------------------------------------------------------------------
 
+// Execute binary data
+void FullyAssociated :: Controller()
+{
+    HashTable();
+}
 
+// -------------------------------------------------------------------------------------------
+
+void FullyAssociated :: HashTable()
+{
+    this -> addressTable.resize(addressList.size() * 2);
+    
+    /*
+    for(std::vector<CacheData> :: size_type i = 0; i < cacheStorage.size(); i++)
+        addressTable[AssignHashIndex(cacheStorage[i])]
+     */
+        
+}
+
+// -------------------------------------------------------------------------------------------
 void FullyAssociated :: Print()
 {
     std::cout << "\nPrint Fully Associated Cache\n\n";
@@ -80,11 +77,45 @@ void FullyAssociated :: LFU()
 }
 
 // -------------------------------------------------------------------------------------------
-
-// Retreive cacheStorage
-std::vector<FullyAssociated::CacheData> FullyAssociated :: getCacheStorage()
+FullyAssociated :: index FullyAssociated :: AssignHashIndex(hashValue hashCode)
 {
-    return cacheStorage;
+    // Declare hash code
+    hashCode %= this -> addressTable.size();
+    
+    // Iterator used to resolve any potential collisions
+    index iterator = 0;
+    
+    // Determine if probing is forward or backward
+    bool isForward = true;
+   
+    while(true)
+    {
+        if(this -> addressTable[hashCode].empty())
+            return hashCode;
+        
+        else
+        {
+            if(isForward)
+            {
+                hashCode = static_cast<int>(pow(++iterator,2)) % this -> addressTable.size();
+                
+                isForward = false;
+            }
+            
+            else
+            {
+                index negativeIndex = -1 * static_cast<int>(pow(iterator,2));
+                
+                hashCode -= negativeIndex;
+                
+                if(hashCode < 0)
+                    hashCode *= -1;
+                
+                hashCode %= this -> addressTable.size();
+                
+                isForward = false;
+            }
+        }
+    }
+   
 }
-
-// -------------------------------------------------------------------------------------------

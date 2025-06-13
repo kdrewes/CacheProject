@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "Cache.h"
-#include "Miscellaneous_Data.h"
+#include "Enums.h"
 
 class FullyAssociated : public Cache
 {
@@ -14,8 +14,9 @@ class FullyAssociated : public Cache
     // unit = unit of measurements
     // input = variables uesd to select data
     // iterator = traverses through data set
+    // index = represents the index of a data set
     // hashValue = used as hash value for hash table algorithm
-    typedef int unit, input, iterator, hashValue;
+    typedef int unit, input, iterator, index, hashValue;
     
     // binary = binary data stored in each cache block
     // hex = hex data stored in each cache block
@@ -119,19 +120,33 @@ private:
     
     // Stores all properties located in CacheData structure
     std::vector <CacheData> cacheStorage;
+    
+    // Store address in hash table
+    binaryVector addressTable;
 
 public:
     
     FullyAssociated(PLACEMENT_POLICY policy) : Cache(policy)
     {
-        Configure();
+        Router();
+        
+        Controller();
     }
     
     ~FullyAssociated() override;
     
-    // ---------------------- Configuration function  -----------------------
+    // ------------------- Router & Controller functions  --------------------
     
-     void Configure();                  // Configure binary data
+     void Router();                     // Configure binary data
+    
+     void Controller();                 // Execute binary data
+    
+    // ----------------------- Hash Table Algorithms -------------------------
+    
+     void HashTable();                   // Performs implementation on hash table
+    
+     index AssignHashIndex               // Assign addresses to their designated index
+     (hashValue hashCode);
     
     // ------------------- Cache Replacements Algorithms  --------------------
     
@@ -148,11 +163,6 @@ public:
      void PrintFile();                  // Output results in file
     
      void PrintConsole();               // Output results in console
-    
-    // --------------------------- Getter Functions ----------------------------
-    
-    // Retreive cacheStorage
-    std::vector <CacheData> getCacheStorage();
     
 };
 

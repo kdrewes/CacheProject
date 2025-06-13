@@ -7,7 +7,7 @@
 #include "FullyAssociated.hpp"
 #include "SetAssociated.hpp"
 #include "DirectMapped.hpp"
-#include "Miscellaneous_Data.h"
+#include "Enums.h"
 
 // ------------------------- Typedef -------------------------
 

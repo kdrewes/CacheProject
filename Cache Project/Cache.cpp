@@ -1,6 +1,6 @@
 #include "Cache.h"
 #include <cstdlib>
-#include "Miscellaneous_Data.h"
+#include "Enums.h"
 
 // -------------- Typedef used for organizational purposes -------------
 
@@ -85,20 +85,11 @@ void Cache :: FullyAssociative()
     
     // Select option
     input data;
-    
-    // Determines if banner should be displayed
-    static bool isBanner = true;
-    
+
     // Iterate through each input
-    static iterator inputIterator = 0;
-    
-    // Fully Associative Cache Banner
-    if(isBanner)
-    {
-        std::cout << "\n---------- Fully Associative Cache -----------\n";
-        
-        isBanner = false;
-    }
+    iterator inputIterator = 0;
+
+    std::cout << "\n---------- Fully Associative Cache -----------\n";
     
     // Traverse through input values
     while(inputIterator < Fully_Associated_Input.size())
@@ -112,9 +103,6 @@ void Cache :: FullyAssociative()
         
         inputIterator += 1;
     }
-    
-    // Reset isBanner variable
-    isBanner = false;
     
     // Reset inputIterator
     inputIterator = 0;
@@ -140,21 +128,12 @@ void Cache :: SetAssociative()
     
     // Select option
     input data;
-    
-    // Determines if banner should be displayed
-    static bool isBanner = true;
-    
+
     // Iterate through each input
     static iterator inputIterator = 0;
-    
-    // Set Associative Cache Banner
-    if(isBanner)
-    {
-        std::cout << "\n----------- Set Associative Cache ------------\n";
-        
-        isBanner = false;
-    }
-    
+
+    std::cout << "\n----------- Set Associative Cache ------------\n";
+
     // Traverse through input values
     while(inputIterator < Set_Associated_Input.size())
     {
@@ -166,10 +145,7 @@ void Cache :: SetAssociative()
         
         inputIterator += 1;
     }
-    
-    // Reset isBanner variable
-    isBanner = false;
-    
+
     // Reset inputIterator
     inputIterator = 0;
 }
@@ -190,20 +166,11 @@ void Cache :: DirectMapped()
     
     // Select option
     input data;
-    
-    // Determines if banner should be displayed
-    static bool isBanner = true;
-    
+
     // Iterate through each input
-    static iterator inputIterator = 0;
+    iterator inputIterator = 0;
     
-    // Direct Mapped Cache Banner
-    if(isBanner)
-    {
-        std::cout << "\n------------ Direct Mapped Cache -------------\n";
-        
-        isBanner = false;
-    }
+    std::cout << "\n------------ Direct Mapped Cache -------------\n";
     
     // Traverse through input values
     while(inputIterator < Direct_Mapped_Input.size())
@@ -216,9 +183,6 @@ void Cache :: DirectMapped()
         
         inputIterator += 1;
     }
-    
-    // Reset isBanner variable
-    isBanner = false;
     
     // Reset inputIterator
     inputIterator = 0;
@@ -514,7 +478,6 @@ void Cache :: ConfigureWord()
         for(int i = 0; i < sizeof(fourWords) / sizeof(fourWords[0]); i++)
             wordVector.push_back(fourWords[i]);
     
-    
     else if(this -> wordQuantity == 2)
         for(int i = 0; i < sizeof(twoWords) / sizeof(twoWords[0]); i++)
             wordVector.push_back(twoWords[i]);
@@ -525,7 +488,7 @@ void Cache :: ConfigureWord()
     
     // Generate binary data and store in vector
     this -> addressList = GenerateAddresses();
-    
+
     // Assign hexadecimal values to address map
     for(std::vector<binary> :: size_type i = 0; i < addressList.size(); i++)
         for(std::vector<binary> :: size_type j = 0; j < wordQuantity; j++)
