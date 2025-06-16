@@ -39,6 +39,9 @@ class FullyAssociated : public Cache
     // Key = binary word, hexidecimal instruction
     typedef std::map<hex,std::queue<binary>> wayMap;
     
+    // binaryHexMap = Represents a map inside a map
+    typedef std::map<binary, std::map<binary,hex>> multiMap;
+    
     // Condenses string into a single variable
     typedef std::ostringstream condensedString;
     
@@ -57,9 +60,9 @@ private:
         instructionMap (getInstructions(address,f.addressMap)), hashCode(GenerateHashCode(this -> address))
         {}
         
-        // -------------------------- Functions ---------------------------
+        // ----------------------------------------------------------------
         // Ensure the same address contains the identical instructions
-        std::map <binary,hex> getInstructions(binary addr, std::map<binary,std::map<binary,hex>> addressMap)
+        std::map <binary,hex> getInstructions (binary addr, multiMap addressMap)
         {
             std::map <binary,hex> instructions;
             
@@ -169,7 +172,7 @@ public:
      std::string toLower                 // Make each string lower case
      (std::string header);
     
-     COLUMNS FindHeader           // Find header for each column
+     COLUMNS FindHeader                  // Find header for each column
      (std::string header);
     
 };

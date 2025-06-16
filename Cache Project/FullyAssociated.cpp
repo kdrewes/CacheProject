@@ -22,6 +22,10 @@ void FullyAssociated :: Router()
     for(int i = 0; i < this -> slots; i++)
         cacheStorage.push_back(CacheData(*this));
     
+    
+   //  UNIT TEST
+    
+    /*
     for(int i = 0; i < cacheStorage.size(); i++)
     {
         std::cout << "\nAddress = " << cacheStorage[i].address << std::endl;
@@ -38,6 +42,7 @@ void FullyAssociated :: Router()
         
         std::cout << "\n----------------------------------------------------------\n";
     }
+     */
 }
 
 // -------------------------------------------------------------------------------------------

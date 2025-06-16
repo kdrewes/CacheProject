@@ -327,22 +327,23 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
                     break;
                     
                 }
+                    // Initialize block size
                     this -> blockSize = data;
                     
                     break;
             
             
-        case MAIN_MEMORY:
+            case MAIN_MEMORY:
         
-        if(data != 16 && data != 8)
-        {
-            std::cerr << "\n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
+            if(data != 16 && data != 8)
+            {
+                std::cerr << "\n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
             
-            inputIterator -= 1;
+                inputIterator -= 1;
             
-            break;
+                break;
             
-        }
+            }
 
             this -> mainMemorySize = data;
             
