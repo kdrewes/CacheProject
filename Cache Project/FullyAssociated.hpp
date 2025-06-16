@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <queue>
 #include "Cache.h"
 #include "Enums.h"
 
@@ -34,6 +35,9 @@ class FullyAssociated : public Cache
     
     // Key = binary word, hexidecimal instruction
     typedef std::map<binary,hex> wordMap;
+    
+    // Key = binary word, hexidecimal instruction
+    typedef std::map<hex,std::queue<binary>> wayMap;
     
     // Condenses string into a single variable
     typedef std::ostringstream condensedString;
@@ -163,6 +167,23 @@ public:
      void PrintFile();                  // Output results in file
     
      void PrintConsole();               // Output results in console
+    
+    // --------------------------- Misc Functions  -----------------------------
+
+     void Title();                       // Create Title
+   
+     void Data();                        // Create data
+    
+     void Header();                      // Create header
+    
+     void CreateHeader                   // Produce column header
+     (COLUMNS c);
+    
+     std::string toLower                 // Make each string lower case
+     (std::string header);
+    
+     COLUMNS FindHeader           // Find header for each column
+     (std::string header);
     
 };
 
