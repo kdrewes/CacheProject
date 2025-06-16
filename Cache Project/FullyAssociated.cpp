@@ -88,10 +88,15 @@ void FullyAssociated :: LFU()
 void FullyAssociated :: Title()
 {
     // Display Title
-    console << "\n\n\n\t##################################################################################################\n\t############################ Fully Associative Placement Policy ##################################\n\t##################################################################################################";
-    spreadsheet << "\n                                      Fully Associative Placement Policy                                      ";
+    console << "\n\n\n\n\t\t\t************************************************************************************\n";
+    console <<"\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
+    console <<"\t\t\t************************************************************************************";
     
-    consoleToFile << "\n\n\n\t******************************************************************************************\n\t************************* Fully Associative Placement Policy *****************************\n\t******************************************************************************************";
+    spreadsheet << "\n                                                                           ";
+    
+    consoleToFile << "\n\n\n\n\t\t\t************************************************************************************\n";
+    consoleToFile <<"\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
+    consoleToFile <<"\t\t\t************************************************************************************";
 
 }
 // -------------------------------------------------------------------------------------------
@@ -100,21 +105,21 @@ void FullyAssociated :: Data()
 {
     
     // Display Data banner
-    console << "\n\n\t--------------------------------- Data ---------------------------------";
+    console << "\n\n\t\t\t\t--------------------------------- Data ---------------------------------";
     spreadsheet << "\n                                 Data                                 ";
-    consoleToFile << "\n\n\n\n\t--------------------------------- Data ---------------------------------";
+    consoleToFile << "\n\n\n\n\t\t\t\t--------------------------------- Data ---------------------------------";
     
     // Display table
-    console << "\n\n\tCache Size | Block Size | # of Ways | Offset Size | Word Size | # of Words\n";
+    console << "\n\n\t\t\t\tCache Size | Block Size | # of Ways | Offset Size | Word Size | # of Words\n";
     spreadsheet << "\n\n,,,,Cache Size (Bytes),Block Size (Bytes),# of Ways,Offset Size (Bytes),Word Size,# of Words\n";
-    consoleToFile << "\n\n\tCache Size (Bytes) | Block Size (Bytes) | # of Ways | Offset Size (Bytes) | Word Size | # of Words\n";
+    consoleToFile << "\n\n\t\t\tCache Size (Bytes) | Block Size (Bytes) | # of Ways | Offset Size (Bytes) | Word Size | # of Words\n";
     
     // Display data
-    console << "\t\t" << this -> cacheSize << "\t\t\t" << this -> blockSize << "\t\t\t" << this -> ways << "\t\t\t" << this -> offsetSize << "\t\t\t" << wordSize << "\t\t\t" << this -> wordQuantity << "\n\n";
+    console << "\t\t\t\t\t\t" << this -> cacheSize << "\t\t\t" << this -> blockSize << "\t\t\t" << this -> ways << "\t\t\t" << this -> offsetSize << "\t\t\t" << wordSize << "\t\t\t" << this -> wordQuantity << "\n\n";
     
-    spreadsheet << this -> cacheSize << "," << this -> blockSize << "," << this -> ways << "," << this -> offsetSize << "," << wordSize << "," << this -> wordQuantity << "\n\n";
+    spreadsheet << ",,,," << this -> cacheSize << "," << this -> blockSize << "," << this -> ways << "," << this -> offsetSize << "," << wordSize << "," << this -> wordQuantity << "\n\n";
     
-    consoleToFile << "\t\t" << this -> cacheSize << "\t\t\t" << this -> blockSize << "\t\t\t" << this -> ways << "\t\t\t" << this -> offsetSize << "\t\t\t" << wordSize << "\t\t\t" << this -> wordQuantity << "\n\n";
+    consoleToFile << "\t\t\t\t\t\t" << this -> cacheSize << "\t\t\t" << this -> blockSize << "\t\t\t" << this -> ways << "\t\t\t" << this -> offsetSize << "\t\t\t" << wordSize << "\t\t\t" << this -> wordQuantity << "\n\n";
 }
 // -------------------------------------------------------------------------------------------
 // Create Header
@@ -124,9 +129,9 @@ void FullyAssociated :: Header()
     std::string header[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions"};
     
     // Display Header banner
-    console << "\n\t------------------------------ Fully Associated Cache Table ------------------------------\n\n";
+    console << "\n\t\t------------------------------ Fully Associated Cache Table ------------------------------\n\n";
     spreadsheet << "                          Fully Associated Cache Table                          \n\n";
-    consoleToFile << "\n\t------------------------------ Fully Associated Cache Table ------------------------------\n\n";
+    consoleToFile << "\n\t\t------------------------------ Fully Associated Cache Table ------------------------------\n\n";
     
     // Display header
     for(int i = 0; i < sizeof(header) / sizeof(header[0]); i++)
@@ -143,7 +148,7 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case ADDRESS :
             
             // Display each address
-            console << "\tAddress | ";
+            console << "\t\tAddress | ";
             spreadsheet << "Address,";
             consoleToFile << "\tAddress | ";
             
