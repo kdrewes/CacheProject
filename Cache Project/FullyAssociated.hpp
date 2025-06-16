@@ -55,20 +55,7 @@ private:
         tag (address.substr(0, address.size() - std::floor(log(f.blockSize)))),
         offset (address.substr(address.size() - std::floor(log(f.blockSize)), address.size())),
         instructionMap (getInstructions(address,f.addressMap)), hashCode(GenerateHashCode(this -> address))
-        {
-            std::cout << "\nAddress = " << this -> address << std::endl;
-            std::cout << "\nHash Code = " << this -> hashCode << std::endl;
-            std::cout << "\nBlock = " << this ->blockSize << std::endl;
-            std::cout << "\nOffset = " << this -> offset << std::endl;
-            std::cout << "\nTag = " << this -> tag << std::endl;
-            std::cout << "\nWord Size = " << this -> wordSize << std::endl << std::endl;
-            for(auto & [binary,hex] : this -> instructionMap)
-            {
-                std::cout << "binary = " << binary << ", hex = " << hex << std::endl;
-            }
-            
-            std::cout << "\n----------------------------------------------------------\n";
-        }
+        {}
         
         // -------------------------- Functions ---------------------------
         // Ensure the same address contains the identical instructions

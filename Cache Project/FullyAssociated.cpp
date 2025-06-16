@@ -6,12 +6,14 @@
 #include <cstdlib>
 
 // -------------------------------------------------------------------------------------------
-
+// Deconstructor
 FullyAssociated :: ~FullyAssociated() = default;
 
 // Configure binary data
 void FullyAssociated :: Router()
 {
+    // Initialize slot size
+    this -> slots = this -> cacheSize / this -> blockSize;
     
     // Determine word quantity binary words used
     ConfigureWord();
@@ -19,6 +21,23 @@ void FullyAssociated :: Router()
     // Insert CacheData properties into cacheStorage vector
     for(int i = 0; i < this -> slots; i++)
         cacheStorage.push_back(CacheData(*this));
+    
+    for(int i = 0; i < cacheStorage.size(); i++)
+    {
+        std::cout << "\nAddress = " << cacheStorage[i].address << std::endl;
+        std::cout << "\nHash Code = " << cacheStorage[i].hashCode << std::endl;
+        std::cout << "\nBlock = " << cacheStorage[i].blockSize << std::endl;
+        std::cout << "\nOffset = " << cacheStorage[i].offset << std::endl;
+        std::cout << "\nTag = " << cacheStorage[i].tag << std::endl;
+        std::cout << "\nWord Size = " << cacheStorage[i].wordSize << std::endl << std::endl;
+        
+        for(auto & [binary,hex] : cacheStorage[i].instructionMap)
+        {
+            std::cout << "binary = " << binary << ", hex = " << hex << std::endl;
+        }
+        
+        std::cout << "\n----------------------------------------------------------\n";
+    }
 }
 
 // -------------------------------------------------------------------------------------------
@@ -51,7 +70,7 @@ void FullyAssociated :: HashTable()
 // -------------------------------------------------------------------------------------------
 void FullyAssociated :: Print()
 {
-    std::cout << "\nPrint Fully Associated Cache\n\n";
+
 }
 
 // -------------------------------------------------------------------------------------------
