@@ -220,11 +220,17 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
                     
                     inputIterator -= 1;
                     
+                    // Block quantity = ( block size / cache size )
+                    this -> blockQuantity = this -> cacheSize / this -> blockSize;
+                    
                     break;
                     
                 }
-                    
+                    // Assign block size
                     this -> blockSize = data;
+            
+                    // Assign offset size
+                    this -> offsetSize = std::floor(log(blockSize));
                     
                     break;
 
@@ -488,6 +494,9 @@ void Cache :: ConfigureWord()
     
     // Generate binary data and store in vector
     this -> addressList = GenerateAddresses();
+    
+    // Determine address size
+    this -> addressSize = addressList[0].size();
 
     // Assign hexadecimal values to address map
     for(std::vector<binary> :: size_type i = 0; i < addressList.size(); i++)

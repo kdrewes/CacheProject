@@ -49,9 +49,11 @@ protected:
           mainMemorySize,     // Size of main memory (Bits)
           slots,              // slots = cacheSize / blockSize
           offsetSize,         // Offset size  (Bits)
+          addressSize,        // Address size (Bytes)
           ways,               // Total amout of ways
           indexSize,          // Index size (Bits)
           wordSize,           // Word count = (block size / word size)
+          blockQuantity,      // Block quantity = (cache size / block size)
           wordQuantity;       // # of words utilized
     
     // -------------------- Miscellaneous variables -------------------------
