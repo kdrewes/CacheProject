@@ -49,14 +49,20 @@ void FullyAssociated :: Router()
 // Execute binary data
 void FullyAssociated :: Controller()
 {
-    // Display Title
+    // Display title
     Title();
     
-    // Display Metadata
+    // Display data
     Data();
     
-    // Display Header
+    // Display header
     Header();
+    
+    // Produce and display table
+    Table();
+    
+    std::cout << console.str();
+    
 }
 
 // -------------------------------------------------------------------------------------------
@@ -64,12 +70,6 @@ void FullyAssociated :: Controller()
 void FullyAssociated :: HashTable()
 {
     this -> addressTable.resize(addressList.size() * 2);
-    
-    /*
-    for(std::vector<CacheData> :: size_type i = 0; i < cacheStorage.size(); i++)
-        addressTable[AssignHashIndex(cacheStorage[i])]
-     */
-        
 }
 
 // -------------------------------------------------------------------------------------------
@@ -128,22 +128,6 @@ void FullyAssociated :: Title()
 void FullyAssociated :: Data()
 {
     
-    // Display Data banner
-   // console << "\n\n\t\t\t\t--------------------------------- Data ---------------------------------";
-    //spreadsheet << "\n                                 Data                                 ";
-    //consoleToFile << "\n\n\n\n\t\t\t\t--------------------------------- Data ---------------------------------";
-    
-    // Display table
-   // console << "\n\n\t\t\t\tCache Size | Block Size | # of Ways | Offset Size | Word Size | # of Words\n";
-   // spreadsheet << "\n\n,,,,Cache Size (Bytes),Block Size (Bytes),# of Ways,Offset Size (Bytes),Word Size,# of Words\n";
-   // consoleToFile << "\n\n\t\t\tCache Size (Bytes) | Block Size (Bytes) | # of Ways | Offset Size (Bytes) | Word Size | # of Words\n";
-    
-    // Display data
-   // console << "\t\t\t\t\t\t" << this -> cacheSize << "\t\t\t" << this -> blockSize << "\t\t\t" << this -> ways << "\t\t\t" << this -> offsetSize << "\t\t\t" << wordSize << "\t\t\t" << this -> wordQuantity << "\n\n";
-    
-    spreadsheet << ",,,," << this -> cacheSize << "," << this -> blockSize << "," << this -> ways << "," << this -> offsetSize << "," << wordSize << "," << this -> wordQuantity << "\n\n";
-    
-  //  consoleToFile << "\t\t\t\t\t\t" << this -> cacheSize << "\t\t\t" << this -> blockSize << "\t\t\t" << this -> ways << "\t\t\t" << this -> offsetSize << "\t\t\t" << wordSize << "\t\t\t" << this -> wordQuantity << "\n\n";
     
     console << "\n\t\t\tCache Size = "    << this -> cacheSize                << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
             
@@ -162,17 +146,17 @@ void FullyAssociated :: Data()
     
                 << wordSize << "," << this -> wordQuantity << "\n\n";
     
-    consoleToFile << "\n\t\t\tCache Size = "    << this -> cacheSize                << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
+    consoleToFile << "\n\t\t\tCache Size = "    << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
             
-                  << "\t\t# of Blocks = "               << this -> cacheSize / this -> blockSize   << " Bytes"
+                  << "\t\t# of Blocks = "       << this -> blockQuantity                << " Bytes"
     
-                  << "\n\n\t\t\t# of Ways = "   << this -> ways                     << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
+                  << "\n\n\t\t\t# of Ways = "   << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
     
-                  << "\t\tRam Size = "                  << this -> mainMemorySize       << " Bytes" << "\n\n\t\t\tWord Size  = "
+                  << "\t\tRam Size = "          << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\tWord Size  = "
      
-                  << this -> wordSize                   << " Bytes\t\t# of Words = "    << this -> wordQuantity
+                  << this -> wordSize           << " Bytes\t\t# of Words = "            << this -> wordQuantity
      
-                  << " Bytes"                       << "\t\tTag Size = "            << this -> addressSize - std::floor(log(blockSize)) << " Bytes\n";
+                  << " Bytes"                   << "\t\tTag Size = "                    << this -> addressSize - std::floor(log(blockSize)) << " Bytes\n";
     
     
     
@@ -196,8 +180,7 @@ void FullyAssociated :: Header()
     // Display header
     for(int i = 0; i < sizeof(header) / sizeof(header[0]); i++)
         CreateHeader(FindHeader(header[i]));
-    
-    std::cout << console.str();
+
 }
 // -------------------------------------------------------------------------------------------
 // Produce column header
@@ -282,15 +265,74 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case EVICTIONS :
             
             // Display if there were any evictions
-            console << "Address(es) Evicted\n";
+            console << "Address(es) Evicted\n\n";
             spreadsheet << "Address(es) Evicted\n";
-            consoleToFile << "Address(es) Evicted\n";
+            consoleToFile << "Address(es) Evicted\n\n";
             
             break;
             
         case COLUMN_ERROR :
             throw std::invalid_argument("\n\nError - incorrect column header\n\nPlease correct command\n\n");
     }
+}
+
+// -------------------------------------------------------------------------------------------
+// Display table
+void FullyAssociated :: Table()
+{
+    // Predefine table
+    std::string table[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions"};
+    
+    for(std::vector<iterator> :: size_type i = 0; i < cacheStorage.size(); i++)
+    {
+        for(std::vector<iterator> :: size_type j = 0; j < sizeof(table) / sizeof(table[0]); j++)
+        {
+            
+        }
+    }
+}
+
+// -------------------------------------------------------------------------------------------
+// Produce rows and columns in table
+void FullyAssociated :: CreateTable(COLUMNS c)
+{
+        switch(c)
+        {
+            case ADDRESS :
+                
+                break;
+                
+            case WAY :
+                
+                break;
+                
+            case TAG :
+
+                break;
+                
+            case OFFSET :
+                
+                break;
+                
+            case HIT_MISS :
+                
+                break;
+                
+            case WORD :
+                
+                break;
+                
+            case INSTRUCTION_RETREIVED :
+
+                break;
+                
+            case EVICTIONS :
+
+                break;
+                
+            case COLUMN_ERROR :
+                throw std::invalid_argument("\n\nError - incorrect column header\n\nPlease correct command\n\n");
+        }
 }
 
 // -------------------------------------------------------------------------------------------
@@ -332,8 +374,37 @@ COLUMNS FullyAssociated :: FindHeader (std::string header)
         return COLUMNS :: INSTRUCTION_RETREIVED;
     
     return COLUMNS :: COLUMN_ERROR;
+}
+
+// -------------------------------------------------------------------------------------------
+// Find column for each row
+COLUMNS FullyAssociated :: FindColumn (std::string column)
+{
+    if(toLower(column) == "address")
+        return COLUMNS :: ADDRESS;
     
-        
+    else if (toLower(column) == "way")
+        return COLUMNS :: WAY;
+    
+    else if(toLower(column) == "tag")
+        return COLUMNS :: TAG;
+    
+    else if(toLower(column) == "offset")
+        return COLUMNS :: OFFSET;
+    
+    else if(toLower(column) == "hit_miss")
+        return COLUMNS :: HIT_MISS;
+    
+    else if(toLower(column) == "evictions")
+        return COLUMNS :: EVICTIONS;
+    
+    else if(toLower(column) == "word")
+        return COLUMNS :: WORD;
+    
+    else if(toLower(column) == "instruction_retreived" || toLower(column) == "instruction")
+        return COLUMNS :: INSTRUCTION_RETREIVED;
+    
+    return COLUMNS :: COLUMN_ERROR;
 }
 
 // -------------------------------------------------------------------------------------------

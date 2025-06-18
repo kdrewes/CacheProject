@@ -45,10 +45,9 @@ class FullyAssociated : public Cache
     // Condenses string into a single variable
     typedef std::ostringstream condensedString;
     
-    
 private:
 
-    // Stores all cache data that works in parallel
+    // Stores each column per row
     struct CacheData
     {
         // Constructor
@@ -61,7 +60,7 @@ private:
         {}
         
         // ----------------------------------------------------------------
-        // Ensure the same address contains the identical instructions
+        // Ensure the same address contains identical instructions
         std::map <binary,hex> getInstructions (binary addr, multiMap addressMap)
         {
             std::map <binary,hex> instructions;
@@ -137,9 +136,9 @@ public:
     
     // ----------------------- Hash Table Algorithms -------------------------
     
-     void HashTable();                   // Performs implementation on hash table
+     void HashTable();                  // Performs implementation on hash table
     
-     index AssignHashIndex               // Assign addresses to their designated index
+     index AssignHashIndex              // Assign addresses to their designated index
      (hashValue hashCode);
     
     // ------------------- Cache Replacements Algorithms  --------------------
@@ -160,13 +159,18 @@ public:
     
     // --------------------------- Misc Functions  -----------------------------
 
-     void Title();                       // Create Title
+     void Title();                       // Display Title
    
-     void Data();                        // Create data
+     void Data();                        // Display data
     
-     void Header();                      // Create header
+     void Header();                      // Display header
     
      void CreateHeader                   // Produce column header
+     (COLUMNS c);
+    
+     void Table();                       // Display table
+    
+     void CreateTable                    // Produce rows and columns in table
      (COLUMNS c);
     
      std::string toLower                 // Make each string lower case
@@ -174,6 +178,9 @@ public:
     
      COLUMNS FindHeader                  // Find header for each column
      (std::string header);
+    
+     COLUMNS FindColumn                  // Find column for each row
+     (std::string column);
     
 };
 
