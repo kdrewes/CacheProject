@@ -57,7 +57,7 @@ protected:
     
     // -------------------- Miscellaneous variables -------------------------
     
-    iterator gobal_iterator;                // Used as a global iterator
+    iterator global_iterator;                // Used as a global iterator
     
     enum CACHING_ALGORITHM algorithm;       // Select caching algorithm
     
@@ -102,13 +102,13 @@ public:
     void DirectMapped();
     
     // Verfies user input for fully associative cache
-    void verifyFullyAssociativeInput(unit data, iterator & inputIterator);
+    void verifyFullyAssociativeInput(unit data);
     
     // Verfies user input for set associative cache
-    void verifySetAssociativeInput(unit data, iterator & inputIterator);
+    void verifySetAssociativeInput(unit data);
     
     // Verfies user input for direct map cache
-    void verifyDirectMappedInput(unit data, iterator & inputIterator);
+    void verifyDirectMappedInput(unit data);
     
     // Establishes word criteria
     void ConfigureWord();

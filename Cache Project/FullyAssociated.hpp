@@ -54,8 +54,8 @@ private:
         CacheData(FullyAssociated & f) :
         blockSize (f.blockSize), wordSize(f.wordSize),
         address (f.addressList[std::rand() % f.addressList.size()]),
-        tag (address.substr(0, address.size() - std::floor(log(f.blockSize)))),
-        offset (address.substr(address.size() - std::floor(log(f.blockSize)), address.size())),
+        tag (address.substr(0, address.size() - std::floor(log2(f.blockSize)))),
+        offset (address.substr(address.size() - std::floor(log2(f.blockSize)), address.size())),
         instructionMap (getInstructions(address,f.addressMap)), hashCode(GenerateHashCode(this -> address))
         {}
         

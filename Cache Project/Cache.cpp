@@ -85,27 +85,24 @@ void Cache :: FullyAssociative()
     
     // Select option
     input data;
-
-    // Iterate through each input
-    iterator inputIterator = 0;
+    
+    this -> global_iterator = 0;
 
     std::cout << "\n---------- Fully Associative Cache -----------\n";
     
     // Traverse through input values
-    while(inputIterator < Fully_Associated_Input.size())
+    while(this -> global_iterator < Fully_Associated_Input.size())
     {
         
-        std::cout << Fully_Associated_Input[inputIterator];
+        std::cout << Fully_Associated_Input[this -> global_iterator];
         
         std::cin >> data;
         
-        verifyFullyAssociativeInput(data,inputIterator);
+        verifyFullyAssociativeInput(data);
         
-        inputIterator += 1;
+        this -> global_iterator += 1;
     }
     
-    // Reset inputIterator
-    inputIterator = 0;
 }
 
 // -------------------------------------------------------------------------------------------
@@ -129,25 +126,22 @@ void Cache :: SetAssociative()
     // Select option
     input data;
 
-    // Iterate through each input
-    static iterator inputIterator = 0;
-
     std::cout << "\n----------- Set Associative Cache ------------\n";
 
     // Traverse through input values
-    while(inputIterator < Set_Associated_Input.size())
+    while(this -> global_iterator < Set_Associated_Input.size())
     {
-        std::cout << Set_Associated_Input[inputIterator];
+        std::cout << Set_Associated_Input[this -> global_iterator];
         
         std::cin >> data;
         
-        verifySetAssociativeInput(data,inputIterator);
+        verifySetAssociativeInput(data);
         
-        inputIterator += 1;
+        this -> global_iterator += 1;
     }
 
     // Reset inputIterator
-    inputIterator = 0;
+    this -> global_iterator = 0;
 }
 
 // -------------------------------------------------------------------------------------------
@@ -166,34 +160,31 @@ void Cache :: DirectMapped()
     
     // Select option
     input data;
-
-    // Iterate through each input
-    iterator inputIterator = 0;
     
     std::cout << "\n------------ Direct Mapped Cache -------------\n";
     
     // Traverse through input values
-    while(inputIterator < Direct_Mapped_Input.size())
+    while(this -> global_iterator < Direct_Mapped_Input.size())
     {
-        std::cout << Direct_Mapped_Input[inputIterator];
+        std::cout << Direct_Mapped_Input[this -> global_iterator];
         
         std::cin >> data;
         
-        verifyDirectMappedInput(data, inputIterator);
+        verifyDirectMappedInput(data);
         
-        inputIterator += 1;
+        this -> global_iterator += 1;
     }
     
     // Reset inputIterator
-    inputIterator = 0;
+    this -> global_iterator = 0;
 }
 
 // -------------------------------------------------------------------------------------------
 // Verify fully associative cache input
-void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
+void Cache :: verifyFullyAssociativeInput(unit data)
 {
     
-    switch(InputEnum(inputIterator+ 1))
+    switch(InputEnum(this -> global_iterator + 1))
     {
             case CACHE_SIZE:
             
@@ -202,7 +193,7 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
                 {
                     std::cerr << "\n------------------- Error --------------------\n\nCache size must be 64 or 32 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                     
-                    inputIterator -= 1;
+                    this -> global_iterator -= 1;
                     
                     break;
                     
@@ -218,7 +209,7 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
                 {
                     std::cerr << "\n------------------- Error --------------------\n\nBlock size must be 8, 4 or 2 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                     
-                    inputIterator -= 1;
+                    this -> global_iterator -= 1;
                     
                     break;
                     
@@ -230,18 +221,18 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
                     this -> blockQuantity = this -> cacheSize / this -> blockSize;
             
                     // Assign offset size
-                    this -> offsetSize = std::floor(log(blockSize));
-                    
+                    this -> offsetSize = std::floor(log2(blockSize));
+        
                     break;
 
-            
+
         case MAIN_MEMORY:
         
         if(data != 16 && data != 8)
         {
             std::cerr << "\n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n------------------------------------------------\n";
             
-            inputIterator -= 1;
+            this -> global_iterator -= 1;
             
             break;
             
@@ -259,7 +250,7 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n------------------- Error --------------------\n\nAmount of ways must be 2 or 3\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
                 
@@ -275,7 +266,7 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n--------------------- Error ----------------------\n\nIncorrect option\n\nPlease re-enter from the following menu:\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
             }
@@ -293,10 +284,10 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
 
 // -------------------------------------------------------------------------------------------
 // Verify set associative cache input
-void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
+void Cache :: verifySetAssociativeInput(unit data)
 {
     
-    switch(InputEnum(inputIterator+ 1))
+    switch(InputEnum(this -> global_iterator + 1))
     {
             case CACHE_SIZE:
             
@@ -305,7 +296,7 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
                 {
                     std::cerr << "\n------------------- Error --------------------\n\nCache size must be 64 or 32 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                     
-                    inputIterator -= 1;
+                    this -> global_iterator -= 1;
                     
                     break;
                     
@@ -322,7 +313,7 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
                 {
                     std::cerr << "\n------------------- Error --------------------\n\nBlock size must be 8, 4 or 2 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                     
-                    inputIterator -= 1;
+                    this -> global_iterator -= 1;
                     
                     break;
                     
@@ -339,7 +330,7 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
             
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
             
                 break;
             
@@ -357,7 +348,7 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n------------------- Error --------------------\n\nAmount of ways must be 2 or 3\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
             }
@@ -373,7 +364,7 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n--------------------- Error ----------------------\n\nIncorrect option\n\nPlease re-enter from the following menu:\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
             }
@@ -391,9 +382,9 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
 
 // -------------------------------------------------------------------------------------------
 // Verify set associative cache input
-void Cache :: verifyDirectMappedInput(unit data, iterator & inputIterator)
+void Cache :: verifyDirectMappedInput(unit data)
 {
-    switch(InputEnum(inputIterator+ 1))
+    switch(InputEnum(this -> global_iterator + 1))
     {
             case CACHE_SIZE:
             
@@ -401,7 +392,7 @@ void Cache :: verifyDirectMappedInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n------------------- Error --------------------\n\nCache size must be 64 or 32 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
             }
@@ -417,7 +408,7 @@ void Cache :: verifyDirectMappedInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n------------------- Error --------------------\n\nBlock size must be 8, 4 or 2 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
             }
@@ -432,7 +423,7 @@ void Cache :: verifyDirectMappedInput(unit data, iterator & inputIterator)
         {
             std::cerr << "/n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
             
-            inputIterator -= 1;
+            this -> global_iterator -= 1;
             
             break;
         }

@@ -149,7 +149,7 @@ void FullyAssociated :: Data()
      
                   << this -> wordSize           << " Bytes\t\t# of Words = "            << this -> wordQuantity
      
-                  << " Bytes"                   << "\t\tTag Size = "                    << this -> addressSize - std::floor(log(blockSize)) << " Bytes\n";
+                  << " Bytes"                   << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
     
     spreadsheet << this -> cacheSize << "," << this -> blockSize << "," << this -> ways << "," << this -> offsetSize << ","
     
@@ -165,7 +165,7 @@ void FullyAssociated :: Data()
      
                   << this -> wordSize           << " Bytes\t\t# of Words = "            << this -> wordQuantity
      
-                  << " Bytes"                   << "\t\tTag Size = "                    << this -> addressSize - std::floor(log(blockSize)) << " Bytes\n";
+                  << " Bytes"                   << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
 }
 // -------------------------------------------------------------------------------------------
 // Create Header
