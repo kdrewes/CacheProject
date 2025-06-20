@@ -47,7 +47,6 @@ protected:
      unit cacheSize,          // Total amount of block data (Bytes)
           blockSize,          // Size of each block (Bytes)
           mainMemorySize,     // Size of main memory (Bits)
-          slots,              // slots = cacheSize / blockSize
           offsetSize,         // Offset size  (Bits)
           addressSize,        // Address size (Bytes)
           ways,               // Total amout of ways
@@ -57,6 +56,8 @@ protected:
           wordQuantity;       // # of words utilized
     
     // -------------------- Miscellaneous variables -------------------------
+    
+    iterator gobal_iterator;                // Used as a global iterator
     
     enum CACHING_ALGORITHM algorithm;       // Select caching algorithm
     

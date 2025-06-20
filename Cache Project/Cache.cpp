@@ -220,14 +220,14 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
                     
                     inputIterator -= 1;
                     
-                    // Block quantity = ( block size / cache size )
-                    this -> blockQuantity = this -> cacheSize / this -> blockSize;
-                    
                     break;
                     
                 }
                     // Assign block size
                     this -> blockSize = data;
+
+                    // Block quantity = ( block size / cache size )
+                    this -> blockQuantity = this -> cacheSize / this -> blockSize;
             
                     // Assign offset size
                     this -> offsetSize = std::floor(log(blockSize));
@@ -616,7 +616,7 @@ binaryVector Cache :: GenerateAddresses()
     binaryVector cacheAddresses;
    
     // Amount of addresses should be half the # of slots for demonstration purposes
-    for(int i = 0; i < this -> slots / 2; i++)
+    for(int i = 0; i < this -> blockQuantity / 2; i++)
     {
                 
         for(int x = 0; x < this -> mainMemorySize; x++)

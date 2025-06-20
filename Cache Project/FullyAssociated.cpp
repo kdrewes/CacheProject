@@ -12,14 +12,11 @@ FullyAssociated :: ~FullyAssociated() = default;
 // Configure binary data
 void FullyAssociated :: Router()
 {
-    // Initialize slot size
-    this -> slots = this -> cacheSize / this -> blockSize;
-    
     // Determine word quantity binary words used
     ConfigureWord();
 
     // Insert CacheData properties into cacheStorage vector
-    for(int i = 0; i < this -> slots; i++)
+    for(int i = 0; i < this -> blockQuantity; i++)
         cacheStorage.push_back(CacheData(*this));
     
     
@@ -62,6 +59,20 @@ void FullyAssociated :: Controller()
     Table();
     
     std::cout << console.str();
+    
+    /*
+     
+    UNIT TEST
+     
+    std::cout << console.str();
+    
+    file write("testFile.csv");
+    
+    write << spreadsheet.str();
+    
+    write.close();
+    
+    */
     
 }
 
@@ -128,21 +139,19 @@ void FullyAssociated :: Title()
 void FullyAssociated :: Data()
 {
     
-    
-    console << "\n\t\t\tCache Size = "    << this -> cacheSize                << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
+          console << "\n\t\t\tCache Size = "    << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
             
-            << "\t\t# of Blocks = "               << this -> cacheSize / this -> blockSize   << " Bytes"
+                  << "\t\t# of Blocks = "       << this -> blockQuantity                << " Bytes"
     
-            << "\n\n\t\t\t# of Ways = "   << this -> ways                     << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
+                  << "\n\n\t\t\t# of Ways = "   << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
     
-            << "\t\tRam Size = "                  << this -> mainMemorySize       << " Bytes" << "\n\n\t\t\tWord Size  = "
+                  << "\t\tRam Size = "          << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\tWord Size  = "
      
-            << this -> wordSize                   << " Bytes\t\t# of Words = "    << this -> wordQuantity
+                  << this -> wordSize           << " Bytes\t\t# of Words = "            << this -> wordQuantity
      
-            << " Bytes"                       << "\t\tTag Size = "            << this -> addressSize - std::floor(log(blockSize)) << " Bytes\n";
+                  << " Bytes"                   << "\t\tTag Size = "                    << this -> addressSize - std::floor(log(blockSize)) << " Bytes\n";
     
-    
-    spreadsheet << ",,,," << this -> cacheSize << "," << this -> blockSize << "," << this -> ways << "," << this -> offsetSize << ","
+    spreadsheet << this -> cacheSize << "," << this -> blockSize << "," << this -> ways << "," << this -> offsetSize << ","
     
                 << wordSize << "," << this -> wordQuantity << "\n\n";
     
@@ -157,20 +166,13 @@ void FullyAssociated :: Data()
                   << this -> wordSize           << " Bytes\t\t# of Words = "            << this -> wordQuantity
      
                   << " Bytes"                   << "\t\tTag Size = "                    << this -> addressSize - std::floor(log(blockSize)) << " Bytes\n";
-    
-    
-    
-    
-    
-        
-              
 }
 // -------------------------------------------------------------------------------------------
 // Create Header
 void FullyAssociated :: Header()
 {
     // Predefine header
-    std::string header[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions"};
+    std::string header[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
     // Display Header banner
     console << "\n\t\t\t------------------------ Fully Associated Cache Table -------------------------\n\n";
@@ -281,20 +283,20 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
 void FullyAssociated :: Table()
 {
     // Predefine table
-    std::string table[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions"};
+    std::string table[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
     for(std::vector<iterator> :: size_type i = 0; i < cacheStorage.size(); i++)
     {
         for(std::vector<iterator> :: size_type j = 0; j < sizeof(table) / sizeof(table[0]); j++)
         {
-            
+            CreateTable(FindColumn(table[i]), i);
         }
     }
 }
 
 // -------------------------------------------------------------------------------------------
 // Produce rows and columns in table
-void FullyAssociated :: CreateTable(COLUMNS c)
+void FullyAssociated :: CreateTable(COLUMNS c, iterator i)
 {
         switch(c)
         {

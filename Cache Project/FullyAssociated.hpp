@@ -171,7 +171,7 @@ public:
      void Table();                       // Display table
     
      void CreateTable                    // Produce rows and columns in table
-     (COLUMNS c);
+     (COLUMNS c, iterator i);
     
      std::string toLower                 // Make each string lower case
      (std::string header);
