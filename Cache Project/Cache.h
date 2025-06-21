@@ -35,6 +35,9 @@ protected:
     // binaryHexMap = Represents a map inside a map
     typedef std::map<binary, std::map<binary,hex>> multiMap;
     
+    // Key = binary tag, values = addresses stored in queue
+    typedef std::map<binary,std::queue<binary>> wayMap;
+    
     // Condenses string into a single variable
     typedef std::ostringstream condensedString;
     
@@ -66,6 +69,8 @@ protected:
                  addressList;               // Dataset that stores all existing addresses
     
         multiMap addressMap;                // Key = Address, Value = Map ( Key = binary word, Value = Hexadecimal Word )
+    
+          wayMap tagQueueMap;               // Key = Tag in binary, Value = Addresses stored in queue
     
  condensedString console,                   // Contains entire string to be printed to console
     

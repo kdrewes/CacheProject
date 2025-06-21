@@ -123,13 +123,13 @@ void FullyAssociated :: LFU()
 void FullyAssociated :: Title()
 {
     // Display Title
-    console << "\n\n\n\n\t\t\t*******************************************************************************\n";
+    console << "\n\n\n\n\n\n\n\n\t\t\t*******************************************************************************\n";
     console <<"\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
     console <<"\t\t\t*******************************************************************************\n";
     
     spreadsheet << "                    Fully Associative Placement Policy                    \n";
     
-    consoleToFile << "\n\n\n\n\t\t\t*******************************************************************************\n";
+    consoleToFile << "\n\n\n\n\n\n\n\n\t\t\t*******************************************************************************\n";
     consoleToFile <<"\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
     consoleToFile <<"\t\t\t*******************************************************************************\n";
 
@@ -285,26 +285,34 @@ void FullyAssociated :: Table()
     // Predefine table
     std::string table[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
-    for(std::vector<iterator> :: size_type i = 0; i < cacheStorage.size(); i++)
-    {
-        for(std::vector<iterator> :: size_type j = 0; j < sizeof(table) / sizeof(table[0]); j++)
-        {
-            CreateTable(FindColumn(table[i]), i);
-        }
-    }
+    for(this -> global_iterator = 0; this -> global_iterator < cacheStorage.size(); this -> global_iterator++)
+        for(int j = 0; j < sizeof(table) / sizeof(table[0]); j++)
+            CreateTable(FindColumn(table[j]));
 }
 
 // -------------------------------------------------------------------------------------------
 // Produce rows and columns in table
-void FullyAssociated :: CreateTable(COLUMNS c, iterator i)
+void FullyAssociated :: CreateTable(COLUMNS c)
 {
         switch(c)
         {
             case ADDRESS :
                 
+                console << "\t\t\t" << cacheStorage[global_iterator].address << " | ";
+                spreadsheet << cacheStorage[global_iterator].address << ',';
+                consoleToFile << "\t\t\t" << cacheStorage[global_iterator].address << " | ";
                 break;
                 
             case WAY :
+                
+                /*
+                if(tagQueueMap.find(cacheStorage[global_iterator].tag) != tagQueueMap.end())
+                {
+                    
+                }
+                else
+                    tagQeueMap[cacheStorage[global_iterator].tag].push();
+                 */
                 
                 break;
                 
@@ -333,6 +341,8 @@ void FullyAssociated :: CreateTable(COLUMNS c, iterator i)
                 break;
                 
             case COLUMN_ERROR :
+                
+                std::cout << "\nCOLUMN_ERROR - iterator = " << this -> global_iterator;
                 throw std::invalid_argument("\n\nError - incorrect column header\n\nPlease correct command\n\n");
         }
 }

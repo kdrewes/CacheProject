@@ -36,9 +36,6 @@ class FullyAssociated : public Cache
     // Key = binary word, hexidecimal instruction
     typedef std::map<binary,hex> wordMap;
     
-    // Key = binary word, hexidecimal instruction
-    typedef std::map<hex,std::queue<binary>> wayMap;
-    
     // binaryHexMap = Represents a map inside a map
     typedef std::map<binary, std::map<binary,hex>> multiMap;
     
@@ -171,7 +168,7 @@ public:
      void Table();                       // Display table
     
      void CreateTable                    // Produce rows and columns in table
-     (COLUMNS c, iterator i);
+     (COLUMNS c);
     
      std::string toLower                 // Make each string lower case
      (std::string header);

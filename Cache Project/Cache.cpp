@@ -24,6 +24,9 @@ typedef std::ofstream file;
 // binaryHexMap = Represents a map inside a map
 typedef std::map<binary, std::map<binary,hex>> multiMap;
 
+// Key = binary word, hexidecimal instruction
+typedef std::map<hex,std::queue<binary>> wayMap;
+
 // Condenses string into a single variable
 typedef std::ostringstream condensedString;
 
