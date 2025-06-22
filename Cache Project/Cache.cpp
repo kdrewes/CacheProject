@@ -486,17 +486,6 @@ void Cache :: ConfigureWord()
     else if(this -> wordQuantity == 1)
         for(int i = 0; i < sizeof(oneWord) / sizeof(oneWord[0]); i++)
             wordVector.push_back(oneWord[i]);
-    
-    // Generate binary data and store in vector
-    this -> addressList = GenerateAddresses();
-    
-    // Determine address size
-    this -> addressSize = addressList[0].size();
-
-    // Assign hexadecimal values to address map
-    for(std::vector<binary> :: size_type i = 0; i < addressList.size(); i++)
-        for(std::vector<binary> :: size_type j = 0; j < wordQuantity; j++)
-            addressMap[addressList[i]][wordVector[j]] = GetInstruction();
 
 }
 

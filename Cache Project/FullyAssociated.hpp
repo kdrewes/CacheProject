@@ -28,7 +28,7 @@ class FullyAssociated : public Cache
     typedef std::vector<std::string> inputSet, binaryVector;
     
     // Key = Address, Value = Hash Value
-    typedef std::vector <std::pair<binary, hashValue>> hashAddressPair;
+    typedef std::vector <std::pair<binary, binary>> hashAddress;
     
     // Write file
     typedef std::ofstream file;
@@ -112,7 +112,7 @@ private:
     std::vector <CacheData> cacheStorage;
     
     // Store address in hash table
-    binaryVector addressTable;
+    hashAddress addressTable;
 
 public:
     
