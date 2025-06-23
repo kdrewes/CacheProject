@@ -70,18 +70,56 @@ void FullyAssociated :: Controller()
     Header();
     
     // Produce and display table
-    Table();
+    Chart();
     
-    //std::cout << console.str();
+    // Unit Test for hash code
+   for(int i = 0; i < cacheStorage.size(); i++)
+       std::cout << "\nAddress[" << i << "]: " << cacheStorage[i].address << ' ' << "Hash Code: " << cacheStorage[i].addressHashCode << '\n';
     
-    // UNIT TEST FOR ADRESS TABLE)
     /*
-    for(hashAddress :: size_type i = 0; i < addressTable.size(); i++)
-        if(!addressTable[i].first.empty() && !addressTable[i].first.empty())
-            std::cout << "\nINDEX = " << i << ' ' << "TAG = " << addressTable[i].first << ' ' << "ADDRESS = " << addressTable[i].second << std::endl;
-            */
-    /*
+     // Unit Test for hash code
+    for(int i = 0; i < cacheStorage.size(); i++)
+        std::cout << "\nAddress[" << i << "]: " << cacheStorage[i].address << ' ' << "Hash Code: " << cacheStorage[i].hashCode << '\n';
      
+    
+     
+    // Unit Test for Address List
+    for(int i = 0; i < addressList.size(); i++)
+        std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
+    
+    std::cout << std::endl;
+    
+     // Unit Test for hash code
+    for(int i = 0; i < cacheStorage.size(); i++)
+        std::cout << "\nAddress[" << i << "]: " << cacheStorage[i].address << ' ' << "Hash Code: " << cacheStorage[i].hashCode << '\n';
+    
+   // std::cout << console.str() << std::endl;
+    
+    
+    // UNIT TEST FOR ADRESS LIST
+    //for(int i = 0; i < addressList.size(); i++)
+        //std::cout << "\naddressList[" << i << "] = " << addressList[i];
+    
+ std:::cout << std::endl;
+    
+    int occupiedSubscripts = 0;
+    
+    for(hashAddress :: size_type i = 0; i < addressTable.size(); i++)
+        if(!addressTable[i].first.empty() && !addressTable[i].second.empty())
+            occupiedSubscripts += 1;
+    
+    std::cout << "\noccupiedSubscripts = " << occupiedSubscripts << std::endl;
+     */
+
+    // UNIT TEST FOR ADRESS TABLE
+    for(hashAddress :: size_type i = 0; i < addressTable.size(); i++)
+        if(!addressTable[i].first.empty() && !addressTable[i].second.empty())
+        {
+            std::cout << "\nINDEX = " << i << ' ' << "TAG = " << addressTable[i].first << ' ' << "ADDRESS = " << addressTable[i].second << std::endl;
+        }
+        
+    /*
+    
     UNIT TEST
      
     std::cout << console.str();
@@ -98,9 +136,23 @@ void FullyAssociated :: Controller()
 
 // -------------------------------------------------------------------------------------------
 
+// Create hash table
 void FullyAssociated :: HashTable()
 {
     this -> addressTable.resize(addressList.size() * 2);
+}
+
+// -------------------------------------------------------------------------------------------
+
+// Assign hash index to addressTable or tagTable
+void FullyAssociated :: AssignHashIndex()
+{
+    // Retrieve hashed index and assign it to addressTable
+    int hashIndex = GetHashIndex(cacheStorage[global_iterator].addressHashCode);
+
+    // Assign data to designated hashed subscript of addressTable
+    if(addressTable[hashIndex].first.empty() &&  addressTable[hashIndex].second.empty())
+        addressTable[hashIndex] = {cacheStorage[global_iterator].tag,cacheStorage[global_iterator].address};
 }
 
 // -------------------------------------------------------------------------------------------
@@ -300,24 +352,25 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
 
 // -------------------------------------------------------------------------------------------
 // Display table
-void FullyAssociated :: Table()
+void FullyAssociated :: Chart()
 {
     // Predefine table
-    std::string table[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
+    std::string chart[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
     for(this -> global_iterator = 0; this -> global_iterator < cacheStorage.size(); this -> global_iterator++)
-        for(int j = 0; j < sizeof(table) / sizeof(table[0]); j++)
-            CreateTable(FindColumn(table[j]));
+        for(int j = 0; j < sizeof(chart) / sizeof(chart[0]); j++)
+            CreateChart(FindColumn(chart[j]));
 }
 
 // -------------------------------------------------------------------------------------------
 // Produce rows and columns in table
-void FullyAssociated :: CreateTable(COLUMNS c)
+void FullyAssociated :: CreateChart(COLUMNS c)
 {
         switch(c)
         {
             case ADDRESS :
-                
+            {
+                // Add address data to each ostringstream variable
                 console << "\t\t" << cacheStorage[global_iterator].address << " | ";
                 
                 spreadsheet << cacheStorage[global_iterator].address << ',';
@@ -325,10 +378,10 @@ void FullyAssociated :: CreateTable(COLUMNS c)
                 consoleToFile << "\t\t" << cacheStorage[global_iterator].address << " | ";
                 
                 // Assign each tag and address to its designated hash index
-                addressTable[AssignHashIndex(cacheStorage[global_iterator].hashCode)]
-                = {cacheStorage[global_iterator].tag,cacheStorage[global_iterator].address};
+                AssignHashIndex();
                 
                 break;
+            }
                 
             case WAY :
                 
@@ -448,8 +501,8 @@ COLUMNS FullyAssociated :: FindColumn (std::string column)
 
 // -------------------------------------------------------------------------------------------
 
-// Assign hash index utilizing the quadratic probing formula
-FullyAssociated :: index FullyAssociated :: AssignHashIndex(hashValue hashCode)
+// Retreive hash index
+FullyAssociated :: index FullyAssociated :: GetHashIndex(hashValue hashCode)
 {
     // Declare hash code
     hashCode %= this -> addressTable.size();
@@ -469,10 +522,6 @@ FullyAssociated :: index FullyAssociated :: AssignHashIndex(hashValue hashCode)
         // Implement quadratic probing formula
         else
         {
-            
-            // Increment iterator
-            iterator += 1;
-            
             // Determine if address is currently stored in hash table
             if( (addressTable[hashCode].first == cacheStorage[global_iterator].tag) &&
                 (addressTable[hashCode].second == cacheStorage[global_iterator].address) )
@@ -480,6 +529,9 @@ FullyAssociated :: index FullyAssociated :: AssignHashIndex(hashValue hashCode)
             
             // Assign value of modified hash code
             hashCode = (hashCopy + static_cast<index>(pow(iterator,2))) % this -> addressTable.size();
+            
+            // Increment iterator
+            iterator += 1;
         
         }
     }

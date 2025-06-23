@@ -53,7 +53,7 @@ private:
         address (f.addressList[std::rand() % f.addressList.size()]),
         tag (address.substr(0, address.size() - std::floor(log2(f.blockSize)))),
         offset (address.substr(address.size() - std::floor(log2(f.blockSize)), address.size())),
-        instructionMap (getInstructions(address,f.addressMap)), hashCode(GenerateHashCode(this -> address))
+        instructionMap (getInstructions(address,f.addressMap)), addressHashCode(GenerateHashCode(this -> address))
         {}
         
         // ----------------------------------------------------------------
@@ -75,14 +75,14 @@ private:
         
         // ----------------------------------------------------------------
         // Generate hash code for each address
-        hashValue GenerateHashCode(binary addr)
+        hashValue GenerateHashCode(binary binaryValue)
         {
-            hashCode = 0;
+            hashValue hashCode = 0;
             
-            for(iterator i = 0; i < addr.size(); i++)
+            for(iterator i = 0; i < binaryValue.size(); i++)
             {
-                if(address[i] ==  '1')
-                    hashCode += pow(2,addr.size() - i - 1);
+                if(binaryValue[i] ==  '1')
+                    hashCode += pow(2,binaryValue.size() - i - 1);
             }
             
             return hashCode;
@@ -96,7 +96,9 @@ private:
         
                 offset;           // Offset in binary form
         
-      hashValue hashCode;         // hash code of each address
+      hashValue tagHashCode,      // hash code of each tag
+        
+                addressHashCode;  // hash code of each address
         
            unit blockSize,        // Size of each block (Bytes)
         
@@ -113,6 +115,8 @@ private:
     
     // Store address in hash table
     hashAddress addressTable;
+    
+    
 
 public:
     
@@ -135,7 +139,9 @@ public:
     
      void HashTable();                  // Performs implementation on hash table
     
-     index AssignHashIndex              // Assign addresses to their designated index
+     void AssignHashIndex();            // Assign addresses to their designated index
+    
+     index GetHashIndex                 // Retreive hash index
      (hashValue hashCode);
     
     // ------------------- Cache Replacements Algorithms  --------------------
@@ -165,9 +171,9 @@ public:
      void CreateHeader                   // Produce column header
      (COLUMNS c);
     
-     void Table();                       // Display table
+     void Chart();                       // Display chart
     
-     void CreateTable                    // Produce rows and columns in table
+     void CreateChart                    // Produce rows and columns in chart
      (COLUMNS c);
     
      std::string toLower                 // Make each string lower case
