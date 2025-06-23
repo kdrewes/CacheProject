@@ -71,16 +71,18 @@ void FullyAssociated :: Controller()
     
     // Produce and display table
     Chart();
-    
-    // Unit Test for hash code
-   for(int i = 0; i < cacheStorage.size(); i++)
-       std::cout << "\nAddress[" << i << "]: " << cacheStorage[i].address << ' ' << "Hash Code: " << cacheStorage[i].addressHashCode << '\n';
-    
+  
+
+
     /*
      // Unit Test for hash code
     for(int i = 0; i < cacheStorage.size(); i++)
         std::cout << "\nAddress[" << i << "]: " << cacheStorage[i].address << ' ' << "Hash Code: " << cacheStorage[i].hashCode << '\n';
      
+     
+     // Unit Test for hash code
+    for(int i = 0; i < cacheStorage.size(); i++)
+        std::cout << "\nAddress[" << i << "]: " << cacheStorage[i].address << ' ' << "Hash Code: " << cacheStorage[i].addressHashCode << '\n';
     
      
     // Unit Test for Address List
@@ -117,6 +119,7 @@ void FullyAssociated :: Controller()
         {
             std::cout << "\nINDEX = " << i << ' ' << "TAG = " << addressTable[i].first << ' ' << "ADDRESS = " << addressTable[i].second << std::endl;
         }
+
         
     /*
     
@@ -152,7 +155,20 @@ void FullyAssociated :: AssignHashIndex()
 
     // Assign data to designated hashed subscript of addressTable
     if(addressTable[hashIndex].first.empty() &&  addressTable[hashIndex].second.empty())
+    {
         addressTable[hashIndex] = {cacheStorage[global_iterator].tag,cacheStorage[global_iterator].address};
+        
+        std::cout << "\nAddress, " << addressTable[hashIndex].second << ", assigned on index " << hashIndex << " - iterator " << global_iterator << "\n\n";
+        
+        this -> hitOrMiss = false;
+    }
+    
+    else
+    {
+        std::cout << "\nAddress, " << addressTable[hashIndex].second << ", already found on index " << hashIndex << " - iterator " << global_iterator << "\n\n";
+        
+        this -> hitOrMiss = true;
+    }
 }
 
 // -------------------------------------------------------------------------------------------

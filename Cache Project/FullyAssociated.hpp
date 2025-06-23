@@ -24,11 +24,17 @@ class FullyAssociated : public Cache
     // menu = consist of entire menu
     typedef std::string binary, hex, menu;
     
+    // Used for boolean datatype
+    typedef bool boolean;
+    
     // inputSet = Stores input values, binaryVector = Stores binary values
     typedef std::vector<std::string> inputSet, binaryVector;
     
-    // Key = Address, Value = Hash Value
+    // Key = hash value, Value = address
     typedef std::vector <std::pair<binary, binary>> hashAddress;
+    
+    // Key = tag, Value = addresses stored in queue
+    typedef std::vector<std::pair<binary,std::queue<binary>>> tagAddress;
     
     // Write file
     typedef std::ofstream file;
@@ -42,6 +48,7 @@ class FullyAssociated : public Cache
     // Condenses string into a single variable
     typedef std::ostringstream condensedString;
     
+    
 private:
 
     // Stores each column per row
@@ -53,7 +60,9 @@ private:
         address (f.addressList[std::rand() % f.addressList.size()]),
         tag (address.substr(0, address.size() - std::floor(log2(f.blockSize)))),
         offset (address.substr(address.size() - std::floor(log2(f.blockSize)), address.size())),
-        instructionMap (getInstructions(address,f.addressMap)), addressHashCode(GenerateHashCode(this -> address))
+        instructionMap (getInstructions(address,f.addressMap)),
+        addressHashCode(GenerateHashCode(this -> address)),
+        tagHashCode(GenerateHashCode(this -> tag))
         {}
         
         // ----------------------------------------------------------------
@@ -107,16 +116,23 @@ private:
         wordMap instructionMap;   // Key = binary value of word, value = Hex value of each instruction
                 
     };
+    
+    
+    // ----------------------------- Varaibles ------------------------------
+    
+    boolean hitOrMiss;        // Determines hit or miss
 
     // -------------------------- Binary datasets ---------------------------
     
     // Stores all properties located in CacheData structure
     std::vector <CacheData> cacheStorage;
     
-    // Store address in hash table
+    // Hash table used to store addresses (Detects hit or miss)
     hashAddress addressTable;
     
-    
+    // Hash table used to store multiple ways
+    // Key = tag, value = addresses stored in queue
+    tagAddress tagTable;
 
 public:
     
