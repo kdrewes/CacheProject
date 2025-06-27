@@ -70,7 +70,12 @@ void FullyAssociated :: Controller()
     Header();
     
     // Produce and display table
-    Chart();
+    Table();
+    
+    // Unit Test for Address List
+    for(int i = 0; i < addressList.size(); i++)
+        std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
+    
   
 
 
@@ -148,26 +153,53 @@ void FullyAssociated :: HashTable()
 // -------------------------------------------------------------------------------------------
 
 // Assign hash index to addressTable or tagTable
-void FullyAssociated :: AssignHashIndex()
+void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
 {
-    // Retrieve hashed index and assign it to addressTable
-    int hashIndex = GetHashIndex(cacheStorage[global_iterator].addressHashCode);
-
-    // Assign data to designated hashed subscript of addressTable
-    if(addressTable[hashIndex].first.empty() &&  addressTable[hashIndex].second.empty())
-    {
-        addressTable[hashIndex] = {cacheStorage[global_iterator].tag,cacheStorage[global_iterator].address};
-        
-        std::cout << "\nAddress, " << addressTable[hashIndex].second << ", assigned on index " << hashIndex << " - iterator " << global_iterator << "\n\n";
-        
-        this -> hitOrMiss = false;
-    }
     
-    else
+    switch(table)
     {
-        std::cout << "\nAddress, " << addressTable[hashIndex].second << ", already found on index " << hashIndex << " - iterator " << global_iterator << "\n\n";
-        
-        this -> hitOrMiss = true;
+        case ADDRESS_TABLE:
+        {
+            // Retrieve hashed index and assign it to addressTable
+            int hashIndex = GetHashIndex(table,cacheStorage[global_iterator].addressHashCode);
+            
+            // Assign data to designated hashed subscript of addressTable
+            if(addressTable[hashIndex].first.empty() &&  addressTable[hashIndex].second.empty())
+            {
+                addressTable[hashIndex] = {cacheStorage[global_iterator].tag,cacheStorage[global_iterator].address};
+                
+                std::cout << "\nAddress, " << addressTable[hashIndex].second << ", assigned on index " << hashIndex << " - iterator " << global_iterator << "\n\n";
+                
+                this -> hitOrMiss = false;
+            }
+            
+            else
+            {
+                std::cout << "\nAddress, " << addressTable[hashIndex].second << ", already found on index " << hashIndex << " - iterator " << global_iterator << "\n\n";
+                
+                this -> hitOrMiss = true;
+            }
+            
+            
+            break;
+            
+        }
+            
+        case TAG_TABLE:
+        {
+            
+            // Retrieve hashed index and assign it to addressTable
+            int hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
+            
+            // INSERT DATA
+            
+        }
+            
+        case HASH_TABLE_ERROR:
+        {
+            throw std::invalid_argument("\n\nError - Invalid table, please re-enter option.\n");
+        }
+            
     }
 }
 
@@ -368,19 +400,19 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
 
 // -------------------------------------------------------------------------------------------
 // Display table
-void FullyAssociated :: Chart()
+void FullyAssociated :: Table()
 {
     // Predefine table
-    std::string chart[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
+    std::string table[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
     for(this -> global_iterator = 0; this -> global_iterator < cacheStorage.size(); this -> global_iterator++)
-        for(int j = 0; j < sizeof(chart) / sizeof(chart[0]); j++)
-            CreateChart(FindColumn(chart[j]));
+        for(int j = 0; j < sizeof(table) / sizeof(table[0]); j++)
+            CreateTable(FindColumn(table[j]));
 }
 
 // -------------------------------------------------------------------------------------------
 // Produce rows and columns in table
-void FullyAssociated :: CreateChart(COLUMNS c)
+void FullyAssociated :: CreateTable(COLUMNS c)
 {
         switch(c)
         {
@@ -394,7 +426,7 @@ void FullyAssociated :: CreateChart(COLUMNS c)
                 consoleToFile << "\t\t" << cacheStorage[global_iterator].address << " | ";
                 
                 // Assign each tag and address to its designated hash index
-                AssignHashIndex();
+                AssignHashIndex(FindTable("Address"));
                 
                 break;
             }
@@ -517,39 +549,76 @@ COLUMNS FullyAssociated :: FindColumn (std::string column)
 
 // -------------------------------------------------------------------------------------------
 
-// Retreive hash index
-FullyAssociated :: index FullyAssociated :: GetHashIndex(hashValue hashCode)
+// Find addressTable or tagTag hashing formula
+HASH_TABLE FullyAssociated :: FindTable (std::string table)
 {
-    // Declare hash code
-    hashCode %= this -> addressTable.size();
+   if(toLower(table) == "address" || toLower(table) == "address table")
+      return HASH_TABLE :: ADDRESS_TABLE;
     
-    // Create copy of hashCode
-    hashValue hashCopy = hashCode;
+    else if(toLower(table) == "tag" || toLower(table) == "tag table")
+       return HASH_TABLE :: TAG_TABLE;
     
-    // Iterator used to resolve any potential collisions
-    index iterator = 0;
-   
-    while(true)
-    {
-        // Determine if subscript of addressTable[hashCode] is empty
-        if(this -> addressTable[hashCode].first.empty() && this -> addressTable[hashCode].second.empty())
-            return hashCode;
-        
-        // Implement quadratic probing formula
-        else
-        {
-            // Determine if address is currently stored in hash table
-            if( (addressTable[hashCode].first == cacheStorage[global_iterator].tag) &&
-                (addressTable[hashCode].second == cacheStorage[global_iterator].address) )
-                return hashCode;
-            
-            // Assign value of modified hash code
-            hashCode = (hashCopy + static_cast<index>(pow(iterator,2))) % this -> addressTable.size();
-            
-            // Increment iterator
-            iterator += 1;
-        
-        }
-    }
+    return HASH_TABLE :: HASH_TABLE_ERROR;
+}
 
+// -------------------------------------------------------------------------------------------
+
+// Retreive hash index
+FullyAssociated :: index FullyAssociated :: GetHashIndex(HASH_TABLE table, hashValue hashCode)
+{
+    switch(table)
+    {
+            
+        case ADDRESS_TABLE:
+        {
+            // Declare hash code
+            hashCode %= this -> addressTable.size();
+            
+            // Create copy of hashCode
+            hashValue hashCopy = hashCode;
+            
+            // Iterator used to resolve any potential collisions
+            index iterator = 0;
+           
+            while(true)
+            {
+                // Determine if subscript of addressTable[hashCode] is empty
+                if(this -> addressTable[hashCode].first.empty() && this -> addressTable[hashCode].second.empty())
+                    return hashCode;
+                
+                // Implement quadratic probing formula
+                else
+                {
+                    // Determine if address is currently stored in hash table
+                    if( (addressTable[hashCode].first == cacheStorage[global_iterator].tag) &&
+                        (addressTable[hashCode].second == cacheStorage[global_iterator].address) )
+                        return hashCode;
+                    
+                    // Assign value of modified hash code
+                    hashCode = (hashCopy + static_cast<index>(pow(iterator,2))) % this -> addressTable.size();
+                    
+                    // Increment iterator
+                    iterator += 1;
+                
+                }
+            }
+            
+            break;
+        }
+            
+        case TAG_TABLE:
+        {
+            
+            break;
+        }
+            
+        case HASH_TABLE_ERROR:
+        {
+            throw std::invalid_argument("\n\nError - Invalid table, please re-enter option.\n");
+        }
+            
+            
+    }
+    
+    return hashCode;
 }

@@ -30,7 +30,7 @@ class FullyAssociated : public Cache
     // inputSet = Stores input values, binaryVector = Stores binary values
     typedef std::vector<std::string> inputSet, binaryVector;
     
-    // Key = hash value, Value = address
+    // Key = Tag, Value = address
     typedef std::vector <std::pair<binary, binary>> hashAddress;
     
     // Key = tag, Value = addresses stored in queue
@@ -128,6 +128,7 @@ private:
     std::vector <CacheData> cacheStorage;
     
     // Hash table used to store addresses (Detects hit or miss)
+    // Key = Tag, Value = address
     hashAddress addressTable;
     
     // Hash table used to store multiple ways
@@ -155,10 +156,12 @@ public:
     
      void HashTable();                  // Performs implementation on hash table
     
-     void AssignHashIndex();            // Assign addresses to their designated index
+     void AssignHashIndex               // Assign addresses to their designated index
+     (HASH_TABLE table);
     
      index GetHashIndex                 // Retreive hash index
-     (hashValue hashCode);
+     (HASH_TABLE table,
+      hashValue hashCode);
     
     // ------------------- Cache Replacements Algorithms  --------------------
     
@@ -187,9 +190,9 @@ public:
      void CreateHeader                   // Produce column header
      (COLUMNS c);
     
-     void Chart();                       // Display chart
+     void Table();                       // Display chart
     
-     void CreateChart                    // Produce rows and columns in chart
+     void CreateTable                    // Produce rows and columns in table
      (COLUMNS c);
     
      std::string toLower                 // Make each string lower case
@@ -201,6 +204,10 @@ public:
      COLUMNS FindColumn                  // Find column for each row
      (std::string column);
     
+     HASH_TABLE FindTable                // Find addressTable or tagTag hashing formula
+     (std::string table);
+    
+     
 };
 
 #endif 
