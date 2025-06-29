@@ -18,6 +18,9 @@ void FullyAssociated :: Router()
     // Generate binary data and store in vector
     this -> addressList = GenerateAddresses();
     
+    // UNIT TEST
+    // this -> addressList = {"10101111", "10111111", "10111110","10101110", "10101100", "10111100"};
+    
     // Determine address size
     this -> addressSize = addressList[0].size();
 
@@ -71,39 +74,6 @@ void FullyAssociated :: Controller()
     
     // Produce and display table
     Table();
-    
-    std::cout << "\n-------------------------- Address List: --------------------------\n";
-    
-    // Unit Test for Address List
-    for(int i = 0; i < addressList.size(); i++)
-        std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
-  
-    std::cout << "\n-------------------------- Address Table: --------------------------\n";
-    
-    // Display address table
-    for(hashAddress :: size_type i = 0; i < addressTable.size(); i++)
-        if(!addressTable[i].first.empty() && !addressTable[i].second.empty())
-            std::cout << "\nAddress Table INDEX = " << i << ' ' << "TAG = " << addressTable[i].first << ' ' << "ADDRESS = " << addressTable[i].second << std::endl;
-    
-    std::cout << "\n-------------------------- Tag Table: --------------------------\n";
-    
-    // Display tag table
-    for(hashAddress :: size_type i = 0; i < tagTable.size(); i++)
-        if(!tagTable[i].first.empty() && !tagTable[i].second.empty())
-        {
-            std::cout << "\n\nTag Table INDEX = " << i << ' ' << "TAG = " << tagTable[i].first << " Queue(s): ";
-            
-            while( !tagTable[i].second.empty())
-            {
-                std::cout << tagTable[i].second.front() << ',' << ' ';
-                tagTable[i].second.pop();
-            }
-        }
-        
-    std::cout << "\n\n----------------------------------------------------------------\n\n";
-    
-    
-
 
     /*
      // Unit Test for hash code
