@@ -113,7 +113,9 @@ private:
         
                 wordSize;         // Word count = (block size / word size)
         
-        wordMap instructionMap;   // Key = binary value of word, value = Hex value of each instruction
+        wordMap instructionMap;   // Key = binary value of word
+        
+                                  // Value = Hex value of each instruction
                 
     };
     
@@ -134,6 +136,9 @@ private:
     // Hash table used to store multiple ways
     // Key = tag, value = addresses stored in queue
     tagAddress tagTable;
+    
+    // Declare queue to hold data for each way
+    std::queue <binary> wayQueue;
 
 public:
     
