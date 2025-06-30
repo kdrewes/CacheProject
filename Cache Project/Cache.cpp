@@ -463,7 +463,7 @@ void Cache :: ConfigureWord()
         this -> wordSize = twoBytes[rand() % 2];
     
     // Determine value of wordQuantity
-    this -> wordQuantity = this -> blockSize / this -> wordSize;
+    this -> wordQuantity = (this -> blockSize / this -> wordSize);
     
     // Predefine values of how many words per block if word count = 4
     binary fourWords[] =  {"00", "01", "10", "11"};
@@ -476,18 +476,31 @@ void Cache :: ConfigureWord()
     
     // Assign binary word value of 4 to wordVector dataset
     if(this -> wordQuantity == 4)
+    {
         for(int i = 0; i < sizeof(fourWords) / sizeof(fourWords[0]); i++)
             wordVector.push_back(fourWords[i]);
+        
+        this -> wordCharacters = 2;
+    }
     
     // Assign binary word value of 2 to wordVector dataset
     else if(this -> wordQuantity == 2)
+    {
         for(int i = 0; i < sizeof(twoWords) / sizeof(twoWords[0]); i++)
             wordVector.push_back(twoWords[i]);
+        
+        this -> wordCharacters = 1;
+    }
     
     // Assign binary word value of 1 to wordVector dataset
     else if(this -> wordQuantity == 1)
+    {
         for(int i = 0; i < sizeof(oneWord) / sizeof(oneWord[0]); i++)
             wordVector.push_back(oneWord[i]);
+        
+        this -> wordCharacters = 0;
+        
+    }
 
 }
 

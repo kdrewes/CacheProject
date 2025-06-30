@@ -59,25 +59,26 @@ private:
         address (f.addressList[std::rand() % f.addressList.size()]),
         tag (address.substr(0, address.size() - std::floor(log2(f.blockSize)))),
         offset (address.substr(address.size() - std::floor(log2(f.blockSize)), address.size())),
-        instructionMap (getInstructions(address,f.addressMap)),
-        addressHashCode(GenerateHashCode(this -> address)),
-        tagHashCode(GenerateHashCode(this -> tag))
-        {}
+        wordCharacters(f.wordCharacters),instructionMap(getInstructionMap(address,f.addressMap)),
+        addressHashCode(GenerateHashCode(this -> address)), tagHashCode(GenerateHashCode(this -> tag))
+        {
+            //instruction = GetInstruction();
+        }
         
         // ----------------------------------------------------------------
         // Ensure the same address contains identical instructions
-        std::map <binary,hex> getInstructions (binary addr, multiMap addressMap)
+        std::map <binary,hex> getInstructionMap (binary addr, multiMap addressMap)
         {
             std::map <binary,hex> instructions;
             
             if(addressMap.find(addr) != addressMap.end())
             {
-                std::map <binary,hex> tempMap = addressMap[address];
+                std::map <binary,hex> tempMap = addressMap[addr];
                 
                 for(auto & t : tempMap)
                     instructions[t.first] = t.second;
             }
-   
+
             return instructions;
         }
         
@@ -96,13 +97,30 @@ private:
             return hashCode;
         }
         
+        // ----------------------------------------------------------------
+        // Find instruction for each address
+        binary GetInstruction()
+        {
+            // Find specific word of address
+            binary word;
+            
+            
+            if(wordCharacters != 0)
+                std::cout << "\nSUBSTRING = " <<  this -> address.substr(this -> wordCharacters - this -> address.size(), this -> wordCharacters);
+            
+            return word;
+        }
+        
         // ------------------------- Binary Data --------------------------
+        
         
          binary address,          // Binary address
         
                 tag,              // Tag in binary form
         
-                offset;           // Offset in binary form
+                offset,           // Offset in binary form
+        
+                instruction;      // instruction of address
         
       hashValue tagHashCode,      // hash code of each tag
         
@@ -110,7 +128,11 @@ private:
         
            unit blockSize,        // Size of each block (Bytes)
         
-                wordSize;         // Word count = (block size / word size)
+                wordSize,         // Word count = (block size / word size)
+                
+                wordCharacters,   // # of characters in a word
+        
+                binaryWord;       // Binary word value
         
         wordMap instructionMap;   // Key = binary value of word
         

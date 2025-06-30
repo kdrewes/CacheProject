@@ -45,6 +45,8 @@ void FullyAssociated :: Router()
         std::cout << "\nOffset = " << cacheStorage[i].offset << std::endl;
         std::cout << "\nTag = " << cacheStorage[i].tag << std::endl;
         std::cout << "\nWord Size = " << cacheStorage[i].wordSize << std::endl << std::endl;
+        std::cout << "\nWord Characters = " << cacheStorage[i].wordCharacters << std::endl << std::endl;
+        std::cout << "\nInstruction= " << cacheStorage[i].instruction << std::endl << std::endl;
         
         for(auto & [binary,hex] : cacheStorage[i].instructionMap)
         {

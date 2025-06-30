@@ -56,7 +56,9 @@ protected:
           indexSize,          // Index size (Bits)
           wordSize,           // Word count = (block size / word size)
           blockQuantity,      // Block quantity = (cache size / block size)
-          wordQuantity;       // # of words utilized
+          wordCharacters,     // # of characters in a word
+          wordQuantity;       // # of words utilized by each address
+          
     
     // -------------------- Miscellaneous variables -------------------------
     
