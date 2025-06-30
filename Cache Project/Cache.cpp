@@ -474,15 +474,17 @@ void Cache :: ConfigureWord()
     // Predefine values of how many words per block if word count = 1
     binary oneWord[] = {"Instruction"};
     
-    // Assign binary word values to wordVector dataset
+    // Assign binary word value of 4 to wordVector dataset
     if(this -> wordQuantity == 4)
         for(int i = 0; i < sizeof(fourWords) / sizeof(fourWords[0]); i++)
             wordVector.push_back(fourWords[i]);
     
+    // Assign binary word value of 2 to wordVector dataset
     else if(this -> wordQuantity == 2)
         for(int i = 0; i < sizeof(twoWords) / sizeof(twoWords[0]); i++)
             wordVector.push_back(twoWords[i]);
     
+    // Assign binary word value of 1 to wordVector dataset
     else if(this -> wordQuantity == 1)
         for(int i = 0; i < sizeof(oneWord) / sizeof(oneWord[0]); i++)
             wordVector.push_back(oneWord[i]);
@@ -597,12 +599,38 @@ binaryVector Cache :: GenerateAddresses()
     
     // Store all addresses: key = binary address, value = hash value
     binaryVector cacheAddresses;
+    
+    // Declare vector to store predefined tags
+    binaryVector tagVector;
+    
+    // Declare temporary tag value
+    binary tempTag;
+    
+    // Tag size
+    std::size_t tagSize = mainMemorySize - log2(this -> blockSize);
+    
+    // Predefine tags - this makes it so each tag will have multiple addresses in each way
+    for(int i = 0; i < this -> blockQuantity / 2; i++)
+    {
+        for(int x = 0; x < tagSize; x++)
+        {
+            int randomValue = rand() % 2;
+            
+            tempTag += std::to_string(randomValue);
+        }
+        
+        tagVector.push_back(tempTag);
+        
+        tempTag = "";
+    }
    
     // Amount of addresses should be half the # of slots for demonstration purposes
     for(int i = 0; i < this -> blockQuantity / 2; i++)
     {
-                
-        for(int x = 0; x < this -> mainMemorySize; x++)
+        // Assign random tag value to address
+        address = tagVector[rand() % tagVector.size()];
+        
+        for(int x = tagSize; x < this -> mainMemorySize; x++)
         {
             int randomValue = rand() % 2;
             

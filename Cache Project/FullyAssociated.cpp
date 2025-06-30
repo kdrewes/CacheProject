@@ -36,14 +36,11 @@ void FullyAssociated :: Router()
     for(int i = 0; i < this -> blockQuantity; i++)
         cacheStorage.push_back(CacheData(*this));
     
-    
-   //  UNIT TEST
-    
-    /*
+   //  UNIT TEST DISPLAYING ALL ADDRESS COMPONENTS
     for(int i = 0; i < cacheStorage.size(); i++)
     {
         std::cout << "\nAddress = " << cacheStorage[i].address << std::endl;
-        std::cout << "\nHash Code = " << cacheStorage[i].hashCode << std::endl;
+        std::cout << "\nHash Code = " << cacheStorage[i].addressHashCode << std::endl;
         std::cout << "\nBlock = " << cacheStorage[i].blockSize << std::endl;
         std::cout << "\nOffset = " << cacheStorage[i].offset << std::endl;
         std::cout << "\nTag = " << cacheStorage[i].tag << std::endl;
@@ -56,7 +53,6 @@ void FullyAssociated :: Router()
         
         std::cout << "\n----------------------------------------------------------\n";
     }
-     */
 }
 
 // -------------------------------------------------------------------------------------------
@@ -74,6 +70,11 @@ void FullyAssociated :: Controller()
     
     // Produce and display table
     Table();
+    
+    // Unit Test for Address List
+    for(int i = 0; i < addressList.size(); i++)
+        std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
+    
 
     /*
      // Unit Test for hash code
@@ -432,7 +433,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 }
             }
             
-            
             break;
             
         case INSTRUCTION_RETREIVED :
@@ -478,7 +478,7 @@ void FullyAssociated :: CreateTable(COLUMNS c)
         {
             case ADDRESS :
             {
-                // Assign each tag and address to its designated hash index
+                // Assign each address to its designated hash index
                 AssignHashIndex(FindTable("Address"));
                 
                 // Insert address data to each ostringstream variable
@@ -493,10 +493,11 @@ void FullyAssociated :: CreateTable(COLUMNS c)
                 
             case WAY :
                 
+                // Assign each tag queue and address to its designated hash index
                 AssignHashIndex(FindTable("Tag Table"));
                
                 
-                // Display data stored in each individual way
+                // Display data stored in each individual way (LRU)
                 for(int i = 0; i < this -> ways; i++)
                 {
                     if(!wayQueue.empty())
@@ -518,11 +519,8 @@ void FullyAssociated :: CreateTable(COLUMNS c)
                         
                         consoleToFile << "\t\t" << '-';
                     }
-                    
-                    
                 }
                  
-                
                 break;
                 
             case TAG :

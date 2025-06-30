@@ -48,7 +48,6 @@ class FullyAssociated : public Cache
     // Condenses string into a single variable
     typedef std::ostringstream condensedString;
     
-    
 private:
 
     // Stores each column per row
@@ -118,7 +117,6 @@ private:
                                   // Value = Hex value of each instruction
                 
     };
-    
     
     // ----------------------------- Varaibles ------------------------------
     
