@@ -75,6 +75,8 @@ void FullyAssociated :: Controller()
     for(int i = 0; i < addressList.size(); i++)
         std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
     
+    std::cout << "\n";
+    
 
     /*
      // Unit Test for hash code
@@ -216,6 +218,7 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
                 // Determine if address was found in queue
                 boolean addressFound = false;
                 
+                // Traverse through queue
                 while(!binaryQueue.empty())
                 {
                     if(binaryQueue.front() == cacheStorage[global_iterator].address)
@@ -374,8 +377,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case ADDRESS :
             
             // Display each address
+            
             console << "\t\tAddress | ";
+            
             spreadsheet << "Address,";
+            
             consoleToFile << "\tAddress | ";
             
             break;
@@ -383,10 +389,13 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case WAY :
             
             // Display each way
+            
             for(int i = 0; i < this -> ways; i++)
             {
                 console << "Data[" << i << "] | ";
+                
                 spreadsheet << "Data[" << i << "],";
+                
                 consoleToFile << "Data[" << i << "] | ";
             }
             
@@ -395,8 +404,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case TAG :
             
             // Display each tag
+            
             console << "Tag | ";
+            
             spreadsheet << "Tag,";
+            
             consoleToFile << "Tag | ";
             
             break;
@@ -404,8 +416,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case OFFSET :
             
             // Display each offset
+            
             console << "Offset | ";
+            
             spreadsheet << "Offset,";
+            
             consoleToFile << "Offset | ";
             
             break;
@@ -413,8 +428,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case HIT_MISS :
             
             // Display whether each address has a hit or miss
+            
             console << "H/M | ";
+            
             spreadsheet << "H/M,";
+            
             consoleToFile << "H/M | ";
             
             break;
@@ -422,13 +440,17 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case WORD :
             
             // Skip if there is only one word present
+            
             if(wordVector.size() != 1)
             {
                 // Display each individual word in binary format
+                
                 for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                 {
                     console << wordVector[i] << " | ";
+                    
                     spreadsheet << wordVector[i] << ",";
+                    
                     consoleToFile << wordVector[i] << " | ";
                 }
             }
@@ -438,8 +460,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case INSTRUCTION_RETREIVED :
             
             // Display which instruction was retreived
+            
             console << "Instruction (Hex) | ";
+            
             spreadsheet << "Instruction (Hex),";
+            
             consoleToFile << "Instruction (Hex) | ";
             
             break;
@@ -447,8 +472,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case EVICTIONS :
             
             // Display if there were any evictions
+            
             console << "Address(es) Evicted\n\n";
+            
             spreadsheet << "Address(es) Evicted\n";
+            
             consoleToFile << "Address(es) Evicted\n\n";
             
             break;
@@ -472,9 +500,9 @@ void FullyAssociated :: Table()
 
 // -------------------------------------------------------------------------------------------
 // Produce rows and columns in table
-void FullyAssociated :: CreateTable(COLUMNS c)
+void FullyAssociated :: CreateTable(COLUMNS columns)
 {
-        switch(c)
+        switch(columns)
         {
             case ADDRESS :
             {
@@ -502,36 +530,73 @@ void FullyAssociated :: CreateTable(COLUMNS c)
                 {
                     if(!wayQueue.empty())
                     {
-                        console << "\t\t" << wayQueue.front();
+                        console << "\t" << wayQueue.front() << "|";
                         
                         spreadsheet << wayQueue.front() << ',';
                         
-                        consoleToFile << "\t\t" << wayQueue.front();
+                        consoleToFile << "\t" << wayQueue.front() << "|";
                         
                         wayQueue.pop();
                     }
                     
                     else
                     {
-                        console << "\t\t" << '-';
+                        console << "\t" << '-';
                         
                         spreadsheet << '-' << ',';
                         
-                        consoleToFile << "\t\t" << '-';
+                        consoleToFile << "\t" << '-';
                     }
                 }
                  
                 break;
                 
             case TAG :
+                
+                console << "\t" << this -> cacheStorage[global_iterator].tag << "|";
+                
+                spreadsheet  << this -> cacheStorage[global_iterator].tag << ',';
+                
+                consoleToFile << "\t" << this -> cacheStorage[global_iterator].tag << "|";
 
                 break;
                 
             case OFFSET :
                 
+                console << "\t" << this -> cacheStorage[global_iterator].offset << "|";
+                
+                spreadsheet << this -> cacheStorage[global_iterator].offset << ',';
+                
+                consoleToFile << "\t" << this -> cacheStorage[global_iterator].offset << "|";
+                
                 break;
                 
             case HIT_MISS :
+                
+                if(hitOrMiss)
+                {
+                    console << "\tHit |";
+                    
+                    spreadsheet << "Hit" << ',';
+                    
+                    consoleToFile << "\tHit |";
+                    
+                    hitOrMiss = false;
+                }
+                
+                else
+                {
+                    if(hitOrMiss)
+                    {
+                        console << "\tMiss |";
+                        
+                        spreadsheet << "Miss" << ',';
+                        
+                        consoleToFile << "\tMiss |";
+                        
+                        hitOrMiss = false;
+                    }
+                }
                 
                 break;
                 
