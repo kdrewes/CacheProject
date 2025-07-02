@@ -12,12 +12,13 @@ class FullyAssociated : public Cache
     
     // -------------- Typedef used for organizational purposes -------------
     
+    // integer = numerical digit
     // unit = unit of measurements
     // input = variables uesd to select data
     // iterator = traverses through data set
     // index = represents the index of a data set
     // hashValue = used as hash value for hash table algorithm
-    typedef int unit, input, iterator, index, hashValue;
+    typedef int integer, unit, input, iterator, index, hashValue;
     
     // binary = binary data stored in each cache block
     // hex = hex data stored in each cache block
@@ -56,13 +57,13 @@ private:
         // Constructor
         CacheData(FullyAssociated & f) :
         blockSize (f.blockSize), wordSize(f.wordSize),
-        address (f.addressList[std::rand() % f.addressList.size()]),
-        tag (address.substr(0, address.size() - std::floor(log2(f.blockSize)))),
+        address (f.addressList[std::rand() % f.addressList.size()]), wordQuantity(f.wordQuantity),
+        tag (address.substr(0, address.size() - std::floor(log2(f.blockSize)))), instruction(GetInstruction()),
         offset (address.substr(address.size() - std::floor(log2(f.blockSize)), address.size())),
-        wordCharacters(f.wordCharacters),instructionMap(getInstructionMap(address,f.addressMap)),
+        wordCharacters(getWordCharacters(f.wordQuantity)), instructionMap(getInstructionMap(address,f.addressMap)),
         addressHashCode(GenerateHashCode(this -> address)), tagHashCode(GenerateHashCode(this -> tag))
         {
-            //instruction = GetInstruction();
+            instruction = GetInstruction();
         }
         
         // ----------------------------------------------------------------
@@ -99,16 +100,40 @@ private:
         
         // ----------------------------------------------------------------
         // Find instruction for each address
-        binary GetInstruction()
+        hex GetInstruction()
         {
             // Find specific word of address
-            binary word;
+            hex word;
             
-            
-            if(wordCharacters != 0)
-                std::cout << "\nSUBSTRING = " <<  this -> address.substr(this -> wordCharacters - this -> address.size(), this -> wordCharacters);
+            if(this -> wordQuantity != 1)
+            {
+                word = this -> address.substr( this -> address.size() - this -> wordCharacters, this -> address.size() );
+                
+                return instructionMap[word];
+            }
+            else
+                word = instructionMap["Instruction"];
+
             
             return word;
+        }
+        
+        // ----------------------------------------------------------------
+        // Get # of word characters
+        integer getWordCharacters(unit wrdQuantity)
+        {
+            integer numOfCharacters = 0;
+            
+            if(wrdQuantity == 4)
+                numOfCharacters = 2;
+            
+            else if(wrdQuantity == 2)
+                numOfCharacters = 1;
+            
+            else if(wrdQuantity == 1)
+                numOfCharacters = 0;
+            
+            return numOfCharacters;
         }
         
         // ------------------------- Binary Data --------------------------
@@ -129,6 +154,8 @@ private:
            unit blockSize,        // Size of each block (Bytes)
         
                 wordSize,         // Word count = (block size / word size)
+        
+                wordQuantity,     // # of words utilized by each address
                 
                 wordCharacters,   // # of characters in a word
         

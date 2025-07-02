@@ -36,6 +36,7 @@ void FullyAssociated :: Router()
     for(int i = 0; i < this -> blockQuantity; i++)
         cacheStorage.push_back(CacheData(*this));
     
+    /*
    //  UNIT TEST DISPLAYING ALL ADDRESS COMPONENTS
     for(int i = 0; i < cacheStorage.size(); i++)
     {
@@ -46,7 +47,7 @@ void FullyAssociated :: Router()
         std::cout << "\nTag = " << cacheStorage[i].tag << std::endl;
         std::cout << "\nWord Size = " << cacheStorage[i].wordSize << std::endl << std::endl;
         std::cout << "\nWord Characters = " << cacheStorage[i].wordCharacters << std::endl << std::endl;
-        std::cout << "\nInstruction= " << cacheStorage[i].instruction << std::endl << std::endl;
+        std::cout << "\nInstruction = " << cacheStorage[i].instruction << std::endl << std::endl;
         
         for(auto & [binary,hex] : cacheStorage[i].instructionMap)
         {
@@ -55,6 +56,7 @@ void FullyAssociated :: Router()
         
         std::cout << "\n----------------------------------------------------------\n";
     }
+     */
 }
 
 // -------------------------------------------------------------------------------------------
@@ -73,14 +75,17 @@ void FullyAssociated :: Controller()
     // Produce and display table
     Table();
     
-    // Unit Test for Address List
-    for(int i = 0; i < addressList.size(); i++)
-        std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
+   
     
     std::cout << "\n";
     
 
     /*
+     
+     // Unit Test for Address List
+     for(int i = 0; i < addressList.size(); i++)
+         std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
+     
      // Unit Test for hash code
     for(int i = 0; i < cacheStorage.size(); i++)
         std::cout << "\nAddress[" << i << "]: " << cacheStorage[i].address << ' ' << "Hash Code: " << cacheStorage[i].hashCode << '\n';
@@ -88,9 +93,6 @@ void FullyAssociated :: Controller()
      // Unit Test for Address List
      for(int i = 0; i < addressList.size(); i++)
          std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
-     
-   
-     
      
      // Unit Test for hash code
     for(int i = 0; i < cacheStorage.size(); i++)
