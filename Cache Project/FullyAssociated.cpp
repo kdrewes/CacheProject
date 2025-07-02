@@ -18,9 +18,6 @@ void FullyAssociated :: Router()
     // Generate binary data and store in vector
     this -> addressList = GenerateAddresses();
     
-    // UNIT TEST
-    // this -> addressList = {"10101111", "10111111", "10111110","10101110", "10101100", "10111100"};
-    
     // Determine address size
     this -> addressSize = addressList[0].size();
 
@@ -37,6 +34,7 @@ void FullyAssociated :: Router()
         cacheStorage.push_back(CacheData(*this));
     
     /*
+    
    //  UNIT TEST DISPLAYING ALL ADDRESS COMPONENTS
     for(int i = 0; i < cacheStorage.size(); i++)
     {
@@ -56,7 +54,9 @@ void FullyAssociated :: Router()
         
         std::cout << "\n----------------------------------------------------------\n";
     }
+     
      */
+     
 }
 
 // -------------------------------------------------------------------------------------------
@@ -75,12 +75,14 @@ void FullyAssociated :: Controller()
     // Produce and display table
     Table();
     
-   
+    std::cout << console.str();
     
-    std::cout << "\n";
+   
     
 
     /*
+     
+     
      
      // Unit Test for Address List
      for(int i = 0; i < addressList.size(); i++)
@@ -556,27 +558,30 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 break;
                 
             case TAG :
-                
+            {
                 console << "\t" << this -> cacheStorage[global_iterator].tag << "|";
                 
                 spreadsheet  << this -> cacheStorage[global_iterator].tag << ',';
                 
                 consoleToFile << "\t" << this -> cacheStorage[global_iterator].tag << "|";
+            }
 
                 break;
                 
             case OFFSET :
+            {
                 
                 console << "\t" << this -> cacheStorage[global_iterator].offset << "|";
                 
                 spreadsheet << this -> cacheStorage[global_iterator].offset << ',';
                 
                 consoleToFile << "\t" << this -> cacheStorage[global_iterator].offset << "|";
+            }
                 
                 break;
                 
             case HIT_MISS :
-                
+            {
                 if(hitOrMiss)
                 {
                     console << "\tHit |";
@@ -590,25 +595,44 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 
                 else
                 {
-                    if(hitOrMiss)
-                    {
-                        console << "\tMiss |";
-                        
-                        spreadsheet << "Miss" << ',';
-                        
-                        consoleToFile << "\tMiss |";
-                        
-                        hitOrMiss = false;
-                    }
+                    console << "\tMiss |";
+                    
+                    spreadsheet << "Miss" << ',';
+                    
+                    consoleToFile << "\tMiss |";
+                    
                 }
+            }
                 
                 break;
                 
             case WORD :
+            {
+                if(wordVector.size() != 1)
+                {
+                    // Display each individual instruction in hexadecimal format
+                    
+                    for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
+                    {
+                        console << cacheStorage[global_iterator].instructionMap[wordVector[i]] << " | ";
+                        
+                        spreadsheet << cacheStorage[global_iterator].instructionMap[wordVector[i]] << ",";
+                        
+                        consoleToFile << cacheStorage[global_iterator].instructionMap[wordVector[i]] << " | ";
+                    }
+                }
+            }
                 
                 break;
                 
             case INSTRUCTION_RETREIVED :
+            {
+                console << "\t" << this -> cacheStorage[global_iterator].instruction << "|";
+                
+                spreadsheet << this -> cacheStorage[global_iterator].instruction << ',';
+                
+                consoleToFile << "\t" << this -> cacheStorage[global_iterator].instruction << "|";
+            }
 
                 break;
                 
