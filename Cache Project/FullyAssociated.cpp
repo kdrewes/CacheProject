@@ -313,15 +313,15 @@ void FullyAssociated :: LFU()
 void FullyAssociated :: Title()
 {
     // Display Title
-    console << "\n\n\n\n\n\n\n\n\t\t\t*******************************************************************************\n";
-    console <<"\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
-    console <<"\t\t\t*******************************************************************************\n";
+    console << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t*******************************************************************************\n";
+    console <<"\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
+    console <<"\t\t\t\t\t\t*******************************************************************************\n";
     
     spreadsheet << "                    Fully Associative Placement Policy                    \n";
     
-    consoleToFile << "\n\n\n\n\n\n\n\n\t\t\t*******************************************************************************\n";
-    consoleToFile <<"\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
-    consoleToFile <<"\t\t\t*******************************************************************************\n";
+    consoleToFile << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t*******************************************************************************\n";
+    consoleToFile <<"\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
+    consoleToFile <<"\t\t\t\t\t\t*******************************************************************************\n";
 
 }
 // -------------------------------------------------------------------------------------------
@@ -329,33 +329,35 @@ void FullyAssociated :: Title()
 void FullyAssociated :: Data()
 {
     
-          console << "\n\t\t\tCache Size = "    << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
+          console << "\n\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
             
-                  << "\t\t# of Blocks = "       << this -> blockQuantity                << " Bytes"
+                  << "\t\t# of Blocks = "                   << this -> blockQuantity                << " Bytes"
+        
+                  << "\n\n\t\t\t\t\t\t# of Ways = "         << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
     
-                  << "\n\n\t\t\t# of Ways = "   << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
+                  << "\t\tRam Size = "                      << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\t\t\t\tWord Size  = "
+     
+                  << this -> wordSize                       << " Bytes\t\t# of Words = "            << this -> wordQuantity
+     
+                  << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
     
-                  << "\t\tRam Size = "          << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\tWord Size  = "
-     
-                  << this -> wordSize           << " Bytes\t\t# of Words = "            << this -> wordQuantity
-     
-                  << " Bytes"                   << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
     
     spreadsheet << this -> cacheSize << "," << this -> blockSize << "," << this -> ways << "," << this -> offsetSize << ","
     
                 << wordSize << "," << this -> wordQuantity << "\n\n";
     
-    consoleToFile << "\n\t\t\tCache Size = "    << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
-            
-                  << "\t\t# of Blocks = "       << this -> blockQuantity                << " Bytes"
     
-                  << "\n\n\t\t\t# of Ways = "   << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
-    
-                  << "\t\tRam Size = "          << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\tWord Size  = "
-     
-                  << this -> wordSize           << " Bytes\t\t# of Words = "            << this -> wordQuantity
-     
-                  << " Bytes"                   << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
+    consoleToFile << "\n\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
+      
+            << "\t\t# of Blocks = "                         << this -> blockQuantity                << " Bytes"
+
+            << "\n\n\t\t\t\t\t\t# of Ways = "               << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
+
+            << "\t\tRam Size = "                            << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\t\t\t\tWord Size  = "
+
+            << this -> wordSize                             << " Bytes\t\t# of Words = "            << this -> wordQuantity
+
+            << " Bytes"                                     << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
 }
 // -------------------------------------------------------------------------------------------
 // Create Header
@@ -365,9 +367,9 @@ void FullyAssociated :: Header()
     std::string header[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
     // Display Header banner
-    console << "\n\t\t\t------------------------ Fully Associated Cache Table -------------------------\n\n";
+    console << "\n\t\t\t\t\t\t------------------------ Fully Associated Cache Table -------------------------\n\n";
     spreadsheet << "                          Fully Associated Cache Table                          \n\n";
-    consoleToFile << "\n\t\t\t------------------------ Fully Associated Cache Table -------------------------\n\n";
+    consoleToFile << "\n\t\t\t\t\t\t------------------------ Fully Associated Cache Table -------------------------\n\n";
     
     // Display header
     for(int i = 0; i < sizeof(header) / sizeof(header[0]); i++)
@@ -467,11 +469,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display which instruction was retreived
             
-            console << "\t\tInstruction (Hex) ";
+            console << "\t\tInstruction";
             
-            spreadsheet << "Instruction (Hex),";
+            spreadsheet << "Instruction,";
             
-            consoleToFile << "\t\tInstruction (Hex) ";
+            consoleToFile << "\t\tInstruction";
             
             break;
             
@@ -479,11 +481,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display if there were any evictions
             
-            console << "Address(es) Evicted\n\n";
+            console << "\t\t\tAddress(es) Evicted\n\n";
             
             spreadsheet << "Address(es) Evicted\n";
             
-            consoleToFile << "Address(es) Evicted\n\n";
+            consoleToFile << "\t\t\tAddress(es) Evicted\n\n";
             
             break;
             
@@ -626,11 +628,11 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 
             case INSTRUCTION_RETREIVED :
             {
-                console << "   " << this -> cacheStorage[global_iterator].instruction << "\t|";
+                console << "      " << this -> cacheStorage[global_iterator].instruction << "\t\t|";
                 
                 spreadsheet << this -> cacheStorage[global_iterator].instruction << ',';
                 
-                consoleToFile << "   " << this -> cacheStorage[global_iterator].instruction << "\t|";
+                consoleToFile << "      " << this -> cacheStorage[global_iterator].instruction << "\t\t|";
             }
 
                 break;
