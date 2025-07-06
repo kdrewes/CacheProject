@@ -384,11 +384,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display each address
             
-            console << "\t\tAddress | ";
+            console << "\t\tAddress";
             
             spreadsheet << "Address,";
             
-            consoleToFile << "\tAddress | ";
+            consoleToFile << "\tAddress";
             
             break;
             
@@ -398,11 +398,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             for(int i = 0; i < this -> ways; i++)
             {
-                console << "Data[" << i << "] | ";
+                console << "\t\tData[" << i << "]  ";
                 
                 spreadsheet << "Data[" << i << "],";
                 
-                consoleToFile << "Data[" << i << "] | ";
+                consoleToFile << "\t\tData[" << i << "]  ";
             }
             
             break;
@@ -411,11 +411,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display each tag
             
-            console << "Tag | ";
+            console << "\t\t Tag";
             
             spreadsheet << "Tag,";
             
-            consoleToFile << "Tag | ";
+            consoleToFile << "\t\t Tag";
             
             break;
             
@@ -423,11 +423,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display each offset
             
-            console << "Offset | ";
+            console << "\t\tOffset";
             
             spreadsheet << "Offset,";
             
-            consoleToFile << "Offset | ";
+            consoleToFile << "\t\tOffset";
             
             break;
             
@@ -435,11 +435,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display whether each address has a hit or miss
             
-            console << "H/M | ";
+            console << "\t\tH/M\t";
             
             spreadsheet << "H/M,";
             
-            consoleToFile << "H/M | ";
+            consoleToFile << "\t\tH/M\t";
             
             break;
             
@@ -453,11 +453,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 
                 for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                 {
-                    console << wordVector[i] << " | ";
+                    console << "\t\t" << wordVector[i] << "  ";
                     
                     spreadsheet << wordVector[i] << ",";
                     
-                    consoleToFile << wordVector[i] << " | ";
+                    consoleToFile << "\t\t" << wordVector[i] << "  ";
                 }
             }
             
@@ -467,11 +467,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display which instruction was retreived
             
-            console << "Instruction (Hex) | ";
+            console << "\t\tInstruction (Hex) ";
             
             spreadsheet << "Instruction (Hex),";
             
-            consoleToFile << "Instruction (Hex) | ";
+            consoleToFile << "\t\tInstruction (Hex) ";
             
             break;
             
@@ -529,29 +529,28 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 
                 // Assign each tag queue and address to its designated hash index
                 AssignHashIndex(FindTable("Tag Table"));
-               
-                
+          
                 // Display data stored in each individual way (LRU)
                 for(int i = 0; i < this -> ways; i++)
                 {
                     if(!wayQueue.empty())
                     {
-                        console << "\t" << wayQueue.front() << "|";
+                        console << "\t" << wayQueue.front() << "\t|";
                         
                         spreadsheet << wayQueue.front() << ',';
                         
-                        consoleToFile << "\t" << wayQueue.front() << "|";
+                        consoleToFile << "\t" << wayQueue.front() << "\t|";
                         
                         wayQueue.pop();
                     }
                     
                     else
                     {
-                        console << "\t" << '-';
+                        console << "\t\t" << '-' << "\t\t|";
                         
                         spreadsheet << '-' << ',';
                         
-                        consoleToFile << "\t" << '-';
+                        consoleToFile << "\t\t" << '-'  << "\t\t|";
                     }
                 }
                  
@@ -559,11 +558,11 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 
             case TAG :
             {
-                console << "\t" << this -> cacheStorage[global_iterator].tag << "|";
+                console << "\t" << this -> cacheStorage[global_iterator].tag << "\t|";
                 
                 spreadsheet  << this -> cacheStorage[global_iterator].tag << ',';
                 
-                consoleToFile << "\t" << this -> cacheStorage[global_iterator].tag << "|";
+                consoleToFile << "\t" << this -> cacheStorage[global_iterator].tag << "\t|";
             }
 
                 break;
@@ -571,11 +570,11 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             case OFFSET :
             {
                 
-                console << "\t" << this -> cacheStorage[global_iterator].offset << "|";
+                console << "\t  " << this -> cacheStorage[global_iterator].offset << " \t| ";
                 
                 spreadsheet << this -> cacheStorage[global_iterator].offset << ',';
                 
-                consoleToFile << "\t" << this -> cacheStorage[global_iterator].offset << "|";
+                consoleToFile << "\t  " << this -> cacheStorage[global_iterator].offset << " \t| ";
             }
                 
                 break;
@@ -584,22 +583,22 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             {
                 if(hitOrMiss)
                 {
-                    console << "\tHit |";
+                    console << "\tHit \t| ";
                     
                     spreadsheet << "Hit" << ',';
                     
-                    consoleToFile << "\tHit |";
+                    consoleToFile << "\tHit\t| ";
                     
                     hitOrMiss = false;
                 }
                 
                 else
                 {
-                    console << "\tMiss |";
+                    console << "\tMiss\t| ";
                     
                     spreadsheet << "Miss" << ',';
                     
-                    consoleToFile << "\tMiss |";
+                    consoleToFile << "\tMiss\t| ";
                     
                 }
             }
@@ -627,16 +626,22 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 
             case INSTRUCTION_RETREIVED :
             {
-                console << "\t" << this -> cacheStorage[global_iterator].instruction << "|";
+                console << "   " << this -> cacheStorage[global_iterator].instruction << "\t|";
                 
                 spreadsheet << this -> cacheStorage[global_iterator].instruction << ',';
                 
-                consoleToFile << "\t" << this -> cacheStorage[global_iterator].instruction << "|";
+                consoleToFile << "   " << this -> cacheStorage[global_iterator].instruction << "\t|";
             }
 
                 break;
                 
             case EVICTIONS :
+                
+                console << "\n";
+                
+                spreadsheet << this -> cacheStorage[global_iterator].instruction << ',';
+                
+                consoleToFile << "\n";
 
                 break;
                 
