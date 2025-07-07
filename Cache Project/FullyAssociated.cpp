@@ -469,11 +469,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display which instruction was retreived
             
-            console << "\t\tInstruction";
+            console << "\t\t  Instruction";
             
             spreadsheet << "Instruction,";
             
-            consoleToFile << "\t\tInstruction";
+            consoleToFile << "\t\t  Instruction";
             
             break;
             
@@ -501,6 +501,7 @@ void FullyAssociated :: Table()
     // Predefine table
     std::string table[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
+    // Traverse through each category for each individual subscript of cacheStorage
     for(this -> global_iterator = 0; this -> global_iterator < cacheStorage.size(); this -> global_iterator++)
         for(int j = 0; j < sizeof(table) / sizeof(table[0]); j++)
             CreateTable(FindColumn(table[j]));
