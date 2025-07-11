@@ -209,7 +209,7 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
                 // Insert tag and queue pair to tagTable
                 tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
                 
-                wayQueue = binaryQueue;
+                wayQueue = tagTable[hashIndex].second;
             }
             
             else if(tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
@@ -253,14 +253,18 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
                  
                     storageQueue.push(cacheStorage[global_iterator].address);
                         
-                    wayQueue = tagTable[hashIndex].second = storageQueue;
+                    tagTable[hashIndex].second = storageQueue;
+                    
+                    wayQueue = tagTable[hashIndex].second;
                 }
                 
                 else
                 {
                     storageQueue.push(lastString);
                     
-                    wayQueue = tagTable[hashIndex].second = storageQueue;
+                    tagTable[hashIndex].second = storageQueue;
+                    
+                    wayQueue = tagTable[hashIndex].second;
                 }
             }
             
@@ -331,35 +335,36 @@ void FullyAssociated :: Title()
 void FullyAssociated :: Data()
 {
     
-          console << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
-            
-                  << "\t\t# of Blocks = "                   << this -> blockQuantity                << " Bytes"
+        console << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
         
-                  << "\n\n\t\t\t\t\t\t\t\t\t\t# of Ways = "         << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
-    
-                  << "\t\tRam Size = "                      << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\t\t\t\t\t\t\t\tWord Size  = "
-     
-                  << this -> wordSize                       << " Bytes\t\t# of Words = "            << this -> wordQuantity
-     
-                  << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
-    
-    
-    spreadsheet << this -> cacheSize << "," << this -> blockSize << "," << this -> ways << "," << this -> offsetSize << ","
-    
-                << wordSize << "," << this -> wordQuantity << "\n\n";
-    
-    
-    consoleToFile << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
-      
-            << "\t\t# of Blocks = "                         << this -> blockQuantity                << " Bytes"
-
-            << "\n\n\t\t\t\t\t\t\t\t\t\t# of Ways = "               << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
-
-            << "\t\tRam Size = "                            << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\t\t\t\t\t\t\t\tWord Size  = "
-
-            << this -> wordSize                             << " Bytes\t\t# of Words = "            << this -> wordQuantity
-
-            << " Bytes"                                     << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
+        << "\t\t# of Blocks = "                   << this -> blockQuantity                << " Bytes"
+        
+        << "\n\n\t\t\t\t\t\t\t\t\t\t# of Ways = "         << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
+        
+        << "\t\tRam Size = "                      << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\t\t\t\t\t\t\t\tWord Size  = "
+        
+        << this -> wordSize                       << " Bytes\t\t# of Words = "            << this -> wordQuantity
+        
+        << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
+        
+        
+        spreadsheet << this -> cacheSize << "," << this -> blockSize << "," << this -> ways << "," << this -> offsetSize << ","
+        
+        << wordSize << "," << this -> wordQuantity << "\n\n";
+        
+        
+        consoleToFile << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
+        
+        << "\t\t# of Blocks = "                         << this -> blockQuantity                << " Bytes"
+        
+        << "\n\n\t\t\t\t\t\t\t\t\t\t# of Ways = "               << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
+        
+        << "\t\tRam Size = "                            << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\t\t\t\t\t\t\t\tWord Size  = "
+        
+        << this -> wordSize                             << " Bytes\t\t# of Words = "            << this -> wordQuantity
+        
+        << " Bytes"                                     << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
+  
 }
 // -------------------------------------------------------------------------------------------
 // Create Header
@@ -453,15 +458,41 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             if(wordVector.size() != 1)
             {
-                // Display each individual word in binary format
-                
-                for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
+                if(this -> wordQuantity == 2)
                 {
-                    console << "\t\t" << wordVector[i] << "  ";
+                    // Display each individual word in binary format
                     
-                    spreadsheet << wordVector[i] << ",";
-                    
-                    consoleToFile << "\t\t" << wordVector[i] << "  ";
+                    for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
+                    {
+                        console << "\t\t" << wordVector[i] << "  ";
+                        
+                        spreadsheet << wordVector[i] << ",";
+                        
+                        consoleToFile << "\t\t" << wordVector[i] << "  ";
+                    }
+                }
+                
+                else
+                {
+                    for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
+                    {
+                        if(i == 0)
+                        {
+                            console << "\t\t" << wordVector[i] << "\t\t";
+                            
+                            spreadsheet << wordVector[i] << ",";
+                            
+                            consoleToFile << "\t\t" << wordVector[i] << "\t\t";
+                        }
+                        else
+                        {
+                            console << wordVector[i] << "\t\t ";
+                            
+                            spreadsheet << wordVector[i] << ",";
+                            
+                            consoleToFile << wordVector[i] << "\t\t ";
+                        }
+                    }
                 }
             }
             
@@ -471,11 +502,22 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display which instruction was retreived
             
-            console << "\t\t  Instruction";
-            
-            spreadsheet << "Instruction,";
-            
-            consoleToFile << "\t\t  Instruction";
+            if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
+            {
+                console << "\t\t   Instruction";
+                
+                spreadsheet << "Instruction,";
+                
+                consoleToFile << "\t\t   Instruction";
+            }
+            else
+            {
+                console << "\t\tInstruction";
+                
+                spreadsheet << "Instruction,";
+                
+                consoleToFile << "\t\tInstruction";
+            }
             
             break;
             

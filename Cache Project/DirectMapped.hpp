@@ -18,7 +18,6 @@ class DirectMapped : public Cache
     // Binary values
     typedef std::vector<std::string> dataSet;
     
-    
 private:
     
     // -------------------------- Binary datasets ---------------------------
