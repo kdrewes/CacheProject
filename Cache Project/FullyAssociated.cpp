@@ -275,7 +275,6 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
         {
             throw std::invalid_argument("\n\nError - Invalid table, please re-enter option.\n");
         }
-            
     }
 }
 
@@ -374,9 +373,9 @@ void FullyAssociated :: Header()
     std::string header[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
     // Display Header banner
-    console << "\n\t\t------------------------------------------------------- Fully Associative Cache Table -------------------------------------------------------\n\n";
+    console << "\n\t\t------------------------------------------------------------ Fully Associative Cache Table ------------------------------------------------------------\n\n";
     spreadsheet << "                          Fully Associated Cache Table                          \n\n";
-    consoleToFile << "\n\t\t------------------------------------------------------- Fully Associative Cache Table -------------------------------------------------------\n\n";
+    consoleToFile << "\n\t\t------------------------------------------------------------ Fully Associative Cache Table ------------------------------------------------------------\n\n";
     
     // Display header
     for(int i = 0; i < sizeof(header) / sizeof(header[0]); i++)
