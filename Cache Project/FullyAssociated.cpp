@@ -196,7 +196,7 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
         {
             
             // Retrieve hashed index and assign it to addressTable
-            int hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
+            this -> hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
             
             if(tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
             {
@@ -209,7 +209,7 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
                 // Insert tag and queue pair to tagTable
                 tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
                 
-                wayQueue = tagTable[hashIndex].second;
+                //wayQueue = tagTable[hashIndex].second;
             }
             
             else if(tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
@@ -225,6 +225,7 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
                 
                 // Determine if address was found in queue
                 boolean addressFound = false;
+                
                 
                 // Traverse through queue
                 while(!binaryQueue.empty())
@@ -248,14 +249,22 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
                 
                 if(!addressFound)
                 {
+                    
                     if(storageQueue.size() >= this -> ways)
+                    {
+                        // Collect evicted address
+                        cacheStorage[global_iterator].addressEvicted = storageQueue.front();
+                        
+                        // remove front node from storageQueue
                         storageQueue.pop();
+                    }
+                    
+                    else
+                        cacheStorage[global_iterator].addressEvicted = "";
                  
                     storageQueue.push(cacheStorage[global_iterator].address);
                         
                     tagTable[hashIndex].second = storageQueue;
-                    
-                    wayQueue = tagTable[hashIndex].second;
                 }
                 
                 else
@@ -264,7 +273,7 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
                     
                     tagTable[hashIndex].second = storageQueue;
                     
-                    wayQueue = tagTable[hashIndex].second;
+                    // wayQueue = tagTable[hashIndex].second;
                 }
             }
             
@@ -344,7 +353,7 @@ void FullyAssociated :: Data()
         
         << this -> wordSize                       << " Bytes\t\t# of Words = "            << this -> wordQuantity
         
-        << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
+        << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n";
         
         
         spreadsheet << this -> cacheSize << "," << this -> blockSize << "," << this -> ways << "," << this -> offsetSize << ","
@@ -362,7 +371,7 @@ void FullyAssociated :: Data()
         
         << this -> wordSize                             << " Bytes\t\t# of Words = "            << this -> wordQuantity
         
-        << " Bytes"                                     << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n";
+        << " Bytes"                                     << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n";
   
 }
 // -------------------------------------------------------------------------------------------
@@ -403,7 +412,7 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case WAY :
             
             // Display each way
-            
+    
             for(int i = 0; i < this -> ways; i++)
             {
                 console << "\t\tData[" << i << "]  ";
@@ -575,19 +584,22 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 
                 // Assign each tag queue and address to its designated hash index
                 AssignHashIndex(FindTable("Tag Table"));
-          
+                
+                // Declare queue to hold data for each way
+                wayQueue = tagTable[hashIndex].second;
+
                 // Display data stored in each individual way (LRU)
                 for(int i = 0; i < this -> ways; i++)
                 {
-                    if(!wayQueue.empty())
+                    if(!tagTable[hashIndex].second.empty())
                     {
-                        console << "\t" << wayQueue.front() << "\t|";
+                        console << "\t" << tagTable[hashIndex].second.front() << "\t|";
                         
-                        spreadsheet << wayQueue.front() << ',';
+                        spreadsheet << tagTable[hashIndex].second.front() << ',';
                         
-                        consoleToFile << "\t" << wayQueue.front() << "\t|";
+                        consoleToFile << "\t" << tagTable[hashIndex].second.front() << "\t|";
                         
-                        wayQueue.pop();
+                        tagTable[hashIndex].second.pop();
                     }
                     
                     else
@@ -599,6 +611,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                         consoleToFile << "\t\t" << '-'  << "\t\t|";
                     }
                 }
+                
+                tagTable[hashIndex].second = wayQueue;
                  
                 break;
                 
@@ -683,11 +697,25 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 
             case EVICTIONS :
                 
-                console << "\n";
+                if(!this -> cacheStorage[global_iterator].addressEvicted.empty())
+                {
+                    console  << '\t' << '\t' << this -> cacheStorage[global_iterator].addressEvicted << '\n';
+                    
+                    spreadsheet << this -> cacheStorage[global_iterator].addressEvicted << ',';
+                    
+                    consoleToFile  << '\t' << '\t' << this -> cacheStorage[global_iterator].addressEvicted << '\n';
+                    
+                }
                 
-                spreadsheet << this -> cacheStorage[global_iterator].instruction << ',';
+                else
+                {
+                    console << '\t' << '\t' << '\t' << '\t' << '-' << '\n';
+                    
+                    spreadsheet << '-' << ',';
+                    
+                    consoleToFile << '\t' << '\t' << '\t' << '\t' << '-' << '\n';
+                }
                 
-                consoleToFile << "\n";
 
                 break;
                 

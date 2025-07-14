@@ -56,7 +56,7 @@ private:
     {
         // Constructor
         CacheData(FullyAssociated & f) :
-        blockSize (f.blockSize), wordSize(f.wordSize),
+        blockSize (f.blockSize), wordSize(f.wordSize), addressEvicted(""),
         address (f.addressList[std::rand() % f.addressList.size()]), wordQuantity(f.wordQuantity),
         tag (address.substr(0, address.size() - std::floor(log2(f.blockSize)))), instruction(GetInstruction()),
         offset (address.substr(address.size() - std::floor(log2(f.blockSize)), address.size())),
@@ -145,7 +145,9 @@ private:
         
                 offset,           // Offset in binary form
         
-                instruction;      // instruction of address
+                instruction,      // Instruction of address
+        
+                addressEvicted;   // Address evicted from way
         
       hashValue tagHashCode,      // hash code of each tag
         
@@ -168,6 +170,8 @@ private:
     };
     
     // ----------------------------- Varaibles ------------------------------
+    
+    hashValue hashIndex;      // Assigned hash index
     
     boolean hitOrMiss;        // Determines hit or miss
 
