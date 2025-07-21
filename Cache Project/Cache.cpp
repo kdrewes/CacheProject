@@ -611,7 +611,7 @@ binaryVector Cache :: GenerateAddresses()
     std::size_t tagSize = mainMemorySize - log2(this -> blockSize);
     
     // Predefine tags - this makes it so each tag will have multiple addresses in each way
-    for(int i = 0; i < this -> blockQuantity / 2; i++)
+    for(int i = 0; i < (this -> blockQuantity / 2); i++)
     {
         for(int x = 0; x < tagSize; x++)
         {
