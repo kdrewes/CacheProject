@@ -8,7 +8,7 @@
 class SetAssociated : public Cache
 {
     
-    // ---------- Typedef for organizational purposes ----------
+    // ---------------- Typedef for organizational purposes ----------------
     
     // Unit of measurements
     typedef int units, input;
