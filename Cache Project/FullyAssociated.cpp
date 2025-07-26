@@ -486,7 +486,7 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                     {
                         console << "\t\t" << wordVector[i] << "  ";
                         
-                        spreadsheet << wordVector[i] << ",";
+                        spreadsheet << "=\""  << wordVector[i] << "\",";
                         
                         consoleToFile << "\t\t" << wordVector[i] << "  ";
                     }
@@ -500,7 +500,7 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                         {
                             console << "\t\t" << wordVector[i] << "\t\t";
                             
-                            spreadsheet << wordVector[i] << ",";
+                            spreadsheet << "=\""  << wordVector[i] << "\",";
                             
                             consoleToFile << "\t\t" << wordVector[i] << "\t\t";
                         }
@@ -508,7 +508,7 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                         {
                             console << wordVector[i] << "\t\t ";
                             
-                            spreadsheet << wordVector[i] << ",";
+                            spreadsheet << "=\""  << wordVector[i] << "\",";
                             
                             consoleToFile << wordVector[i] << "\t\t ";
                         }
@@ -585,7 +585,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 // Insert address data to each ostringstream variable
                 console << "\t\t" << cacheStorage[global_iterator].address << " | ";
                 
-                spreadsheet << cacheStorage[global_iterator].address << ',';
+                spreadsheet << "=\""  << cacheStorage[global_iterator].address << "\",";
                 
                 consoleToFile << "\t\t" << cacheStorage[global_iterator].address << " | ";
                 
@@ -607,7 +607,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                     {
                         console << "\t" << tagTable[hashIndex].second.front() << "\t|";
                         
-                        spreadsheet << tagTable[hashIndex].second.front() << ',';
+                        spreadsheet << "=\""  << tagTable[hashIndex].second.front() << "\",";
                         
                         consoleToFile << "\t" << tagTable[hashIndex].second.front() << "\t|";
                         
@@ -618,7 +618,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                     {
                         console << "\t\t" << '-' << "\t\t|";
                         
-                        spreadsheet << '-' << ',';
+                        spreadsheet << "=\""  << '-' << "\",";
                         
                         consoleToFile << "\t\t" << '-'  << "\t\t|";
                     }
@@ -632,7 +632,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             {
                 console << "\t" << this -> cacheStorage[global_iterator].tag << "\t|";
                 
-                spreadsheet  << this -> cacheStorage[global_iterator].tag << ',';
+                spreadsheet << "=\""   << this -> cacheStorage[global_iterator].tag << "\",";
                 
                 consoleToFile << "\t" << this -> cacheStorage[global_iterator].tag << "\t|";
             }
@@ -644,7 +644,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 
                 console << "\t  " << this -> cacheStorage[global_iterator].offset << " \t| ";
                 
-                spreadsheet << this -> cacheStorage[global_iterator].offset << ',';
+                spreadsheet << "=\""  << this -> cacheStorage[global_iterator].offset << "\",";
                 
                 consoleToFile << "\t  " << this -> cacheStorage[global_iterator].offset << " \t| ";
             }
@@ -657,7 +657,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 {
                     console << "\tHit \t| ";
                     
-                    spreadsheet << "Hit" << ',';
+                    spreadsheet << "=\""  << "Hit" << "\",";
                     
                     consoleToFile << "\tHit\t| ";
                     
@@ -668,7 +668,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 {
                     console << "\tMiss\t| ";
                     
-                    spreadsheet << "Miss" << ',';
+                    spreadsheet << "=\""  << "Miss" << "\",";
                     
                     consoleToFile << "\tMiss\t| ";
                     
@@ -687,7 +687,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                     {
                         console << cacheStorage[global_iterator].instructionMap[wordVector[i]] << " | ";
                         
-                        spreadsheet << cacheStorage[global_iterator].instructionMap[wordVector[i]] << ",";
+                        spreadsheet << "=\"" << cacheStorage[global_iterator].instructionMap[wordVector[i]] << "\",";
                         
                         consoleToFile << cacheStorage[global_iterator].instructionMap[wordVector[i]] << " | ";
                     }
@@ -700,7 +700,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             {
                 console << "      " << this -> cacheStorage[global_iterator].instruction << "\t\t|";
                 
-                spreadsheet << this -> cacheStorage[global_iterator].instruction << ',';
+                spreadsheet << "=\""  << this -> cacheStorage[global_iterator].instruction << "\",";
                 
                 consoleToFile << "      " << this -> cacheStorage[global_iterator].instruction << "\t\t|";
             }
