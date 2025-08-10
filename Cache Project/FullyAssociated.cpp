@@ -417,25 +417,33 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display each address
             
-            console << "\t\tAddress";
-            
-            spreadsheet << "Address,";
-            
-            consoleToFile << "\tAddress";
+            if(this -> mainMemorySize == 8)
+            {
+                
+                console << "\t\tAddress";
+                
+                spreadsheet << "Address,";
+                
+                consoleToFile << "\tAddress";
+            }
             
             break;
             
         case WAY :
             
             // Display each way
-    
-            for(int i = 0; i < this -> ways; i++)
+            
+            
+            if(this -> mainMemorySize == 8)
             {
-                console << "\t\tData[" << i << "]  ";
-                
-                spreadsheet << "Data[" << i << "],";
-                
-                consoleToFile << "\t\tData[" << i << "]  ";
+                for(int i = 0; i < this -> ways; i++)
+                {
+                    console << "\t\tData[" << i << "]  ";
+                    
+                    spreadsheet << "Data[" << i << "],";
+                    
+                    consoleToFile << "\t\tData[" << i << "]  ";
+                }
             }
             
             break;
@@ -444,11 +452,14 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display each tag
             
-            console << "\t\t Tag";
-            
-            spreadsheet << "Tag,";
-            
-            consoleToFile << "\t\t Tag";
+            if(this -> mainMemorySize == 8)
+            {
+                console << "\t\t Tag";
+                
+                spreadsheet << "Tag,";
+                
+                consoleToFile << "\t\t Tag";
+            }
             
             break;
             
@@ -456,11 +467,14 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display each offset
             
-            console << "\t\tOffset";
-            
-            spreadsheet << "Offset,";
-            
-            consoleToFile << "\t\tOffset";
+            if(this -> mainMemorySize == 8)
+            {
+                console << "\t\tOffset";
+                
+                spreadsheet << "Offset,";
+                
+                consoleToFile << "\t\tOffset";
+            }
             
             break;
             
@@ -468,11 +482,14 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display whether each address has a hit or miss
             
-            console << "\t\tH/M\t";
-            
-            spreadsheet << "H/M,";
-            
-            consoleToFile << "\t\tH/M\t";
+            if(this -> mainMemorySize == 8)
+            {
+                console << "\t\tH/M\t";
+                
+                spreadsheet << "H/M,";
+                
+                consoleToFile << "\t\tH/M\t";
+            }
             
             break;
             
@@ -480,41 +497,44 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Skip if there is only one word present
             
-            if(wordVector.size() != 1)
+            if(this -> mainMemorySize == 8)
             {
-                if(this -> wordQuantity == 2)
+                if(wordVector.size() != 1)
                 {
-                    // Display each individual word in binary format
-                    
-                    for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
+                    if(this -> wordQuantity == 2)
                     {
-                        console << "\t\t" << wordVector[i] << "  ";
+                        // Display each individual word in binary format
                         
-                        spreadsheet << "=\""  << wordVector[i] << "\",";
-                        
-                        consoleToFile << "\t\t" << wordVector[i] << "  ";
-                    }
-                }
-                
-                else
-                {
-                    for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
-                    {
-                        if(i == 0)
+                        for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
-                            console << "\t\t" << wordVector[i] << "\t\t";
+                            console << "\t\t" << wordVector[i] << "  ";
                             
                             spreadsheet << "=\""  << wordVector[i] << "\",";
                             
-                            consoleToFile << "\t\t" << wordVector[i] << "\t\t";
+                            consoleToFile << "\t\t" << wordVector[i] << "  ";
                         }
-                        else
+                    }
+                    
+                    else
+                    {
+                        for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
-                            console << wordVector[i] << "\t\t ";
-                            
-                            spreadsheet << "=\""  << wordVector[i] << "\",";
-                            
-                            consoleToFile << wordVector[i] << "\t\t ";
+                            if(i == 0)
+                            {
+                                console << "\t\t" << wordVector[i] << "\t\t";
+                                
+                                spreadsheet << "=\""  << wordVector[i] << "\",";
+                                
+                                consoleToFile << "\t\t" << wordVector[i] << "\t\t";
+                            }
+                            else
+                            {
+                                console << wordVector[i] << "\t\t ";
+                                
+                                spreadsheet << "=\""  << wordVector[i] << "\",";
+                                
+                                consoleToFile << wordVector[i] << "\t\t ";
+                            }
                         }
                     }
                 }
@@ -526,21 +546,24 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display which instruction was retreived
             
-            if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
+            if(this -> mainMemorySize == 8)
             {
-                console << "\t\t   Instruction";
-                
-                spreadsheet << "Instruction,";
-                
-                consoleToFile << "\t\t   Instruction";
-            }
-            else
-            {
-                console << "\t\tInstruction";
-                
-                spreadsheet << "Instruction,";
-                
-                consoleToFile << "\t\tInstruction";
+                if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
+                {
+                    console << "\t\t   Instruction";
+                    
+                    spreadsheet << "Instruction,";
+                    
+                    consoleToFile << "\t\t   Instruction";
+                }
+                else
+                {
+                    console << "\t\tInstruction";
+                    
+                    spreadsheet << "Instruction,";
+                    
+                    consoleToFile << "\t\tInstruction";
+                }
             }
             
             break;
@@ -549,12 +572,14 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display if there were any evictions
             
-            console << "\t\t\tAddress(es) Evicted\n\n";
-            
-            spreadsheet << "Address(es) Evicted\n";
-            
-            consoleToFile << "\t\t\tAddress(es) Evicted\n\n";
-            
+            if(this -> mainMemorySize == 8)
+            {
+                console << "\t\t\tAddress(es) Evicted\n\n";
+                
+                spreadsheet << "Address(es) Evicted\n";
+                
+                consoleToFile << "\t\t\tAddress(es) Evicted\n\n";
+            }
             break;
             
         case COLUMN_ERROR :
