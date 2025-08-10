@@ -417,15 +417,19 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display each address
             
-            if(this -> mainMemorySize == 8)
+            if(this -> mainMemorySize == 8 || this -> mainMemorySize == 16)
             {
                 
                 console << "\t\tAddress";
                 
                 spreadsheet << "Address,";
                 
-                consoleToFile << "\tAddress";
+                consoleToFile << "\t\tAddress";
             }
+            
+            else
+                throw std::invalid_argument("\nError - Invalid memory size\n\n");
+           
             
             break;
             
@@ -446,6 +450,21 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 }
             }
             
+            else if(this -> mainMemorySize == 16)
+            {
+                for(int i = 0; i < this -> ways; i++)
+                {
+                    console << "\t\t\t\tData[" << i << "]  ";
+                    
+                    spreadsheet << "Data[" << i << "],";
+                    
+                    consoleToFile << "\t\t\t\tData[" << i << "]  ";
+                }
+            }
+            
+            else
+                throw std::invalid_argument("\nError - Invalid memory size\n\n");
+            
             break;
             
         case TAG :
@@ -460,6 +479,19 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 
                 consoleToFile << "\t\t Tag";
             }
+            
+            else if(this -> mainMemorySize == 16)
+            {
+                console << "\t\t\tTag";
+                
+                spreadsheet << "Tag,";
+                
+                consoleToFile << "\t\t\tTag";
+            }
+            
+            else
+                throw std::invalid_argument("\nError - Invalid memory size\n\n");
+
             
             break;
             
@@ -476,6 +508,18 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 consoleToFile << "\t\tOffset";
             }
             
+            else if(this -> mainMemorySize == 16)
+            {
+                console << "\t\t\t\tOffset";
+                
+                spreadsheet << "Offset,";
+                
+                consoleToFile << "\t\t\t\tOffset";
+            }
+            
+            else
+                throw std::invalid_argument("\nError - Invalid memory size\n\n");
+            
             break;
             
         case HIT_MISS :
@@ -484,12 +528,24 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             if(this -> mainMemorySize == 8)
             {
-                console << "\t\tH/M\t";
+                console << "\t\tH/M";
                 
                 spreadsheet << "H/M,";
                 
-                consoleToFile << "\t\tH/M\t";
+                consoleToFile << "\t\tH/M";
             }
+            
+            else if(this -> mainMemorySize == 16)
+            {
+                console << "\t\tH/M";
+                
+                spreadsheet << "H/M,";
+                
+                consoleToFile << "\t\tH/M";
+            }
+            
+            else
+                throw std::invalid_argument("\nError - Invalid memory size\n\n");
             
             break;
             
@@ -540,6 +596,53 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 }
             }
             
+            else if(this -> mainMemorySize == 16)
+            {
+                if(wordVector.size() != 1)
+                {
+                    if(this -> wordQuantity == 2)
+                    {
+                        // Display each individual word in binary format
+                        
+                        for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
+                        {
+                            console << "\t\t\t" << wordVector[i] << "  ";
+                            
+                            spreadsheet << "=\""  << wordVector[i] << "\",";
+                            
+                            consoleToFile << "\t\t\t" << wordVector[i] << "  ";
+                        }
+                    }
+                    
+                    else
+                    {
+                        for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
+                        {
+                            if(i == 0)
+                            {
+                                console << "\t\t\t" << wordVector[i] << "\t\t";
+                                
+                                spreadsheet << "=\""  << wordVector[i] << "\",";
+                                
+                                consoleToFile << "\t\t\t" << wordVector[i] << "\t\t";
+                            }
+                            else
+                            {
+                                console << wordVector[i] << "\t\t\t";
+                                
+                                spreadsheet << "=\""  << wordVector[i] << "\",";
+                                
+                                consoleToFile << wordVector[i] << "\t\t\t";
+                            }
+                        }
+                    }
+                }
+            }
+            
+            
+            else
+                throw std::invalid_argument("\nError - Invalid memory size\n\n");
+            
             break;
             
         case INSTRUCTION_RETREIVED :
@@ -566,6 +669,29 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 }
             }
             
+            else if(this -> mainMemorySize == 16)
+            {
+                if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
+                {
+                    console << "\t\t\tInstruction";
+                    
+                    spreadsheet << "Instruction,";
+                    
+                    consoleToFile << "\t\t\tInstruction";
+                }
+                else
+                {
+                    console << "\t\t\tInstruction";
+                    
+                    spreadsheet << "Instruction,";
+                    
+                    consoleToFile << "\t\t\tInstruction";
+                }
+            }
+            
+            else
+                throw std::invalid_argument("\nError - Invalid memory size\n\n");
+            
             break;
             
         case EVICTIONS :
@@ -580,6 +706,19 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 
                 consoleToFile << "\t\t\tAddress(es) Evicted\n\n";
             }
+            
+            else if(this -> mainMemorySize == 16)
+            {
+                console << "\t\t\t\tAddress(es) Evicted\n\n";
+                
+                spreadsheet << "Address(es) Evicted\n";
+                
+                consoleToFile << "\t\t\t\tAddress(es) Evicted\n\n";
+            }
+            
+            else
+                throw std::invalid_argument("\nError - Invalid memory size\n\n");
+            
             break;
             
         case COLUMN_ERROR :
