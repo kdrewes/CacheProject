@@ -417,7 +417,7 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             // Display each address
             
-            if(this -> mainMemorySize == 8 || this -> mainMemorySize == 16)
+            if(this -> mainMemorySize == 8)
             {
                 
                 console << "\t\tAddress";
@@ -427,6 +427,14 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 consoleToFile << "\t\tAddress";
             }
             
+            else if(this -> mainMemorySize == 16)
+            {
+                console << "\t\t\tAddress\t";
+                
+                spreadsheet << "Address,";
+                
+                consoleToFile << "\t\t\tAddress\t";
+            }
             else
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");
            
@@ -454,11 +462,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             {
                 for(int i = 0; i < this -> ways; i++)
                 {
-                    console << "\t\t\t\tData[" << i << "]  ";
+                    console << "\t\t\tData[" << i << "] ";
                     
                     spreadsheet << "Data[" << i << "],";
                     
-                    consoleToFile << "\t\t\t\tData[" << i << "]  ";
+                    consoleToFile << "\t\t\tData[" << i << "] ";
                 }
             }
             
@@ -606,11 +614,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                         
                         for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
-                            console << "\t\t\t" << wordVector[i] << "  ";
+                            console << "\t\t  " << wordVector[i];
                             
                             spreadsheet << "=\""  << wordVector[i] << "\",";
                             
-                            consoleToFile << "\t\t\t" << wordVector[i] << "  ";
+                            consoleToFile << "\t\t  " << wordVector[i];
                         }
                     }
                     
@@ -620,19 +628,19 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                         {
                             if(i == 0)
                             {
-                                console << "\t\t\t" << wordVector[i] << "\t\t";
+                                console << "\t\t\t\t" << wordVector[i] << "\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
                                 
-                                consoleToFile << "\t\t\t" << wordVector[i] << "\t\t";
+                                consoleToFile << "\t\t\t\t" << wordVector[i]  << "\t";
                             }
                             else
                             {
-                                console << wordVector[i] << "\t\t\t";
+                                console << wordVector[i] << "\t\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
                                 
-                                consoleToFile << wordVector[i] << "\t\t\t";
+                                consoleToFile << wordVector[i] << "\t\t";
                             }
                         }
                     }
@@ -661,11 +669,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 }
                 else
                 {
-                    console << "\t\tInstruction";
+                    console << "\tInstruction";
                     
                     spreadsheet << "Instruction,";
                     
-                    consoleToFile << "\t\tInstruction";
+                    consoleToFile << "\tInstruction";
                 }
             }
             
@@ -709,11 +717,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
-                console << "\t\t\t\tAddress(es) Evicted\n\n";
+                console << "\t\t\tAddress(es) Evicted\n\n";
                 
                 spreadsheet << "Address(es) Evicted\n";
                 
-                consoleToFile << "\t\t\t\tAddress(es) Evicted\n\n";
+                consoleToFile << "\t\t\tAddress(es) Evicted\n\n";
             }
             
             else
@@ -771,24 +779,45 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 // Display data stored in each individual way (LRU)
                 for(int i = 0; i < this -> ways; i++)
                 {
-                    if(!tagTable[hashIndex].second.empty())
+                    if(mainMemorySize == 8)
                     {
-                        console << "\t" << tagTable[hashIndex].second.front() << "\t|";
+                        if(!tagTable[hashIndex].second.empty())
+                        {
+                            console << "\t" << tagTable[hashIndex].second.front() << "\t|";
+                            
+                            spreadsheet << "=\""  << tagTable[hashIndex].second.front() << "\",";
+                            
+                            consoleToFile << "\t" << tagTable[hashIndex].second.front() << "\t|";
+                            
+                            tagTable[hashIndex].second.pop();
+                        }
                         
-                        spreadsheet << "=\""  << tagTable[hashIndex].second.front() << "\",";
-                        
-                        consoleToFile << "\t" << tagTable[hashIndex].second.front() << "\t|";
-                        
-                        tagTable[hashIndex].second.pop();
+                        else
+                        {
+                            console << "\t\t" << '-' << "\t\t|";
+                            
+                            spreadsheet << "=\""  << '-' << "\",";
+                            
+                            consoleToFile << "\t\t" << '-'  << "\t\t|";
+                        }
                     }
                     
-                    else
+                    else if(mainMemorySize == 16)
                     {
-                        console << "\t\t" << '-' << "\t\t|";
-                        
-                        spreadsheet << "=\""  << '-' << "\",";
-                        
-                        consoleToFile << "\t\t" << '-'  << "\t\t|";
+                        if (!tagTable[hashIndex].second.empty())
+                        {
+                            console << "  " << tagTable[hashIndex].second.front() << " |";
+                            spreadsheet << "=\"" << tagTable[hashIndex].second.front() << "\",";
+                            consoleToFile <<  "  " << tagTable[hashIndex].second.front() << " |";
+
+                            tagTable[hashIndex].second.pop();
+                        }
+                        else
+                        {
+                            console << std::setw(10) << '-' << std::setw(10) << "|";
+                            spreadsheet << "=\"" << '-' << "\",";
+                            consoleToFile << std::setw(10) << '-' << std::setw(10) << "|";
+                        }
                     }
                 }
                 
@@ -879,11 +908,11 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 
                 if(!this -> cacheStorage[global_iterator].addressEvicted.empty())
                 {
-                    console  << '\t' << '\t' << this -> cacheStorage[global_iterator].addressEvicted << '\n';
+                    console  << "\t\t\t" << this -> cacheStorage[global_iterator].addressEvicted << '\n';
                     
                     spreadsheet << this -> cacheStorage[global_iterator].addressEvicted << ',';
                     
-                    consoleToFile  << '\t' << '\t' << this -> cacheStorage[global_iterator].addressEvicted << '\n';
+                    consoleToFile  << "\t\t\t" << this -> cacheStorage[global_iterator].addressEvicted << '\n';
                     
                 }
                 
