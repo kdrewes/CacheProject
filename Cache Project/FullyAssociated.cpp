@@ -339,7 +339,7 @@ void FullyAssociated :: Title()
     console <<"\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
     
     //spreadsheet << "                                    Fully Associative Placement Policy                                  \n";
-    spreadsheet << "---------------------------------------------------- Fully Associative Placement Policy ----------------------------------------------------\n\n";
+    spreadsheet << "---------------------------------------------------- Fully Associative Placement Policy ----------------------------------------------------\n";
     
     consoleToFile << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
     consoleToFile <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
@@ -585,11 +585,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                         {
                             if(i == 0)
                             {
-                                console << "\t\t" << wordVector[i] << "\t\t";
+                                console << "\t" << wordVector[i] << "\t\t\t\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
                                 
-                                consoleToFile << "\t\t" << wordVector[i] << "\t\t";
+                                consoleToFile << "\t" << wordVector[i] << "\t\t\t\t";
                             }
                             else
                             {
