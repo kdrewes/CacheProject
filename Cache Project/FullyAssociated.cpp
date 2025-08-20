@@ -201,6 +201,8 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
             
         case TAG_TABLE:
         {
+            // Select placement policy algorithm
+            this -> PlacementPolicy(placementPolicy);
             
             // Retrieve hashed index and assign it to addressTable
             this -> hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
@@ -308,26 +310,6 @@ void FullyAssociated::PrintFile()
 }
 
 
-// -------------------------------------------------------------------------------------------
-
-void FullyAssociated :: LRU()
-{
-   
-}
-
-// -------------------------------------------------------------------------------------------
-
-void FullyAssociated :: FIFO()
-{
-  
-}
-
-// -------------------------------------------------------------------------------------------
-
-void FullyAssociated :: LFU()
-{
-  
-}
 // -------------------------------------------------------------------------------------------
 
 // Create Title
@@ -933,6 +915,18 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 std::cout << "\nCOLUMN_ERROR - iterator = " << this -> global_iterator;
                 throw std::invalid_argument("\n\nError - incorrect column header\n\nPlease correct command\n\n");
         }
+}
+// -------------------------------------------------------------------------------------------
+
+void FullyAssociated :: PlacementPolicy (enum CACHING_ALGORITHM algorithm)
+{
+    switch(algorithm)
+    {
+        case LRU:
+        {
+            
+        }
+    }
 }
 
 // -------------------------------------------------------------------------------------------

@@ -221,11 +221,11 @@ public:
     
     // ------------------- Cache Replacements Algorithms  --------------------
     
-     void LRU();                        // Last Recently Used
+     void Last_Recently_Used();         // Last Recently Used
     
-     void FIFO();                       // First in First Out
+     void First_In_First_Out();         // First in First Out
     
-     void LFU();                        // Least Frequently Used
+     void Least_Frequently_Used();      // Least Frequently Used
     
     // ---------------------------- Print Results  -----------------------------
     
@@ -250,6 +250,9 @@ public:
     
      void CreateTable                    // Produce rows and columns in table
      (COLUMNS c);
+    
+     void PlacementPolicy                // Contains placement policy algorithms
+     (enum CACHING_ALGORITHM);
     
      std::string toLower                 // Make each string lower case
      (std::string header);

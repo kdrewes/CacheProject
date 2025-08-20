@@ -62,9 +62,9 @@ protected:
     
     // -------------------- Miscellaneous variables -------------------------
     
-    iterator global_iterator;                // Used as a global iterator
+    iterator global_iterator;               // Used as a global iterator
     
-    enum CACHING_ALGORITHM algorithm;       // Select caching algorithm
+    enum CACHING_ALGORITHM placementPolicy; // Select placement policy algorithm
     
     binaryVector wordVector,                // Contains predifed word in binary form
     

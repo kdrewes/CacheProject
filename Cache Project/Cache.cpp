@@ -274,7 +274,7 @@ void Cache :: verifyFullyAssociativeInput(unit data)
                 break;
             }
             
-                this -> algorithm = CachingEnum(data);
+                this -> placementPolicy = CachingEnum(data);
                 
                 break;
             
@@ -372,7 +372,7 @@ void Cache :: verifySetAssociativeInput(unit data)
                 break;
             }
 
-                this -> algorithm = CachingEnum(data);
+                this -> placementPolicy = CachingEnum(data);
                 
                 break;
             
