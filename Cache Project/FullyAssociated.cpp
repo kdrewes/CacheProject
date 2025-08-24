@@ -855,8 +855,6 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
                 
                 // Insert tag and queue pair to tagTable
                 tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
-                
-                //wayQueue = tagTable[hashIndex].second;
             }
             
             else if(tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
@@ -1054,7 +1052,9 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
                             while (!temporaryQueue.empty())
                             {
                                 binary temporaryAddress = temporaryQueue.front();
+                                
                                 temporaryQueue.pop();
+                                
                                 if (temporaryAddress != leastFrequentAddress.first)
                                     copyQueue.push(temporaryAddress);
                             }
@@ -1071,7 +1071,7 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
                         }
                         else
                         {
-                            // Address was found
+                            // Update queue of tagTable
                             tagTable[hashIndex].second = copyQueue;
 
                             // Update frequency
