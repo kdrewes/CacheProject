@@ -202,89 +202,7 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
         case TAG_TABLE:
         {
             // Select placement policy algorithm
-            this -> PlacementPolicy(placementPolicy);
-            
-            // Retrieve hashed index and assign it to addressTable
-            this -> hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
-            
-            if(tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
-            {
-                // Declare queue using to store binary addresses
-                std::queue<binary> binaryQueue;
-                
-                // Insert address into binaryQueue
-                binaryQueue.push(cacheStorage[global_iterator].address);
-                
-                // Insert tag and queue pair to tagTable
-                tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
-                
-                //wayQueue = tagTable[hashIndex].second;
-            }
-            
-            else if(tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
-            {
-                // Declare temporary queue used for traversing
-                std::queue <binary> binaryQueue(tagTable[hashIndex].second);
-                
-                // Declare temporary queue used for storage
-                std::queue <binary> storageQueue;
-                
-                // Declare string that is inserted to the back of the binary queue
-                binary lastString = "";
-                
-                // Determine if address was found in queue
-                boolean addressFound = false;
-                
-                
-                // Traverse through queue
-                while(!binaryQueue.empty())
-                {
-                    if(binaryQueue.front() == cacheStorage[global_iterator].address)
-                    {
-                        lastString = binaryQueue.front();
-                        
-                        binaryQueue.pop();
-                        
-                        addressFound = true;
-                    }
-                    
-                    else
-                    {
-                        storageQueue.push(binaryQueue.front());
-                        
-                        binaryQueue.pop();
-                    }
-                }
-                
-                if(!addressFound)
-                {
-                    
-                    if(storageQueue.size() >= this -> ways)
-                    {
-                        // Collect evicted address
-                        cacheStorage[global_iterator].addressEvicted = storageQueue.front();
-                        
-                        // remove front node from storageQueue
-                        storageQueue.pop();
-                    }
-                    
-                    else
-                        cacheStorage[global_iterator].addressEvicted = "";
-                 
-                    storageQueue.push(cacheStorage[global_iterator].address);
-                        
-                    tagTable[hashIndex].second = storageQueue;
-                }
-                
-                else
-                {
-                    storageQueue.push(lastString);
-                    
-                    tagTable[hashIndex].second = storageQueue;
-                    
-                    // wayQueue = tagTable[hashIndex].second;
-                }
-            }
+            this -> PlacementPolicy(placementPolicy, table);
             
             break;
         }
@@ -518,11 +436,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             if(this -> mainMemorySize == 8)
             {
-                console << "\t\tH/M";
+                console << "\t\tH/M\t";
                 
                 spreadsheet << "H/M,";
                 
-                consoleToFile << "\t\tH/M";
+                consoleToFile << "\t\tH/M\t";
             }
             
             else if(this -> mainMemorySize == 16)
@@ -553,11 +471,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                         
                         for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
-                            console << "\t\t" << wordVector[i] << "  ";
+                            console << "\t\t" << wordVector[i];
                             
                             spreadsheet << "=\""  << wordVector[i] << "\",";
                             
-                            consoleToFile << "\t\t" << wordVector[i] << "  ";
+                            consoleToFile << "\t\t" << wordVector[i];
                         }
                     }
                     
@@ -643,11 +561,11 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             {
                 if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
                 {
-                    console << "\t\t   Instruction";
+                    console << "\t\tInstruction";
                     
                     spreadsheet << "Instruction,";
                     
-                    consoleToFile << "\t\t   Instruction";
+                    consoleToFile << "\t\tInstruction";
                 }
                 else
                 {
@@ -918,14 +836,113 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
 }
 // -------------------------------------------------------------------------------------------
 
-void FullyAssociated :: PlacementPolicy (enum CACHING_ALGORITHM algorithm)
+void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, enum HASH_TABLE table)
 {
-    switch(algorithm)
+    switch(cache_algorithm)
     {
         case LRU:
         {
+            // Retrieve hashed index and assign it to addressTable
+            this -> hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
             
+            if(tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
+            {
+                // Declare queue using to store binary addresses
+                std::queue<binary> binaryQueue;
+                
+                // Insert address into binaryQueue
+                binaryQueue.push(cacheStorage[global_iterator].address);
+                
+                // Insert tag and queue pair to tagTable
+                tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
+                
+                //wayQueue = tagTable[hashIndex].second;
+            }
+            
+            else if(tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
+            {
+                // Declare temporary queue used for traversing
+                std::queue <binary> binaryQueue(tagTable[hashIndex].second);
+                
+                // Declare temporary queue used for storage
+                std::queue <binary> storageQueue;
+                
+                // Declare string that is inserted to the back of the binary queue
+                binary lastString = "";
+                
+                // Determine if address was found in queue
+                boolean addressFound = false;
+                
+                
+                // Traverse through queue
+                while(!binaryQueue.empty())
+                {
+                    if(binaryQueue.front() == cacheStorage[global_iterator].address)
+                    {
+                        lastString = binaryQueue.front();
+                        
+                        binaryQueue.pop();
+                        
+                        addressFound = true;
+                    }
+                    
+                    else
+                    {
+                        storageQueue.push(binaryQueue.front());
+                        
+                        binaryQueue.pop();
+                    }
+                }
+                
+                if(!addressFound)
+                {
+                    
+                    if(storageQueue.size() >= this -> ways)
+                    {
+                        // Collect evicted address
+                        cacheStorage[global_iterator].addressEvicted = storageQueue.front();
+                        
+                        // remove front node from storageQueue
+                        storageQueue.pop();
+                    }
+                    
+                    else
+                        cacheStorage[global_iterator].addressEvicted = "-";
+                 
+                    storageQueue.push(cacheStorage[global_iterator].address);
+                        
+                    tagTable[hashIndex].second = storageQueue;
+                }
+                
+                else
+                {
+                    storageQueue.push(lastString);
+                    
+                    tagTable[hashIndex].second = storageQueue;
+                    
+                    // wayQueue = tagTable[hashIndex].second;
+                }
+            }
+            
+            break;
         }
+            
+        case LFU:
+        {
+            break;
+        }
+            
+        case FIFO:
+        {
+            break;
+        }
+            
+        case ALGORITHMIC_ERROR:
+        {
+            break;
+        }
+            
+        
     }
 }
 
