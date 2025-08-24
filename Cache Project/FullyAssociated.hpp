@@ -46,6 +46,9 @@ class FullyAssociated : public Cache
     // binaryHexMap = Represents a map inside a map
     typedef std::map<binary, std::map<binary,hex>> multiMap;
     
+    // Key = tag, Value = std::vector<std::pair<address, frequenty of address detected in tagTable.second>>
+    typedef std::map<binary, std::vector<std::pair<binary,integer>>> addressDetectorMap;
+    
     // Condenses string into a single variable
     typedef std::ostringstream condensedString;
     
@@ -187,6 +190,9 @@ private:
     // Hash table used to store multiple ways
     // Key = tag, value = addresses stored in queue
     tagAddress tagTable;
+    
+    // Key = tag, Value = std::vector<std::pair<address, frequenty of address detected in tagTable.second>>
+    addressDetectorMap addressDetector;
     
     // Declare queue to hold data for each way
     std::queue <binary> wayQueue;
