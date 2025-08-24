@@ -509,7 +509,7 @@ std::string Cache :: Fully_Associative_Menu(input select)
         return "\n4) Enter number of ways (2 or 3): ";
         
     else if(select == 5)
-        return "\n--------------- Caching Algorithms ---------------\n\n1) Last Recently Used\t\t2) Last Frequently Used\n\n3) First In First Out\n\n--------------------------------------------------\n\nSelect: ";
+        return "\n--------------- Caching Algorithms ---------------\n\n1) Last Recently Used\t\t2) Least Frequently Used\n\n3) First In First Out\n\n--------------------------------------------------\n\nSelect: ";
     
     return "";
 }
