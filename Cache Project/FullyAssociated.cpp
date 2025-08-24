@@ -835,7 +835,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
     }
 }
 // -------------------------------------------------------------------------------------------
-
+// Contains each placement policy algoirthm
 void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, enum HASH_TABLE table)
 {
     switch(cache_algorithm)
@@ -928,7 +928,7 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
         case LFU:
         {
             // Retrieve hashed index and assign it to tagTable
-            this -> hashIndex = GetHashIndex(table, cacheStorage[global_iterator].tagHashCode);
+            this->hashIndex = GetHashIndex(table, cacheStorage[global_iterator].tagHashCode);
 
             // If cache is empty
             if (tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
@@ -940,12 +940,11 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
                 binaryQueue.push(cacheStorage[global_iterator].address);
 
                 // Insert tag and queue pair into tagTable
-                tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
+                tagTable[hashIndex] = {cacheStorage[global_iterator].tag, binaryQueue};
 
                 // Track address frequency in addressDetector
                 addressDetector[cacheStorage[global_iterator].tag] = {{cacheStorage[global_iterator].address, 1}};
             }
-            
             else
             {
                 if (tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
@@ -969,7 +968,7 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
                         {
                             // Current address in binaryQueue
                             binary currentAddress = binaryQueue.front();
-                            
+
                             // Pop binary queue
                             binaryQueue.pop();
 
@@ -997,20 +996,19 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
 
                         // Update tagTable
                         tagTable[hashIndex].second = copyQueue;
-                        
+
                         // Updated addressDetector
                         addressDetector[tagTable[hashIndex].first] = addressDetectorVec;
                     }
-                    
-                    // If cache is full
-                    else
+                    else // Cache is full
                     {
                         // Search for existing address
                         while (!binaryQueue.empty())
                         {
                             // Declare variable which copies address in front of queue
                             binary currentAddress = binaryQueue.front();
-                            
+
+                            // Pop binary queue
                             binaryQueue.pop();
 
                             // If address is found then increment the frequency
@@ -1063,7 +1061,7 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
 
                             // Insert new address into the queue
                             copyQueue.push(cacheStorage[global_iterator].address);
-                            
+
                             // Update queue in tagTable
                             tagTable[hashIndex].second = copyQueue;
 
@@ -1075,7 +1073,7 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
                         {
                             // Address was found
                             tagTable[hashIndex].second = copyQueue;
-                            
+
                             // Update frequency
                             addressDetector[tagTable[hashIndex].first] = addressDetectorVec;
                         }
@@ -1085,8 +1083,6 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
 
             break;
         }
-
-
             
         case FIFO:
             {
