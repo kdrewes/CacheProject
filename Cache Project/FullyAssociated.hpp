@@ -227,8 +227,7 @@ public:
      void AssignHashIndex();            // Assign addresses to their designated index
     
      index GetHashIndex                 // Retreive hash index
-     (HASH_TABLE table,
-      hashValue hashCode);
+     (hashValue hashCode);
     
     // ------------------- Cache Replacements Algorithms  --------------------
     

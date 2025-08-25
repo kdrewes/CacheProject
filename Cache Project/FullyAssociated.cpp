@@ -182,7 +182,7 @@ void FullyAssociated :: AssignHashIndex()
         case ADDRESS_TABLE:
         {
             // Retrieve hashed index and assign it to addressTable
-            int hashIndex = GetHashIndex(table,cacheStorage[global_iterator].addressHashCode);
+            int hashIndex = GetHashIndex(cacheStorage[global_iterator].addressHashCode);
             
             // Assign data to designated hashed subscript of addressTable
             if(addressTable[hashIndex].first.empty() &&  addressTable[hashIndex].second.empty())
@@ -910,7 +910,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     void FullyAssociated :: Least_Recently_Used()
     {
         // Retrieve hashed index and assign it to addressTable
-        this -> hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
+        this -> hashIndex = GetHashIndex(cacheStorage[global_iterator].tagHashCode);
         
         if(tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
         {
@@ -993,7 +993,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     void FullyAssociated :: Least_Frequently_Used()
     {
         // Retrieve hashed index and assign it to tagTable
-        this->hashIndex = GetHashIndex(table, cacheStorage[global_iterator].tagHashCode);
+        this->hashIndex = GetHashIndex(cacheStorage[global_iterator].tagHashCode);
 
         // If cache is empty
         if (tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
@@ -1164,7 +1164,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     void FullyAssociated :: First_In_First_Out()
     {
             // Retrieve hashed index and assign it to addressTable
-            this -> hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
+            this -> hashIndex = GetHashIndex(cacheStorage[global_iterator].tagHashCode);
             
             if(tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
             {
@@ -1320,7 +1320,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     
     // -------------------------------------------------------------------------------------------
     // Retreive hash index
-    FullyAssociated :: index FullyAssociated :: GetHashIndex(HASH_TABLE table, hashValue hashCode)
+    FullyAssociated :: index FullyAssociated :: GetHashIndex(hashValue hashCode)
     {
         switch(table)
         {
