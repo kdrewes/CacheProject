@@ -75,8 +75,6 @@ void FullyAssociated :: Controller()
     // Produce and display table
     Table();
     
-    
-    
     std::cout << console.str();
     
     file write("testFile.csv");
@@ -229,7 +227,6 @@ void FullyAssociated::PrintFile()
 
 
 // -------------------------------------------------------------------------------------------
-
 // Create Title
 void FullyAssociated :: Title()
 {
@@ -275,7 +272,7 @@ void FullyAssociated :: Title()
     
 }
 // -------------------------------------------------------------------------------------------
-// Create Data
+// Produce and display metrics
 void FullyAssociated :: Data()
 {
     
@@ -343,7 +340,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case ADDRESS :
             
             // Display each address
-            
             if(this -> mainMemorySize == 8)
             {
                 
@@ -371,8 +367,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case WAY :
             
             // Display each way
-            
-            
             if(this -> mainMemorySize == 8)
             {
                 for(int i = 0; i < this -> ways; i++)
@@ -405,7 +399,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case TAG :
             
             // Display each tag
-            
             if(this -> mainMemorySize == 8)
             {
                 console << "\t\t Tag";
@@ -433,7 +426,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case OFFSET :
             
             // Display each offset
-            
             if(this -> mainMemorySize == 8)
             {
                 console << "\t\tOffset";
@@ -460,7 +452,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case HIT_MISS :
             
             // Display whether each address has a hit or miss
-            
             if(this -> mainMemorySize == 8)
             {
                 console << "\t\tH/M\t";
@@ -487,7 +478,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case WORD :
             
             // Skip if there is only one word present
-            
             if(this -> mainMemorySize == 8)
             {
                 if(wordVector.size() != 1)
@@ -495,7 +485,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                     if(this -> wordQuantity == 2)
                     {
                         // Display each individual word in binary format
-                        
                         for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
                             console << "\t\t" << wordVector[i];
@@ -583,7 +572,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case INSTRUCTION_RETREIVED :
             
             // Display which instruction was retreived
-            
             if(this -> mainMemorySize == 8)
             {
                 if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
@@ -632,7 +620,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
         case EVICTIONS :
             
             // Display if there were any evictions
-            
             if(this -> mainMemorySize == 8)
             {
                 console << "\t\t\tAddress(es) Evicted\n\n";
@@ -1189,7 +1176,6 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                 // Determine if address was found in queue
                 boolean addressFound = false;
                 
-                
                 // Traverse through queue
                 while(!binaryQueue.empty())
                 {
@@ -1227,9 +1213,6 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                     
                     tagTable[hashIndex].second = storageQueue;
                 }
-                
-                else
-                    tagTable[hashIndex].second = storageQueue;
             }
     }
 
