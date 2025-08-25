@@ -177,6 +177,12 @@ private:
     hashValue hashIndex;      // Assigned hash index
     
     boolean hitOrMiss;        // Determines hit or miss
+    
+    
+    // --------------------------- Enum Variable ----------------------------
+    
+    // Select which hash table to use (address or tag)
+    enum HASH_TABLE table;
 
     // -------------------------- Binary datasets ---------------------------
     
@@ -218,8 +224,7 @@ public:
     
      void HashTable();                  // Performs implementation on hash table
     
-     void AssignHashIndex               // Assign addresses to their designated index
-     (HASH_TABLE table);
+     void AssignHashIndex();            // Assign addresses to their designated index
     
      index GetHashIndex                 // Retreive hash index
      (HASH_TABLE table,
@@ -227,11 +232,11 @@ public:
     
     // ------------------- Cache Replacements Algorithms  --------------------
     
-     void Last_Recently_Used();         // Last Recently Used
+     void Least_Recently_Used();        // Least Recently Used
+     
+     void Least_Frequently_Used();      // Least Frequently Used
     
      void First_In_First_Out();         // First in First Out
-    
-     void Least_Frequently_Used();      // Least Frequently Used
     
     // ---------------------------- Print Results  -----------------------------
     

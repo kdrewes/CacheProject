@@ -175,7 +175,7 @@ void FullyAssociated :: HashTable()
 // -------------------------------------------------------------------------------------------
 
 // Assign hash index to addressTable or tagTable
-void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
+void FullyAssociated :: AssignHashIndex()
 {
     switch(table)
     {
@@ -682,8 +682,11 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
     {
         case ADDRESS :
         {
+            // Assign value to Hash table object
+            this -> table = FindTable("Address");
+            
             // Assign each address to its designated hash index
-            AssignHashIndex(FindTable("Address"));
+            AssignHashIndex();
             
             // Insert address data to each ostringstream variable
             console << "\t\t" << cacheStorage[global_iterator].address << " | ";
@@ -697,8 +700,12 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             
         case WAY :
             
+            
+            // Assign value to Hash table object
+            this -> table = FindTable("Tag Table");
+            
             // Assign each tag queue and address to its designated hash index
-            AssignHashIndex(FindTable("Tag Table"));
+            AssignHashIndex();
             
             // Declare queue to hold data for each way
             wayQueue = tagTable[hashIndex].second;
@@ -868,6 +875,294 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     {
         case LRU:
         {
+            Least_Recently_Used();
+            
+            break;
+        }
+            
+        case LFU:
+        {
+            Least_Frequently_Used();
+
+            break;
+        }
+            
+        case FIFO:
+        {
+            First_In_First_Out();
+                
+            break;
+                    
+        }
+            
+        case ALGORITHMIC_ERROR:
+            {
+                throw std::invalid_argument("\n\nError - Invalid algorithm\n\nPlease re-enter selection.\n\n");
+                break;
+            }
+            
+            
+        }
+    }
+
+    // -------------------------------------------------------------------------------------------
+    // Least Recently Used Algorithm
+    void FullyAssociated :: Least_Recently_Used()
+    {
+        // Retrieve hashed index and assign it to addressTable
+        this -> hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
+        
+        if(tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
+        {
+            // Declare queue using to store binary addresses
+            std::queue<binary> binaryQueue;
+            
+            // Insert address into binaryQueue
+            binaryQueue.push(cacheStorage[global_iterator].address);
+            
+            // Insert tag and queue pair to tagTable
+            tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
+        }
+        
+        else if(tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
+        {
+            // Declare temporary queue used for traversing
+            std::queue <binary> binaryQueue(tagTable[hashIndex].second);
+            
+            // Declare temporary queue used for storage
+            std::queue <binary> storageQueue;
+            
+            // Declare string that is inserted to the back of the binary queue
+            binary lastString = "";
+            
+            // Determine if address was found in queue
+            boolean addressFound = false;
+            
+            
+            // Traverse through queue
+            while(!binaryQueue.empty())
+            {
+                if(binaryQueue.front() == cacheStorage[global_iterator].address)
+                {
+                    lastString = binaryQueue.front();
+                    
+                    binaryQueue.pop();
+                    
+                    addressFound = true;
+                }
+                
+                else
+                {
+                    storageQueue.push(binaryQueue.front());
+                    
+                    binaryQueue.pop();
+                }
+            }
+            
+            if(!addressFound)
+            {
+                
+                if(storageQueue.size() >= this -> ways)
+                {
+                    // Collect evicted address
+                    cacheStorage[global_iterator].addressEvicted = storageQueue.front();
+                    
+                    // remove front address from storageQueue
+                    storageQueue.pop();
+                }
+                
+                else
+                    cacheStorage[global_iterator].addressEvicted = "";
+                
+                storageQueue.push(cacheStorage[global_iterator].address);
+                
+                tagTable[hashIndex].second = storageQueue;
+            }
+            
+            else
+            {
+                storageQueue.push(lastString);
+                
+                tagTable[hashIndex].second = storageQueue;
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------------------------
+    // Least Frequently Used Algorithm
+    void FullyAssociated :: Least_Frequently_Used()
+    {
+        // Retrieve hashed index and assign it to tagTable
+        this->hashIndex = GetHashIndex(table, cacheStorage[global_iterator].tagHashCode);
+
+        // If cache is empty
+        if (tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
+        {
+            // Declare queue used to store binary addresses
+            std::queue<binary> binaryQueue;
+
+            // Insert address into binaryQueue
+            binaryQueue.push(cacheStorage[global_iterator].address);
+
+            // Insert tag and queue pair into tagTable
+            tagTable[hashIndex] = {cacheStorage[global_iterator].tag, binaryQueue};
+
+            // Track address frequency in addressDetector
+            addressDetector[cacheStorage[global_iterator].tag] = {{cacheStorage[global_iterator].address, 1}};
+        }
+        else
+        {
+            if (tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
+            {
+                // Copy current queue of addresses
+                std::queue<binary> binaryQueue = tagTable[hashIndex].second;
+
+                // Declare temporary queue used for storage
+                std::queue<binary> copyQueue;
+
+                // Declare vector which stores value of addressDetector
+                std::vector<std::pair<binary, int>> addressDetectorVec = addressDetector[tagTable[hashIndex].first];
+
+                // Determine whether address is found
+                bool addressFound = false;
+
+                // If cache is not full
+                if (binaryQueue.size() < this->ways)
+                {
+                    while (!binaryQueue.empty())
+                    {
+                        // Current address in binaryQueue
+                        binary currentAddress = binaryQueue.front();
+
+                        // Pop binary queue
+                        binaryQueue.pop();
+
+                        // Add current address to temporary queue
+                        copyQueue.push(currentAddress);
+
+                        // Update frequency if found
+                        for (size_t i = 0; i < addressDetectorVec.size(); ++i)
+                        {
+                            if (currentAddress == addressDetectorVec[i].first &&
+                                currentAddress == cacheStorage[global_iterator].address)
+                            {
+                                addressDetectorVec[i].second += 1;
+                                addressFound = true;
+                            }
+                        }
+                    }
+
+                    // If address is not found, add new address and update frequency
+                    if (!addressFound)
+                    {
+                        copyQueue.push(cacheStorage[global_iterator].address);
+                        addressDetectorVec.push_back({cacheStorage[global_iterator].address, 1});
+                    }
+
+                    // Update tagTable
+                    tagTable[hashIndex].second = copyQueue;
+
+                    // Updated addressDetector
+                    addressDetector[tagTable[hashIndex].first] = addressDetectorVec;
+                }
+                else // Cache is full
+                {
+                    // Search for existing address
+                    while (!binaryQueue.empty())
+                    {
+                        // Declare variable which copies address in front of queue
+                        binary currentAddress = binaryQueue.front();
+
+                        // Pop binary queue
+                        binaryQueue.pop();
+
+                        // If address is found then increment the frequency
+                        if (currentAddress == cacheStorage[global_iterator].address)
+                        {
+                            for (size_t i = 0; i < addressDetectorVec.size(); ++i)
+                            {
+                                if (addressDetectorVec[i].first == currentAddress)
+                                {
+                                    addressDetectorVec[i].second += 1;
+                                    addressFound = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // Add current address to temporary copyQueue
+                        copyQueue.push(currentAddress);
+                    }
+
+                    // If the address was not found, replace least frequently used address
+                    if (!addressFound)
+                    {
+                        // Track least frequently used address
+                        std::pair<binary, int> leastFrequentAddress;
+                        
+                        leastFrequentAddress.second = INT_MAX;
+                        
+                        std::size_t index = 0;
+
+                        // Find least frequently used address
+                        for (size_t i = 0; i < addressDetectorVec.size(); ++i)
+                        {
+                            if (addressDetectorVec[i].second < leastFrequentAddress.second)
+                            {
+                                leastFrequentAddress = addressDetectorVec[i];
+                                
+                                index = i;
+                            }
+                        }
+                        
+                    
+                        // Collect evicted address
+                        cacheStorage[global_iterator].addressEvicted = leastFrequentAddress.first;
+
+                        // Declare temporary queue to store all addresses excluding least frequently used address
+                        std::queue<binary> temporaryQueue = tagTable[hashIndex].second;
+
+                        // Re-create queue which excludes least frequently used address and inserts new address
+                        while (!temporaryQueue.empty())
+                        {
+                            binary temporaryAddress = temporaryQueue.front();
+                            
+                            temporaryQueue.pop();
+                            
+                            if (temporaryAddress != leastFrequentAddress.first)
+                                copyQueue.push(temporaryAddress);
+                        }
+
+                        // Insert new address into the queue
+                        copyQueue.push(cacheStorage[global_iterator].address);
+
+                        // Update queue in tagTable
+                        tagTable[hashIndex].second = copyQueue;
+
+                        // Replace LFU entry in addressDetector
+                        addressDetectorVec[index] = {cacheStorage[global_iterator].address, 1};
+                        
+                        // Update value of addressDetector[tagTable[hashIndex].first]
+                        addressDetector[tagTable[hashIndex].first] = addressDetectorVec;
+                    }
+                    else
+                    {
+                        // Update queue of tagTable
+                        tagTable[hashIndex].second = copyQueue;
+
+                        // Update frequency
+                        addressDetector[tagTable[hashIndex].first] = addressDetectorVec;
+                    }
+                }
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------------------------
+
+    // First in First out Algorithm
+    void FullyAssociated :: First_In_First_Out()
+    {
             // Retrieve hashed index and assign it to addressTable
             this -> hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
             
@@ -891,9 +1186,6 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                 // Declare temporary queue used for storage
                 std::queue <binary> storageQueue;
                 
-                // Declare string that is inserted to the back of the binary queue
-                binary lastString = "";
-                
                 // Determine if address was found in queue
                 boolean addressFound = false;
                 
@@ -903,8 +1195,6 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                 {
                     if(binaryQueue.front() == cacheStorage[global_iterator].address)
                     {
-                        lastString = binaryQueue.front();
-                        
                         binaryQueue.pop();
                         
                         addressFound = true;
@@ -939,271 +1229,10 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                 }
                 
                 else
-                {
-                    storageQueue.push(lastString);
-                    
                     tagTable[hashIndex].second = storageQueue;
-                }
             }
-            
-            break;
-        }
-            
-        case LFU:
-        {
-            // Retrieve hashed index and assign it to tagTable
-            this->hashIndex = GetHashIndex(table, cacheStorage[global_iterator].tagHashCode);
-
-            // If cache is empty
-            if (tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
-            {
-                // Declare queue used to store binary addresses
-                std::queue<binary> binaryQueue;
-
-                // Insert address into binaryQueue
-                binaryQueue.push(cacheStorage[global_iterator].address);
-
-                // Insert tag and queue pair into tagTable
-                tagTable[hashIndex] = {cacheStorage[global_iterator].tag, binaryQueue};
-
-                // Track address frequency in addressDetector
-                addressDetector[cacheStorage[global_iterator].tag] = {{cacheStorage[global_iterator].address, 1}};
-            }
-            else
-            {
-                if (tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
-                {
-                    // Copy current queue of addresses
-                    std::queue<binary> binaryQueue = tagTable[hashIndex].second;
-
-                    // Declare temporary queue used for storage
-                    std::queue<binary> copyQueue;
-
-                    // Declare vector which stores value of addressDetector
-                    std::vector<std::pair<binary, int>> addressDetectorVec = addressDetector[tagTable[hashIndex].first];
-
-                    // Determine whether address is found
-                    bool addressFound = false;
-
-                    // If cache is not full
-                    if (binaryQueue.size() < this->ways)
-                    {
-                        while (!binaryQueue.empty())
-                        {
-                            // Current address in binaryQueue
-                            binary currentAddress = binaryQueue.front();
-
-                            // Pop binary queue
-                            binaryQueue.pop();
-
-                            // Add current address to temporary queue
-                            copyQueue.push(currentAddress);
-
-                            // Update frequency if found
-                            for (size_t i = 0; i < addressDetectorVec.size(); ++i)
-                            {
-                                if (currentAddress == addressDetectorVec[i].first &&
-                                    currentAddress == cacheStorage[global_iterator].address)
-                                {
-                                    addressDetectorVec[i].second += 1;
-                                    addressFound = true;
-                                }
-                            }
-                        }
-
-                        // If address is not found, add new address and update frequency
-                        if (!addressFound)
-                        {
-                            copyQueue.push(cacheStorage[global_iterator].address);
-                            addressDetectorVec.push_back({cacheStorage[global_iterator].address, 1});
-                        }
-
-                        // Update tagTable
-                        tagTable[hashIndex].second = copyQueue;
-
-                        // Updated addressDetector
-                        addressDetector[tagTable[hashIndex].first] = addressDetectorVec;
-                    }
-                    else // Cache is full
-                    {
-                        // Search for existing address
-                        while (!binaryQueue.empty())
-                        {
-                            // Declare variable which copies address in front of queue
-                            binary currentAddress = binaryQueue.front();
-
-                            // Pop binary queue
-                            binaryQueue.pop();
-
-                            // If address is found then increment the frequency
-                            if (currentAddress == cacheStorage[global_iterator].address)
-                            {
-                                for (size_t i = 0; i < addressDetectorVec.size(); ++i)
-                                {
-                                    if (addressDetectorVec[i].first == currentAddress)
-                                    {
-                                        addressDetectorVec[i].second += 1;
-                                        addressFound = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            // Add current address to temporary copyQueue
-                            copyQueue.push(currentAddress);
-                        }
-
-                        // If the address was not found, replace least frequently used address
-                        if (!addressFound)
-                        {
-                            // Track least frequently used address
-                            std::pair<binary, int> leastFrequentAddress;
-                            
-                            leastFrequentAddress.second = INT_MAX;
-                            
-                            std::size_t index = 0;
-
-                            // Find least frequently used address
-                            for (size_t i = 0; i < addressDetectorVec.size(); ++i)
-                            {
-                                if (addressDetectorVec[i].second < leastFrequentAddress.second)
-                                {
-                                    leastFrequentAddress = addressDetectorVec[i];
-                                    
-                                    index = i;
-                                }
-                            }
-                            
-                        
-                            // Collect evicted address
-                            cacheStorage[global_iterator].addressEvicted = leastFrequentAddress.first;
-
-                            // Declare temporary queue to store all addresses excluding least frequently used address
-                            std::queue<binary> temporaryQueue = tagTable[hashIndex].second;
-
-                            // Re-create queue which excludes least frequently used address and inserts new address
-                            while (!temporaryQueue.empty())
-                            {
-                                binary temporaryAddress = temporaryQueue.front();
-                                
-                                temporaryQueue.pop();
-                                
-                                if (temporaryAddress != leastFrequentAddress.first)
-                                    copyQueue.push(temporaryAddress);
-                            }
-
-                            // Insert new address into the queue
-                            copyQueue.push(cacheStorage[global_iterator].address);
-
-                            // Update queue in tagTable
-                            tagTable[hashIndex].second = copyQueue;
-
-                            // Replace LFU entry in addressDetector
-                            addressDetectorVec[index] = {cacheStorage[global_iterator].address, 1};
-                            
-                            // Update value of addressDetector[tagTable[hashIndex].first]
-                            addressDetector[tagTable[hashIndex].first] = addressDetectorVec;
-                        }
-                        else
-                        {
-                            // Update queue of tagTable
-                            tagTable[hashIndex].second = copyQueue;
-
-                            // Update frequency
-                            addressDetector[tagTable[hashIndex].first] = addressDetectorVec;
-                        }
-                    }
-                }
-            }
-
-            break;
-        }
-            
-        case FIFO:
-            {
-                // Retrieve hashed index and assign it to addressTable
-                this -> hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
-                
-                if(tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
-                {
-                    // Declare queue using to store binary addresses
-                    std::queue<binary> binaryQueue;
-                    
-                    // Insert address into binaryQueue
-                    binaryQueue.push(cacheStorage[global_iterator].address);
-                    
-                    // Insert tag and queue pair to tagTable
-                    tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
-                }
-                
-                else if(tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
-                {
-                    // Declare temporary queue used for traversing
-                    std::queue <binary> binaryQueue(tagTable[hashIndex].second);
-                    
-                    // Declare temporary queue used for storage
-                    std::queue <binary> storageQueue;
-                    
-                    // Determine if address was found in queue
-                    boolean addressFound = false;
-                    
-                    
-                    // Traverse through queue
-                    while(!binaryQueue.empty())
-                    {
-                        if(binaryQueue.front() == cacheStorage[global_iterator].address)
-                        {
-                            binaryQueue.pop();
-                            
-                            addressFound = true;
-                        }
-                        
-                        else
-                        {
-                            storageQueue.push(binaryQueue.front());
-                            
-                            binaryQueue.pop();
-                        }
-                    }
-                    
-                    if(!addressFound)
-                    {
-                        
-                        if(storageQueue.size() >= this -> ways)
-                        {
-                            // Collect evicted address
-                            cacheStorage[global_iterator].addressEvicted = storageQueue.front();
-                            
-                            // remove front address from storageQueue
-                            storageQueue.pop();
-                        }
-                        
-                        else
-                            cacheStorage[global_iterator].addressEvicted = "";
-                        
-                        storageQueue.push(cacheStorage[global_iterator].address);
-                        
-                        tagTable[hashIndex].second = storageQueue;
-                    }
-                    
-                    else
-                        tagTable[hashIndex].second = storageQueue;
-                }
-                
-                break;
-                    
-                
-            }
-            
-        case ALGORITHMIC_ERROR:
-            {
-                break;
-            }
-            
-            
-        }
     }
-    
+
     // -------------------------------------------------------------------------------------------
     // Make each string lower case
     std::string FullyAssociated :: toLower(std::string header)
@@ -1277,7 +1306,6 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     }
     
     // -------------------------------------------------------------------------------------------
-    
     // Find addressTable or tagTag hashing formula
     HASH_TABLE FullyAssociated :: FindTable (std::string table)
     {
@@ -1291,7 +1319,6 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     }
     
     // -------------------------------------------------------------------------------------------
-    
     // Retreive hash index
     FullyAssociated :: index FullyAssociated :: GetHashIndex(HASH_TABLE table, hashValue hashCode)
     {
@@ -1377,3 +1404,4 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
         
         return hashCode;
     }
+    // -------------------------------------------------------------------------------------------
