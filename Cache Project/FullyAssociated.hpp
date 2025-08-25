@@ -258,8 +258,7 @@ public:
      (COLUMNS c);
     
      void PlacementPolicy                // Contains placement policy algorithms
-     (enum CACHING_ALGORITHM,
-      enum HASH_TABLE);
+     (enum HASH_TABLE);
     
      std::string toLower                 // Make each string lower case
      (std::string header);

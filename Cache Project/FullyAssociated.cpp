@@ -202,7 +202,7 @@ void FullyAssociated :: AssignHashIndex(HASH_TABLE table)
         case TAG_TABLE:
         {
             // Select placement policy algorithm
-            this -> PlacementPolicy(placementPolicy, table);
+            this -> PlacementPolicy(table);
             
             break;
         }
@@ -235,14 +235,42 @@ void FullyAssociated :: Title()
 {
     // Display Title
     console << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
-    console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
+    
+    if(placementPolicy == CACHING_ALGORITHM :: LRU)
+        console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - LRU\n";
+    
+    else if(placementPolicy == CACHING_ALGORITHM :: LFU)
+        console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - LFU\n";
+    
+    else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
+        console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - FIFO\n";
+    
+    
+    
     console <<"\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
     
-    //spreadsheet << "                                    Fully Associative Placement Policy                                  \n";
-    spreadsheet << "---------------------------------------------------- Fully Associative Placement Policy ----------------------------------------------------\n";
+    
+    if(placementPolicy == CACHING_ALGORITHM :: LRU)
+        spreadsheet <<"---------------------------------------------------- Fully Associative Placement Policy - LRU ----------------------------------------------------\n";
+    
+    else if(placementPolicy == CACHING_ALGORITHM :: LFU)
+        spreadsheet <<"---------------------------------------------------- Fully Associative Placement Policy - LFU ----------------------------------------------------\n";
+    
+    else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
+        spreadsheet <<"---------------------------------------------------- Fully Associative Placement Policy - FIFO ----------------------------------------------------\n";
+    
     
     consoleToFile << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
-    consoleToFile <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy\n";
+    
+    if(placementPolicy == CACHING_ALGORITHM :: LRU)
+        consoleToFile <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - LRU\n";
+    
+    else if(placementPolicy == CACHING_ALGORITHM :: LFU)
+        consoleToFile <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - LFU\n";
+    
+    else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
+        consoleToFile <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - FIFO\n";
+    
     consoleToFile <<"\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
     
 }
@@ -296,9 +324,8 @@ void FullyAssociated :: Header()
     
     // Display Header banner
     console << "\n\t\t------------------------------------------------------------ Fully Associative Cache Table ------------------------------------------------------------\n\n";
-    //spreadsheet << "                                        Fully Associative Cache Table                                       \n\n";
+
     spreadsheet << "------------------------------------------------------ Fully Associative Cache Table ------------------------------------------------------\n\n";
-    
     
     consoleToFile << "\n\t\t------------------------------------------------------------ Fully Associative Cache Table ------------------------------------------------------------\n\n";
     
@@ -779,7 +806,6 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             if(wordVector.size() != 1)
             {
                 // Display each individual instruction in hexadecimal format
-                
                 for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                 {
                     console << cacheStorage[global_iterator].instructionMap[wordVector[i]] << " | ";
@@ -836,9 +862,9 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
 }
 // -------------------------------------------------------------------------------------------
 // Contains each placement policy algoirthm
-void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, enum HASH_TABLE table)
+void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
 {
-    switch(cache_algorithm)
+    switch(placementPolicy)
     {
         case LRU:
         {
@@ -905,7 +931,7 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
                     }
                     
                     else
-                        cacheStorage[global_iterator].addressEvicted = "-";
+                        cacheStorage[global_iterator].addressEvicted = "";
                     
                     storageQueue.push(cacheStorage[global_iterator].address);
                     
@@ -1032,8 +1058,10 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
                         {
                             // Track least frequently used address
                             std::pair<binary, int> leastFrequentAddress;
+                            
                             leastFrequentAddress.second = INT_MAX;
-                            size_t index = 0;
+                            
+                            std::size_t index = 0;
 
                             // Find least frequently used address
                             for (size_t i = 0; i < addressDetectorVec.size(); ++i)
@@ -1041,9 +1069,14 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
                                 if (addressDetectorVec[i].second < leastFrequentAddress.second)
                                 {
                                     leastFrequentAddress = addressDetectorVec[i];
+                                    
                                     index = i;
                                 }
                             }
+                            
+                        
+                            // Collect evicted address
+                            cacheStorage[global_iterator].addressEvicted = leastFrequentAddress.first;
 
                             // Declare temporary queue to store all addresses excluding least frequently used address
                             std::queue<binary> temporaryQueue = tagTable[hashIndex].second;
@@ -1067,6 +1100,8 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
 
                             // Replace LFU entry in addressDetector
                             addressDetectorVec[index] = {cacheStorage[global_iterator].address, 1};
+                            
+                            // Update value of addressDetector[tagTable[hashIndex].first]
                             addressDetector[tagTable[hashIndex].first] = addressDetectorVec;
                         }
                         else
@@ -1086,7 +1121,78 @@ void FullyAssociated :: PlacementPolicy(enum CACHING_ALGORITHM cache_algorithm, 
             
         case FIFO:
             {
+                // Retrieve hashed index and assign it to addressTable
+                this -> hashIndex = GetHashIndex(table,cacheStorage[global_iterator].tagHashCode);
+                
+                if(tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
+                {
+                    // Declare queue using to store binary addresses
+                    std::queue<binary> binaryQueue;
+                    
+                    // Insert address into binaryQueue
+                    binaryQueue.push(cacheStorage[global_iterator].address);
+                    
+                    // Insert tag and queue pair to tagTable
+                    tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
+                }
+                
+                else if(tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
+                {
+                    // Declare temporary queue used for traversing
+                    std::queue <binary> binaryQueue(tagTable[hashIndex].second);
+                    
+                    // Declare temporary queue used for storage
+                    std::queue <binary> storageQueue;
+                    
+                    // Determine if address was found in queue
+                    boolean addressFound = false;
+                    
+                    
+                    // Traverse through queue
+                    while(!binaryQueue.empty())
+                    {
+                        if(binaryQueue.front() == cacheStorage[global_iterator].address)
+                        {
+                            binaryQueue.pop();
+                            
+                            addressFound = true;
+                        }
+                        
+                        else
+                        {
+                            storageQueue.push(binaryQueue.front());
+                            
+                            binaryQueue.pop();
+                        }
+                    }
+                    
+                    if(!addressFound)
+                    {
+                        
+                        if(storageQueue.size() >= this -> ways)
+                        {
+                            // Collect evicted address
+                            cacheStorage[global_iterator].addressEvicted = storageQueue.front();
+                            
+                            // remove front address from storageQueue
+                            storageQueue.pop();
+                        }
+                        
+                        else
+                            cacheStorage[global_iterator].addressEvicted = "";
+                        
+                        storageQueue.push(cacheStorage[global_iterator].address);
+                        
+                        tagTable[hashIndex].second = storageQueue;
+                    }
+                    
+                    else
+                        tagTable[hashIndex].second = storageQueue;
+                }
+                
                 break;
+                    
+                
             }
             
         case ALGORITHMIC_ERROR:
