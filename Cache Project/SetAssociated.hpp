@@ -36,9 +36,11 @@ public:
     
     ~SetAssociated() override;
     
-    // ---------------------- Configuration functions  -----------------------
+    // ------------------- Router & Controller functions  --------------------
     
-     void Configure();                  // Configure binary data
+     void Router();                     // Configure binary data
+    
+     void Controller();                 // Execute binary data
     
     // ------------------- Cache Replacements Algorithms  --------------------
     
