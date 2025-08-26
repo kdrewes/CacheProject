@@ -121,9 +121,7 @@ void Cache :: SetAssociative()
         
         Set_Associative_Menu(3),
         
-        Set_Associative_Menu(4),
-        
-        Set_Associative_Menu(5)
+        Set_Associative_Menu(4)
     };
     
     // Select option
@@ -142,6 +140,9 @@ void Cache :: SetAssociative()
         
         this -> global_iterator += 1;
     }
+    
+    // Automatically set # of ways to 2
+    this -> ways = 2;
 
     // Reset inputIterator
     this -> global_iterator = 0;
@@ -342,24 +343,6 @@ void Cache :: verifySetAssociativeInput(unit data)
             this -> mainMemorySize = data;
             
             break;
-
-        break;
-            
-            case WAYS:
-            
-            if(data != 2 && data != 3)
-            {
-                std::cerr << "\n------------------- Error --------------------\n\nAmount of ways must be 2 or 3\n\nPlease re-enter value:\n\n----------------------------------------------\n";
-                
-                this -> global_iterator -= 1;
-                
-                break;
-            }
-            
-                this -> ways = data;
-                
-                break;
-            
             
             case CACHING_ALGORITHM:
             
@@ -526,11 +509,8 @@ std::string Cache :: Set_Associative_Menu(input select)
     
     else if(select == 3)
         return "\n3) Main Memory Size (16 or 8 bits): ";
-    
-    else if(select == 4)
-        return "\n4) Enter number of ways (2 or 3): ";
         
-    else if(select == 5)
+    else if(select == 4)
         return "\n--------------- Caching Algorithms ---------------\n\n1) Last Recently Used\t\t2) Last Frequently Used\n\n3) First In First Out\n\n--------------------------------------------------\n\nSelect: ";
     
     return "";

@@ -23,7 +23,7 @@ std::unique_ptr <Cache> FactoryPattern(PLACEMENT_POLICY selection);
 void CachePolicyMenu();
 
 // Determines cache placement policy
-PLACEMENT_POLICY PolicyEnum(int selection);
+PLACEMENT_POLICY PolicyEnum(input selection);
 
 // ---------------------- Global Variable(s) ---------------------
 
