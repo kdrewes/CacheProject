@@ -21,10 +21,15 @@ private:
     // -------------------------- Binary datasets ---------------------------
     
     dataSet addresses,              // Stores each binary address
+    
             tag,                    // Stores each tag in binary form
+    
             offset,                 // Stores each offset in binary form
+    
             index,                  // Stores each index in binary form
+    
             words,                  // Stores each word in binary form
+    
             instructions;           // Stores each instruction in binary form
     
 public:

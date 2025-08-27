@@ -32,7 +32,7 @@ protected:
     // Write file
     typedef std::ofstream file;
     
-    // binaryHexMap = Represents a map inside a map
+    // multiMap = Represents a map inside a map
     typedef std::map<binary, std::map<binary,hex>> multiMap;
     
     // Key = binary tag, values = addresses stored in queue

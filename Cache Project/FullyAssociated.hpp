@@ -55,10 +55,10 @@ class FullyAssociated : public Cache
 private:
 
     // Stores each column per row
-    struct CacheData
+    struct Fully_Associative_Structure
     {
         // Constructor
-        CacheData(FullyAssociated & f) :
+        Fully_Associative_Structure (FullyAssociated & f) :
         blockSize (f.blockSize), wordSize(f.wordSize), addressEvicted(""),
         address (f.addressList[std::rand() % f.addressList.size()]), wordQuantity(f.wordQuantity),
         tag (address.substr(0, address.size() - std::floor(log2(f.blockSize)))), instruction(GetInstruction()),
@@ -187,7 +187,7 @@ private:
     // -------------------------- Binary datasets ---------------------------
     
     // Stores all properties located in CacheData structure
-    std::vector <CacheData> cacheStorage;
+    std::vector <Fully_Associative_Structure> Fully_Associative_Vector;
     
     // Hash table used to store addresses (Detects hit or miss)
     // Key = Tag, Value = address

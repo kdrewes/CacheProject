@@ -29,9 +29,9 @@ void FullyAssociated :: Router()
     // Implement hash table
     HashTable();
     
-    // Insert CacheData properties into cacheStorage vector
+    // Insert CacheData properties into Fully_Associative_Vector vector
     for(int i = 0; i < this -> blockQuantity; i++)
-        cacheStorage.push_back(CacheData(*this));
+        Fully_Associative_Vector.push_back(Fully_Associative_Structure(*this));
     
 }
 
@@ -61,23 +61,21 @@ void FullyAssociated :: Controller()
     
     /*
      
+     // Unit Test for Address List
+     for(int i = 0; i < addressList.size(); i++)
+     std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
      
+     // Unit Test for hash code
+     for(int i = 0; i < Fully_Associative_Vector.size(); i++)
+     std::cout << "\nAddress[" << i << "]: " << Fully_Associative_Vector[i].address << ' ' << "Hash Code: " << Fully_Associative_Vector[i].hashCode << '\n';
      
      // Unit Test for Address List
      for(int i = 0; i < addressList.size(); i++)
      std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
      
      // Unit Test for hash code
-     for(int i = 0; i < cacheStorage.size(); i++)
-     std::cout << "\nAddress[" << i << "]: " << cacheStorage[i].address << ' ' << "Hash Code: " << cacheStorage[i].hashCode << '\n';
-     
-     // Unit Test for Address List
-     for(int i = 0; i < addressList.size(); i++)
-     std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
-     
-     // Unit Test for hash code
-     for(int i = 0; i < cacheStorage.size(); i++)
-     std::cout << "\nAddress[" << i << "]: " << cacheStorage[i].address << ' ' << "Hash Code: " << cacheStorage[i].addressHashCode << '\n';
+     for(int i = 0; i < Fully_Associative_Vector.size(); i++)
+     std::cout << "\nAddress[" << i << "]: " << Fully_Associative_Vector[i].address << ' ' << "Hash Code: " << Fully_Associative_Vector[i].addressHashCode << '\n';
      
      
      // Unit Test for Address List
@@ -87,8 +85,8 @@ void FullyAssociated :: Controller()
      std::cout << std::endl;
      
      // Unit Test for hash code
-     for(int i = 0; i < cacheStorage.size(); i++)
-     std::cout << "\nAddress[" << i << "]: " << cacheStorage[i].address << ' ' << "Hash Code: " << cacheStorage[i].hashCode << '\n';
+     for(int i = 0; i < Fully_Associative_Vector.size(); i++)
+     std::cout << "\nAddress[" << i << "]: " << Fully_Associative_Vector[i].address << ' ' << "Hash Code: " << Fully_Associative_Vector[i].hashCode << '\n';
      
      // std::cout << console.str() << std::endl;
      
@@ -156,12 +154,12 @@ void FullyAssociated :: AssignHashIndex()
         case ADDRESS_TABLE:
         {
             // Retrieve hashed index and assign it to addressTable
-            int hashIndex = GetHashIndex(cacheStorage[global_iterator].addressHashCode);
+            int hashIndex = GetHashIndex(Fully_Associative_Vector[global_iterator].addressHashCode);
             
             // Assign data to designated hashed subscript of addressTable
             if(addressTable[hashIndex].first.empty() &&  addressTable[hashIndex].second.empty())
             {
-                addressTable[hashIndex] = {cacheStorage[global_iterator].tag,cacheStorage[global_iterator].address};
+                addressTable[hashIndex] = {Fully_Associative_Vector[global_iterator].tag,Fully_Associative_Vector[global_iterator].address};
                 
                 this -> hitOrMiss = false;
             }
@@ -631,8 +629,8 @@ void FullyAssociated :: Table()
     // Predefine table
     std::string table[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
-    // Traverse through each category for each individual subscript of cacheStorage
-    for(this -> global_iterator = 0; this -> global_iterator < cacheStorage.size(); this -> global_iterator++)
+    // Traverse through each category for each individual subscript of Fully_Associative_Vector
+    for(this -> global_iterator = 0; this -> global_iterator < Fully_Associative_Vector.size(); this -> global_iterator++)
         for(int j = 0; j < sizeof(table) / sizeof(table[0]); j++)
             CreateTable(FindColumn(table[j]));
 }
@@ -652,11 +650,11 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             AssignHashIndex();
             
             // Insert address data to each ostringstream variable
-            console << "\t\t" << cacheStorage[global_iterator].address << " | ";
+            console << "\t\t" << Fully_Associative_Vector[global_iterator].address << " | ";
             
-            spreadsheet << "=\""  << cacheStorage[global_iterator].address << "\",";
+            spreadsheet << "=\""  << Fully_Associative_Vector[global_iterator].address << "\",";
             
-            consoleToFile << "\t\t" << cacheStorage[global_iterator].address << " | ";
+            consoleToFile << "\t\t" << Fully_Associative_Vector[global_iterator].address << " | ";
             
             break;
         }
@@ -724,11 +722,11 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             
         case TAG :
         {
-            console << "\t" << this -> cacheStorage[global_iterator].tag << "\t|";
+            console << "\t" << this -> Fully_Associative_Vector[global_iterator].tag << "\t|";
             
-            spreadsheet << "=\""   << this -> cacheStorage[global_iterator].tag << "\",";
+            spreadsheet << "=\""   << this -> Fully_Associative_Vector[global_iterator].tag << "\",";
             
-            consoleToFile << "\t" << this -> cacheStorage[global_iterator].tag << "\t|";
+            consoleToFile << "\t" << this -> Fully_Associative_Vector[global_iterator].tag << "\t|";
         }
             
             break;
@@ -736,11 +734,11 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
         case OFFSET :
         {
             
-            console << "\t  " << this -> cacheStorage[global_iterator].offset << " \t| ";
+            console << "\t  " << this -> Fully_Associative_Vector[global_iterator].offset << " \t| ";
             
-            spreadsheet << "=\""  << this -> cacheStorage[global_iterator].offset << "\",";
+            spreadsheet << "=\""  << this -> Fully_Associative_Vector[global_iterator].offset << "\",";
             
-            consoleToFile << "\t  " << this -> cacheStorage[global_iterator].offset << " \t| ";
+            consoleToFile << "\t  " << this -> Fully_Associative_Vector[global_iterator].offset << " \t| ";
         }
             
             break;
@@ -778,11 +776,11 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 // Display each individual instruction in hexadecimal format
                 for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                 {
-                    console << cacheStorage[global_iterator].instructionMap[wordVector[i]] << " | ";
+                    console << Fully_Associative_Vector[global_iterator].instructionMap[wordVector[i]] << " | ";
                     
-                    spreadsheet << "=\"" << cacheStorage[global_iterator].instructionMap[wordVector[i]] << "\",";
+                    spreadsheet << "=\"" << Fully_Associative_Vector[global_iterator].instructionMap[wordVector[i]] << "\",";
                     
-                    consoleToFile << cacheStorage[global_iterator].instructionMap[wordVector[i]] << " | ";
+                    consoleToFile << Fully_Associative_Vector[global_iterator].instructionMap[wordVector[i]] << " | ";
                 }
             }
         }
@@ -791,24 +789,24 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             
         case INSTRUCTION_RETREIVED :
         {
-            console << "      " << this -> cacheStorage[global_iterator].instruction << "\t\t|";
+            console << "      " << this -> Fully_Associative_Vector[global_iterator].instruction << "\t\t|";
             
-            spreadsheet << "=\""  << this -> cacheStorage[global_iterator].instruction << "\",";
+            spreadsheet << "=\""  << this -> Fully_Associative_Vector[global_iterator].instruction << "\",";
             
-            consoleToFile << "      " << this -> cacheStorage[global_iterator].instruction << "\t\t|";
+            consoleToFile << "      " << this -> Fully_Associative_Vector[global_iterator].instruction << "\t\t|";
         }
             
             break;
             
         case EVICTIONS :
             
-            if(!this -> cacheStorage[global_iterator].addressEvicted.empty())
+            if(!this -> Fully_Associative_Vector[global_iterator].addressEvicted.empty())
             {
-                console  << "\t\t\t" << this -> cacheStorage[global_iterator].addressEvicted << '\n';
+                console  << "\t\t\t" << this -> Fully_Associative_Vector[global_iterator].addressEvicted << '\n';
                 
-                spreadsheet << this -> cacheStorage[global_iterator].addressEvicted << ',';
+                spreadsheet << this -> Fully_Associative_Vector[global_iterator].addressEvicted << ',';
                 
-                consoleToFile  << "\t\t\t" << this -> cacheStorage[global_iterator].addressEvicted << '\n';
+                consoleToFile  << "\t\t\t" << this -> Fully_Associative_Vector[global_iterator].addressEvicted << '\n';
                 
             }
             
@@ -873,7 +871,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     void FullyAssociated :: Least_Recently_Used()
     {
         // Retrieve hashed index and assign it to addressTable
-        this -> hashIndex = GetHashIndex(cacheStorage[global_iterator].tagHashCode);
+        this -> hashIndex = GetHashIndex(Fully_Associative_Vector[global_iterator].tagHashCode);
         
         if(tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
         {
@@ -881,13 +879,13 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
             std::queue<binary> binaryQueue;
             
             // Insert address into binaryQueue
-            binaryQueue.push(cacheStorage[global_iterator].address);
+            binaryQueue.push(Fully_Associative_Vector[global_iterator].address);
             
             // Insert tag and queue pair to tagTable
-            tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
+            tagTable[hashIndex] = { Fully_Associative_Vector[global_iterator].tag, binaryQueue };
         }
         
-        else if(tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
+        else if(tagTable[hashIndex].first == Fully_Associative_Vector[global_iterator].tag)
         {
             // Declare temporary queue used for traversing
             std::queue <binary> binaryQueue(tagTable[hashIndex].second);
@@ -905,7 +903,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
             // Traverse through queue
             while(!binaryQueue.empty())
             {
-                if(binaryQueue.front() == cacheStorage[global_iterator].address)
+                if(binaryQueue.front() == Fully_Associative_Vector[global_iterator].address)
                 {
                     lastString = binaryQueue.front();
                     
@@ -928,16 +926,16 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                 if(storageQueue.size() >= this -> ways)
                 {
                     // Collect evicted address
-                    cacheStorage[global_iterator].addressEvicted = storageQueue.front();
+                    Fully_Associative_Vector[global_iterator].addressEvicted = storageQueue.front();
                     
                     // remove front address from storageQueue
                     storageQueue.pop();
                 }
                 
                 else
-                    cacheStorage[global_iterator].addressEvicted = "";
+                    Fully_Associative_Vector[global_iterator].addressEvicted = "";
                 
-                storageQueue.push(cacheStorage[global_iterator].address);
+                storageQueue.push(Fully_Associative_Vector[global_iterator].address);
                 
                 tagTable[hashIndex].second = storageQueue;
             }
@@ -956,7 +954,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     void FullyAssociated :: Least_Frequently_Used()
     {
         // Retrieve hashed index and assign it to tagTable
-        this->hashIndex = GetHashIndex(cacheStorage[global_iterator].tagHashCode);
+        this->hashIndex = GetHashIndex(Fully_Associative_Vector[global_iterator].tagHashCode);
 
         // If cache is empty
         if (tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
@@ -965,17 +963,17 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
             std::queue<binary> binaryQueue;
 
             // Insert address into binaryQueue
-            binaryQueue.push(cacheStorage[global_iterator].address);
+            binaryQueue.push(Fully_Associative_Vector[global_iterator].address);
 
             // Insert tag and queue pair into tagTable
-            tagTable[hashIndex] = {cacheStorage[global_iterator].tag, binaryQueue};
+            tagTable[hashIndex] = {Fully_Associative_Vector[global_iterator].tag, binaryQueue};
 
             // Track address frequency in addressDetector
-            addressDetector[cacheStorage[global_iterator].tag] = {{cacheStorage[global_iterator].address, 1}};
+            addressDetector[Fully_Associative_Vector[global_iterator].tag] = {{Fully_Associative_Vector[global_iterator].address, 1}};
         }
         else
         {
-            if (tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
+            if (tagTable[hashIndex].first == Fully_Associative_Vector[global_iterator].tag)
             {
                 // Copy current queue of addresses
                 std::queue<binary> binaryQueue = tagTable[hashIndex].second;
@@ -1007,7 +1005,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                         for (size_t i = 0; i < addressDetectorVec.size(); ++i)
                         {
                             if (currentAddress == addressDetectorVec[i].first &&
-                                currentAddress == cacheStorage[global_iterator].address)
+                                currentAddress == Fully_Associative_Vector[global_iterator].address)
                             {
                                 addressDetectorVec[i].second += 1;
                                 addressFound = true;
@@ -1018,8 +1016,8 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                     // If address is not found, add new address and update frequency
                     if (!addressFound)
                     {
-                        copyQueue.push(cacheStorage[global_iterator].address);
-                        addressDetectorVec.push_back({cacheStorage[global_iterator].address, 1});
+                        copyQueue.push(Fully_Associative_Vector[global_iterator].address);
+                        addressDetectorVec.push_back({Fully_Associative_Vector[global_iterator].address, 1});
                     }
 
                     // Update tagTable
@@ -1040,7 +1038,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                         binaryQueue.pop();
 
                         // If address is found then increment the frequency
-                        if (currentAddress == cacheStorage[global_iterator].address)
+                        if (currentAddress == Fully_Associative_Vector[global_iterator].address)
                         {
                             for (size_t i = 0; i < addressDetectorVec.size(); ++i)
                             {
@@ -1080,7 +1078,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                         
                     
                         // Collect evicted address
-                        cacheStorage[global_iterator].addressEvicted = leastFrequentAddress.first;
+                        Fully_Associative_Vector[global_iterator].addressEvicted = leastFrequentAddress.first;
 
                         // Declare temporary queue to store all addresses excluding least frequently used address
                         std::queue<binary> temporaryQueue = tagTable[hashIndex].second;
@@ -1097,13 +1095,13 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                         }
 
                         // Insert new address into the queue
-                        copyQueue.push(cacheStorage[global_iterator].address);
+                        copyQueue.push(Fully_Associative_Vector[global_iterator].address);
 
                         // Update queue in tagTable
                         tagTable[hashIndex].second = copyQueue;
 
                         // Replace LFU entry in addressDetector
-                        addressDetectorVec[index] = {cacheStorage[global_iterator].address, 1};
+                        addressDetectorVec[index] = {Fully_Associative_Vector[global_iterator].address, 1};
                         
                         // Update value of addressDetector[tagTable[hashIndex].first]
                         addressDetector[tagTable[hashIndex].first] = addressDetectorVec;
@@ -1127,7 +1125,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     void FullyAssociated :: First_In_First_Out()
     {
             // Retrieve hashed index and assign it to addressTable
-            this -> hashIndex = GetHashIndex(cacheStorage[global_iterator].tagHashCode);
+            this -> hashIndex = GetHashIndex(Fully_Associative_Vector[global_iterator].tagHashCode);
             
             if(tagTable[hashIndex].first.empty() && tagTable[hashIndex].second.empty())
             {
@@ -1135,13 +1133,13 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                 std::queue<binary> binaryQueue;
                 
                 // Insert address into binaryQueue
-                binaryQueue.push(cacheStorage[global_iterator].address);
+                binaryQueue.push(Fully_Associative_Vector[global_iterator].address);
                 
                 // Insert tag and queue pair to tagTable
-                tagTable[hashIndex] = { cacheStorage[global_iterator].tag, binaryQueue };
+                tagTable[hashIndex] = { Fully_Associative_Vector[global_iterator].tag, binaryQueue };
             }
             
-            else if(tagTable[hashIndex].first == cacheStorage[global_iterator].tag)
+            else if(tagTable[hashIndex].first == Fully_Associative_Vector[global_iterator].tag)
             {
                 // Declare temporary queue used for traversing
                 std::queue <binary> binaryQueue(tagTable[hashIndex].second);
@@ -1155,7 +1153,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                 // Traverse through queue
                 while(!binaryQueue.empty())
                 {
-                    if(binaryQueue.front() == cacheStorage[global_iterator].address)
+                    if(binaryQueue.front() == Fully_Associative_Vector[global_iterator].address)
                     {
                         binaryQueue.pop();
                         
@@ -1176,16 +1174,16 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                     if(storageQueue.size() >= this -> ways)
                     {
                         // Collect evicted address
-                        cacheStorage[global_iterator].addressEvicted = storageQueue.front();
+                        Fully_Associative_Vector[global_iterator].addressEvicted = storageQueue.front();
                         
                         // remove front address from storageQueue
                         storageQueue.pop();
                     }
                     
                     else
-                        cacheStorage[global_iterator].addressEvicted = "";
+                        Fully_Associative_Vector[global_iterator].addressEvicted = "";
                     
-                    storageQueue.push(cacheStorage[global_iterator].address);
+                    storageQueue.push(Fully_Associative_Vector[global_iterator].address);
                     
                     tagTable[hashIndex].second = storageQueue;
                 }
@@ -1304,8 +1302,8 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                     else
                     {
                         // Determine if address is currently stored in hash table
-                        if( (addressTable[hashCode].first == cacheStorage[global_iterator].tag) &&
-                           (addressTable[hashCode].second == cacheStorage[global_iterator].address) )
+                        if( (addressTable[hashCode].first == Fully_Associative_Vector[global_iterator].tag) &&
+                           (addressTable[hashCode].second == Fully_Associative_Vector[global_iterator].address) )
                             return hashCode;
                         
                         // Assign value of modified hash code
@@ -1334,7 +1332,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                 {
                     // Determine if subscript of tagTable[hashCode] is empty
                     if(( this -> tagTable[hashCode].first.empty() && this -> tagTable[hashCode].second.empty() ) ||
-                       tagTable[hashCode].first == cacheStorage[global_iterator].tag)
+                       tagTable[hashCode].first == Fully_Associative_Vector[global_iterator].tag)
                         return hashCode;
                     
                     
@@ -1346,9 +1344,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                         // Increment iterator
                         iterator += 1;
                     }
-                    
                 }
-                
                 
                 break;
             }
