@@ -36,7 +36,7 @@ class SetAssociated : public Cache
     typedef std::vector <std::pair<binary, binary>> hashAddress;
     
     // Key = tag, Value = addresses stored in queue
-    typedef std::vector<std::pair<binary,std::queue<binary>>> tagAddress;
+    typedef std::vector<std::pair<binary,std::queue<binary>>> indexAddress;
     
     // Write file
     typedef std::ofstream file;
@@ -65,14 +65,14 @@ private:
         wordQuantity(s.wordQuantity), instruction(GetInstruction()),
         tagSize(address.size() - std::floor(log2(s.blockQuantity / s.ways)) - std::floor(log2(blockSize))),
         tag(address.substr(0, tagSize)),
-                indexSize((int)std::floor(std::log2(s.blockQuantity / s.ways))),
-                setIndex(address.substr(tagSize, indexSize)),
+        indexSize((int)std::floor(std::log2(s.blockQuantity / s.ways))),
+        setIndex(address.substr(tagSize, indexSize)),
         offset(address.substr(address.size() - std::floor(log2(blockSize)), std::floor(log2(blockSize)))),
         wordCharacters(getWordCharacters(s.wordQuantity)), instructionMap(getInstructionMap(address,s.addressMap)),
         addressHashCode(GenerateHashCode(this -> address)), indexHashCode(GenerateHashCode(this -> setIndex))
-            {
-                instruction = GetInstruction();
-            }
+        {
+            instruction = GetInstruction();
+        }
         
         // ----------------------------------------------------------------
         // Ensure the same address contains identical instructions
@@ -206,7 +206,7 @@ private:
     
     // Hash table used to store multiple ways
     // Key = tag, value = addresses stored in queue
-    tagAddress tagTable;
+    indexAddress indexTable;
     
     // Key = tag, Value = std::vector<std::pair<address, frequenty of address detected in tagTable.second>>
     addressDetectorMap addressDetector;
