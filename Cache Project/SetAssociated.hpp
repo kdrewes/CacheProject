@@ -63,15 +63,16 @@ private:
         blockSize (s.blockSize), wordSize(s.wordSize), addressEvicted(""),
         address (s.addressList[std::rand() % s.addressList.size()]),
         wordQuantity(s.wordQuantity), instruction(GetInstruction()),
-        tag (address.substr(0, address.size() - std::floor(log2(s.blockQuantity / s.ways)) - std::floor(log2(blockSize)))),
         tagSize(address.size() - std::floor(log2(s.blockQuantity / s.ways)) - std::floor(log2(blockSize))),
-        setIndex(address.substr(tagSize, address.size() - std::floor(log2(blockSize)))),
+        tag(address.substr(0, tagSize)),
+                indexSize((int)std::floor(std::log2(s.blockQuantity / s.ways))),
+                setIndex(address.substr(tagSize, indexSize)),
         offset(address.substr(address.size() - std::floor(log2(blockSize)), std::floor(log2(blockSize)))),
         wordCharacters(getWordCharacters(s.wordQuantity)), instructionMap(getInstructionMap(address,s.addressMap)),
         addressHashCode(GenerateHashCode(this -> address)), indexHashCode(GenerateHashCode(this -> setIndex))
-        {
-            instruction = GetInstruction();
-        }
+            {
+                instruction = GetInstruction();
+            }
         
         // ----------------------------------------------------------------
         // Ensure the same address contains identical instructions
@@ -172,7 +173,9 @@ private:
         
                 binaryWord,       // Binary word value
         
-                tagSize;          // tagSize = address.size() - std::floor(log2(blockSize / s.ways)) - std::floor(log2(blockSize))
+                tagSize,          // tagSize = address.size() -                                                              std::floor(log2(blockSize / s.ways)) -                                                  std::floor(log2(blockSize))
+        
+                indexSize;        // indexSize = (int)std::floor(std::log2(s.blockQuantity / s.ways))
         
         wordMap instructionMap;   // Key = binary value of word
         
