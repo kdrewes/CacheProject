@@ -48,15 +48,25 @@ protected:
     // -------------------------- Numerical data --------------------------
     
      unit cacheSize,          // Total amount of block data (Bytes)
+    
           blockSize,          // Size of each block (Bytes)
+    
           mainMemorySize,     // Size of main memory (Bits)
+    
           offsetSize,         // Offset size  (Bits)
+    
           addressSize,        // Address size (Bytes)
+    
           ways,               // Total amout of ways
+    
           indexSize,          // Index size (Bits)
+    
           wordSize,           // Word count = (block size / word size)
+    
           blockQuantity,      // Block quantity = (cache size / block size)
+    
           wordCharacters,     // # of characters in a word
+    
           wordQuantity;       // # of words utilized by each address
           
     
@@ -64,7 +74,8 @@ protected:
     
     iterator global_iterator;               // Used as a global iterator
     
-    enum CACHING_ALGORITHM placementPolicy; // Select placement policy algorithm
+    enum CACHING_ALGORITHM
+    placementPolicy;                        // Select placement policy algorithm
     
     binaryVector wordVector,                // Contains predifed word in binary form
     
@@ -120,8 +131,14 @@ public:
     // Establishes word criteria
     void ConfigureWord();
     
-    // Determine input to select
-    INPUT InputEnum(input number);
+    // Determine input to select for Fully Associative Cache
+    INPUT FullyAssociativeInput(input number);
+    
+    // Determine input to select for Set Associative Cache
+    INPUT SetAssociativeInput(input number);
+    
+    // Determine input to select for Direct Mapped Cache
+    INPUT DirectMappedInput(input number);
     
     // Determine caching algorithm to select
     enum CACHING_ALGORITHM CachingEnum(input number);

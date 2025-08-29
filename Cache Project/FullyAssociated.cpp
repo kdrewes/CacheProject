@@ -51,14 +51,6 @@ void FullyAssociated :: Controller()
     // Produce and display table
     Table();
     
-    std::cout << console.str();
-    
-    file write("testFile.csv");
-    
-    write << spreadsheet.str();
-    
-    write.close();
-    
     /*
      
      // Unit Test for Address List
@@ -189,7 +181,13 @@ void FullyAssociated :: AssignHashIndex()
 // -------------------------------------------------------------------------------------------
 void FullyAssociated :: Print()
 {
+    std::cout << console.str();
     
+    file write("testFile.csv");
+    
+    write << spreadsheet.str();
+    
+    write.close();
 }
 
 // -------------------------------------------------------------------------------------------

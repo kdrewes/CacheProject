@@ -36,7 +36,7 @@ class SetAssociated : public Cache
     typedef std::vector <std::pair<binary, binary>> hashAddress;
     
     // Key = tag, Value = addresses stored in queue
-    typedef std::vector<std::pair<binary,std::queue<binary>>> indexAddress;
+    typedef std::vector<std::pair<binary,std::queue<binary>>> tagAddress;
     
     // Write file
     typedef std::ofstream file;
@@ -59,17 +59,17 @@ private:
     struct Set_Associative_Structure
     {
         // Constructor
-        Set_Associative_Structure (SetAssociated & s) :
-        blockSize (s.blockSize), wordSize(s.wordSize), addressEvicted(""),
-        address (s.addressList[std::rand() % s.addressList.size()]),
-        wordQuantity(s.wordQuantity), instruction(GetInstruction()),
-        tagSize(address.size() - std::floor(log2(s.blockQuantity / s.ways)) - std::floor(log2(blockSize))),
-        tag(address.substr(0, tagSize)),
-        indexSize((int)std::floor(std::log2(s.blockQuantity / s.ways))),
-        setIndex(address.substr(tagSize, indexSize)),
-        offset(address.substr(address.size() - std::floor(log2(blockSize)), std::floor(log2(blockSize)))),
-        wordCharacters(getWordCharacters(s.wordQuantity)), instructionMap(getInstructionMap(address,s.addressMap)),
-        addressHashCode(GenerateHashCode(this -> address)), indexHashCode(GenerateHashCode(this -> setIndex))
+        Set_Associative_Structure(SetAssociated& s) :
+        blockSize(s.blockSize), wordSize(s.wordSize),addressEvicted(""),
+        address(s.addressList[std::rand() % s.addressList.size()]),
+        wordQuantity(s.wordQuantity),
+        instructionMap(getInstructionMap(address, s.addressMap)),
+        wordCharacters(getWordCharacters(s.wordQuantity)),
+        addressHashCode(GenerateHashCode(this -> address)),
+        tag(address.substr(0, address.size() - s.indexSize - s.offsetSize)),
+        indexHashCode(GenerateHashCode(setIndex)),
+        offset(address.substr(address.size() - s.offsetSize, s.offsetSize)),
+        setIndex(address.substr(s.mainMemorySize - (s.indexSize + s.offsetSize),s.indexSize))
         {
             instruction = GetInstruction();
         }
@@ -87,7 +87,7 @@ private:
                 for(auto & t : tempMap)
                     instructions[t.first] = t.second;
             }
-
+            
             return instructions;
         }
         
@@ -121,7 +121,7 @@ private:
             }
             else
                 word = instructionMap["Instruction"];
-
+            
             
             return word;
         }
@@ -147,40 +147,40 @@ private:
         // ------------------------- Binary Data --------------------------
         
         
-         binary address,          // Binary address
+        binary address,   // Binary address
         
-                tag,              // Tag in binary form
+        tag,              // Tag in binary form
         
-                offset,           // Offset in binary form
+        offset,           // Offset in binary form
         
-                setIndex,         // Set index in binary form
+        setIndex,         // Set index in binary form
         
-                instruction,      // Instruction of address
+        instruction,      // Instruction of address
         
-                addressEvicted;   // Address evicted from way
+        addressEvicted;   // Address evicted from way
         
-      hashValue indexHashCode,    // hash code of each index
+        hashValue
+        indexHashCode,    // hash code of each index
         
-                addressHashCode;  // hash code of each address
+        addressHashCode;  // hash code of each address
         
-           unit blockSize,        // Size of each block (Bytes)
+        unit blockSize,   // Size of each block (Bytes)
         
-                wordSize,         // Word count = (block size / word size)
+        wordSize,         // Word count = (block size / word size)
         
-                wordQuantity,     // # of words utilized by each address
-                
-                wordCharacters,   // # of characters in a word
+        wordQuantity,     // # of words utilized by each address
         
-                binaryWord,       // Binary word value
+        wordCharacters,   // # of characters in a word
         
-                tagSize,          // tagSize = address.size() -                                                              std::floor(log2(blockSize / s.ways)) -                                                  std::floor(log2(blockSize))
+        binaryWord,       // Binary word value
         
-                indexSize;        // indexSize = (int)std::floor(std::log2(s.blockQuantity / s.ways))
+        tagSize,          // tagSize = address.size() - std::floor(log2(blockSize / s.ways)) - std::floor(log2(blockSize))
         
-        wordMap instructionMap;   // Key = binary value of word
+        indexSize;        // indexSize = std::log2(s.blockQuantity / s.ways)
         
-                                  // Value = Hex value of each instruction
-                
+        wordMap
+        instructionMap;   // Key = binary value of word, Value = Hex value of each instruction
+        
     };
     
     // ----------------------------- Varaibles ------------------------------
@@ -194,7 +194,7 @@ private:
     
     // Select which hash table to use (address or tag)
     enum HASH_TABLE table;
-
+    
     // -------------------------- Binary datasets ---------------------------
     
     // Stores all properties located in CacheData structure
@@ -206,7 +206,7 @@ private:
     
     // Hash table used to store multiple ways
     // Key = tag, value = addresses stored in queue
-    indexAddress indexTable;
+    tagAddress tagTable;
     
     // Key = tag, Value = std::vector<std::pair<address, frequenty of address detected in tagTable.second>>
     addressDetectorMap addressDetector;
@@ -218,16 +218,18 @@ public:
     
     SetAssociated(PLACEMENT_POLICY policy) : Cache(policy)
     {
+        Router();
         
+        Controller();
     }
     
     ~SetAssociated() override;
     
     // ------------------- Router & Controller functions  --------------------
     
-     void Router();                     // Configure binary data
+    void Router();                     // Configure binary data
     
-     void Controller();                 // Execute binary data
+    void Controller();                 // Execute binary data
     
     // ----------------------- Hash Table Algorithms -------------------------
     
@@ -246,15 +248,6 @@ public:
     
      void First_In_First_Out();         // First in First Out
     
-    
-    // ------------------- Cache Replacements Algorithms  --------------------
-    
-     void LRU();                        // Last Recently Used
-    
-     void FIFO();                       // First in First Out
-    
-     void LFU();                        // Least Frequently Used
-    
     // ---------------------------- Print Results  -----------------------------
     
      void Print() override;             // Print report
@@ -263,7 +256,39 @@ public:
     
      void PrintConsole();               // Output results in console
     
+    // --------------------------- Misc Functions  -----------------------------
+
+     void Title();                       // Display Title
+   
+     void Data();                        // Display data
+    
+     void Header();                      // Display header
+    
+     void CreateHeader                   // Produce column header
+     (COLUMNS c);
+    
+     void Table();                       // Display chart
+    
+     void CreateTable                    // Produce rows and columns in table
+     (COLUMNS c);
+    
+     void PlacementPolicy                // Contains placement policy algorithms
+     (enum HASH_TABLE);
+    
+     std::string toLower                 // Make each string lower case
+     (std::string header);
+    
+     COLUMNS FindHeader                  // Find header for each column
+     (std::string header);
+    
+     COLUMNS FindColumn                  // Find column for each row
+     (std::string column);
+    
+     HASH_TABLE FindTable                // Find addressTable or tagTag hashing formula
+     (std::string table);
+    
+    
     
 };
 
-#endif 
+#endif

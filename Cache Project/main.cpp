@@ -144,7 +144,7 @@ void CachePolicyMenu()
     
     std::cout <<"----------- Cache Placement Policy -----------\n\n";
     
-    std::cout << "1) Fully Associated\t\t2) Set Associated\n\n3) Direct Mapped\t\t4) Exit\n";
+    std::cout << "1) Fully Associative\t2) Set Associative\n\n3) Direct Mapped\t\t4) Exit\n";
     
     std::cout <<"\n----------------------------------------------\n\n";
     
@@ -152,3 +152,4 @@ void CachePolicyMenu()
     
 }
 // ------------------------------------------------------------
+

@@ -188,7 +188,7 @@ void Cache :: DirectMapped()
 void Cache :: verifyFullyAssociativeInput(unit data)
 {
     
-    switch(InputEnum(this -> global_iterator + 1))
+    switch(FullyAssociativeInput(this -> global_iterator + 1))
     {
             case CACHE_SIZE:
             
@@ -291,7 +291,7 @@ void Cache :: verifyFullyAssociativeInput(unit data)
 void Cache :: verifySetAssociativeInput(unit data)
 {
     
-    switch(InputEnum(this -> global_iterator + 1))
+    switch(SetAssociativeInput(this -> global_iterator + 1))
     {
             case CACHE_SIZE:
             
@@ -324,6 +324,15 @@ void Cache :: verifySetAssociativeInput(unit data)
                 }
                     // Initialize block size
                     this -> blockSize = data;
+            
+                    // Block quantity = ( block size / cache size )
+                    this -> blockQuantity = this -> cacheSize / this -> blockSize;
+            
+                    // Assign offset size
+                    this -> offsetSize = std::floor(log2(blockSize));
+            
+                    // Assign index size
+                    this -> indexSize = (int)std::floor(std::log2(blockQuantity / 2));
                     
                     break;
             
@@ -370,7 +379,7 @@ void Cache :: verifySetAssociativeInput(unit data)
 // Verify set associative cache input
 void Cache :: verifyDirectMappedInput(unit data)
 {
-    switch(InputEnum(this -> global_iterator + 1))
+    switch(DirectMappedInput(this -> global_iterator + 1))
     {
             case CACHE_SIZE:
             
@@ -533,8 +542,8 @@ std::string Cache :: Direct_Mapped_Menu(input select)
 }
 
 // -------------------------------------------------------------------------------------------
-// Determine input to select
-INPUT Cache :: InputEnum(input number)
+// Determine input to select for Fully Associative Cache
+INPUT Cache :: FullyAssociativeInput(input number)
 {
     if(number == 1)
         return INPUT :: CACHE_SIZE;
@@ -550,6 +559,41 @@ INPUT Cache :: InputEnum(input number)
     
     else if(number == 5)
         return INPUT :: CACHING_ALGORITHM;
+    
+    return INPUT :: INPUT_ERROR;
+}
+
+// -------------------------------------------------------------------------------------------
+// Determine input to select for Set Associative Cache
+INPUT Cache :: SetAssociativeInput(input number)
+{
+    if(number == 1)
+        return INPUT :: CACHE_SIZE;
+    
+    else if(number == 2)
+        return INPUT :: BLOCK_SIZE;
+    
+    else if(number == 3)
+        return INPUT :: MAIN_MEMORY;
+
+    else if(number == 4)
+        return INPUT :: CACHING_ALGORITHM;
+    
+    return INPUT :: INPUT_ERROR;
+}
+
+// -------------------------------------------------------------------------------------------
+// Determine input to select for Fully Associative Cache
+INPUT Cache :: DirectMappedInput(input number)
+{
+    if(number == 1)
+        return INPUT :: CACHE_SIZE;
+    
+    else if(number == 2)
+        return INPUT :: BLOCK_SIZE;
+    
+    else if(number == 3)
+        return INPUT :: MAIN_MEMORY;
     
     return INPUT :: INPUT_ERROR;
 }
