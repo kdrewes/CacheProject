@@ -207,7 +207,6 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             
             break;
             
-            
         case INDEX :
             
             // Display each address
