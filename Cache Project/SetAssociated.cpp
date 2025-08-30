@@ -60,7 +60,7 @@ void SetAssociated :: HashTable()
 {
     this -> addressTable.resize(addressList.size() * 2);
     
-    this -> tagTable.resize(addressList.size() * 2);
+    this -> indexTable.resize(addressList.size() * 2);
 }
 
 // -------------------------------------------------------------------------------------------
@@ -214,20 +214,20 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             if(this -> mainMemorySize == 8)
             {
                 
-                console << "\t\tIndex";
+                console << "\t\tSet #";
                 
-                spreadsheet << "Index,";
+                spreadsheet << "Set #,";
                 
-                consoleToFile << "\t\tIndex";
+                consoleToFile << "\t\tSet #";
             }
             
             else if(this -> mainMemorySize == 16)
             {
-                console << "\t\t\tIndex\t";
+                console << "\t\t\tSet #\t";
                 
-                spreadsheet << "Index,";
+                spreadsheet << "Set #,";
                 
-                consoleToFile << "\t\t\tIndex\t";
+                consoleToFile << "\t\t\tSet #";
             }
             else
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");

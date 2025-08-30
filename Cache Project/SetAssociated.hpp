@@ -35,8 +35,8 @@ class SetAssociated : public Cache
     // Key = Tag, Value = address
     typedef std::vector <std::pair<binary, binary>> hashAddress;
     
-    // Key = tag, Value = addresses stored in queue
-    typedef std::vector<std::pair<binary,std::queue<binary>>> tagAddress;
+    // Key = index, Value = addresses stored in queue
+    typedef std::vector<std::pair<binary,std::queue<binary>>> indexAddress;
     
     // Write file
     typedef std::ofstream file;
@@ -205,8 +205,8 @@ private:
     hashAddress addressTable;
     
     // Hash table used to store multiple ways
-    // Key = tag, value = addresses stored in queue
-    tagAddress tagTable;
+    // Key = index, value = addresses stored in queue
+    indexAddress indexTable;
     
     // Key = tag, Value = std::vector<std::pair<address, frequenty of address detected in tagTable.second>>
     addressDetectorMap addressDetector;
