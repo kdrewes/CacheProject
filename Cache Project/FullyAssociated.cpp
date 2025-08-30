@@ -179,6 +179,91 @@ void FullyAssociated :: AssignHashIndex()
 }
 
 // -------------------------------------------------------------------------------------------
+// Retreive hash index
+FullyAssociated :: index FullyAssociated :: GetHashIndex(hashValue hashCode)
+{
+    switch(table)
+    {
+        case ADDRESS_TABLE:
+        {
+            // Declare hash code
+            hashCode %= this -> addressTable.size();
+            
+            // Create copy of hashCode
+            hashValue hashCopy = hashCode;
+            
+            // Iterator used to resolve any potential collisions
+            index iterator = 0;
+            
+            while(true)
+            {
+                // Determine if subscript of addressTable[hashCode] is empty
+                if(this -> addressTable[hashCode].first.empty() && this -> addressTable[hashCode].second.empty())
+                    return hashCode;
+                
+                // Implement quadratic probing formula
+                else
+                {
+                    // Determine if address is currently stored in hash table
+                    if( (addressTable[hashCode].first == Fully_Associative_Vector[global_iterator].tag) &&
+                       (addressTable[hashCode].second == Fully_Associative_Vector[global_iterator].address) )
+                        return hashCode;
+                    
+                    // Assign value of modified hash code
+                    hashCode = (hashCopy + static_cast<index>(pow(iterator,2))) % this -> addressTable.size();
+                    
+                    // Increment iterator
+                    iterator += 1;
+                }
+            }
+            
+            break;
+        }
+            
+        case TAG_TABLE:
+        {
+            // Declare hash code
+            hashCode %= this -> tagTable.size();
+            
+            // Create copy of hashCode
+            hashValue hashCopy = hashCode;
+            
+            // Iterator used to resolve any potential collisions
+            index iterator = 0;
+            
+            while(true)
+            {
+                // Determine if subscript of tagTable[hashCode] is empty
+                if(( this -> tagTable[hashCode].first.empty() && this -> tagTable[hashCode].second.empty() ) ||
+                   tagTable[hashCode].first == Fully_Associative_Vector[global_iterator].tag)
+                    return hashCode;
+                
+                
+                else
+                {
+                    // Assign value of modified hash code
+                    hashCode = (hashCopy + static_cast<index>(pow(iterator,2))) % this -> tagTable.size();
+                    
+                    // Increment iterator
+                    iterator += 1;
+                }
+            }
+            
+            break;
+        }
+            
+        case HASH_TABLE_ERROR:
+        {
+            throw std::invalid_argument("\n\nError - Invalid table, please re-enter option.\n");
+        }
+            
+            
+    }
+    
+    return hashCode;
+}
+
+// -------------------------------------------------------------------------------------------
 void FullyAssociated :: Print()
 {
     std::cout << console.str();
@@ -802,7 +887,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             {
                 console  << "\t\t\t" << this -> Fully_Associative_Vector[global_iterator].addressEvicted << '\n';
                 
-                spreadsheet << this -> Fully_Associative_Vector[global_iterator].addressEvicted << ',';
+                spreadsheet << this -> Fully_Associative_Vector[global_iterator].addressEvicted << '\n';
                 
                 consoleToFile  << "\t\t\t" << this -> Fully_Associative_Vector[global_iterator].addressEvicted << '\n';
                 
@@ -1273,88 +1358,4 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
         return HASH_TABLE :: HASH_TABLE_ERROR;
     }
     
-    // -------------------------------------------------------------------------------------------
-    // Retreive hash index
-    FullyAssociated :: index FullyAssociated :: GetHashIndex(hashValue hashCode)
-    {
-        switch(table)
-        {
-            case ADDRESS_TABLE:
-            {
-                // Declare hash code
-                hashCode %= this -> addressTable.size();
-                
-                // Create copy of hashCode
-                hashValue hashCopy = hashCode;
-                
-                // Iterator used to resolve any potential collisions
-                index iterator = 0;
-                
-                while(true)
-                {
-                    // Determine if subscript of addressTable[hashCode] is empty
-                    if(this -> addressTable[hashCode].first.empty() && this -> addressTable[hashCode].second.empty())
-                        return hashCode;
-                    
-                    // Implement quadratic probing formula
-                    else
-                    {
-                        // Determine if address is currently stored in hash table
-                        if( (addressTable[hashCode].first == Fully_Associative_Vector[global_iterator].tag) &&
-                           (addressTable[hashCode].second == Fully_Associative_Vector[global_iterator].address) )
-                            return hashCode;
-                        
-                        // Assign value of modified hash code
-                        hashCode = (hashCopy + static_cast<index>(pow(iterator,2))) % this -> addressTable.size();
-                        
-                        // Increment iterator
-                        iterator += 1;
-                    }
-                }
-                
-                break;
-            }
-                
-            case TAG_TABLE:
-            {
-                // Declare hash code
-                hashCode %= this -> tagTable.size();
-                
-                // Create copy of hashCode
-                hashValue hashCopy = hashCode;
-                
-                // Iterator used to resolve any potential collisions
-                index iterator = 0;
-                
-                while(true)
-                {
-                    // Determine if subscript of tagTable[hashCode] is empty
-                    if(( this -> tagTable[hashCode].first.empty() && this -> tagTable[hashCode].second.empty() ) ||
-                       tagTable[hashCode].first == Fully_Associative_Vector[global_iterator].tag)
-                        return hashCode;
-                    
-                    
-                    else
-                    {
-                        // Assign value of modified hash code
-                        hashCode = (hashCopy + static_cast<index>(pow(iterator,2))) % this -> tagTable.size();
-                        
-                        // Increment iterator
-                        iterator += 1;
-                    }
-                }
-                
-                break;
-            }
-                
-            case HASH_TABLE_ERROR:
-            {
-                throw std::invalid_argument("\n\nError - Invalid table, please re-enter option.\n");
-            }
-                
-                
-        }
-        
-        return hashCode;
-    }
-    // -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
