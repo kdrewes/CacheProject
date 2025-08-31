@@ -374,7 +374,9 @@ void FullyAssociated :: Data()
 void FullyAssociated :: Header()
 {
     // Predefine header
-    std::string header[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
+    
+    // std::string header[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
+    std::string header[] = { "Address", "Tag", "Way", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
     // Display Header banner
     console << "\n\t\t------------------------------------------------------------ Fully Associative Cache Table ------------------------------------------------------------\n\n";
@@ -710,7 +712,7 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
 void FullyAssociated :: Table()
 {
     // Predefine table
-    std::string table[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
+    std::string table[] = { "Address", "Tag", "Way", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
     // Traverse through each category for each individual subscript of Fully_Associative_Vector
     for(this -> global_iterator = 0; this -> global_iterator < Fully_Associative_Vector.size(); this -> global_iterator++)
