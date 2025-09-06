@@ -374,8 +374,6 @@ void FullyAssociated :: Data()
 void FullyAssociated :: Header()
 {
     // Predefine header
-    
-    // std::string header[] = { "Address", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     std::string header[] = { "Address", "Tag", "Way", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
     // Display Header banner
