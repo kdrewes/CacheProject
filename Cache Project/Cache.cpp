@@ -1,6 +1,6 @@
 #include "Cache.h"
 #include <cstdlib>
-#include "Miscellaneous_Data.h"
+#include "Enums.h"
 
 // -------------- Typedef used for organizational purposes -------------
 
@@ -23,6 +23,9 @@ typedef std::ofstream file;
 
 // binaryHexMap = Represents a map inside a map
 typedef std::map<binary, std::map<binary,hex>> multiMap;
+
+// Key = binary word, hexidecimal instruction
+typedef std::map<hex,std::queue<binary>> wayMap;
 
 // Condenses string into a single variable
 typedef std::ostringstream condensedString;
@@ -86,38 +89,23 @@ void Cache :: FullyAssociative()
     // Select option
     input data;
     
-    // Determines if banner should be displayed
-    static bool isBanner = true;
-    
-    // Iterate through each input
-    static iterator inputIterator = 0;
-    
-    // Fully Associative Cache Banner
-    if(isBanner)
-    {
-        std::cout << "\n---------- Fully Associative Cache -----------\n";
-        
-        isBanner = false;
-    }
+    this -> global_iterator = 0;
+
+    std::cout << "\n---------- Fully Associative Cache -----------\n";
     
     // Traverse through input values
-    while(inputIterator < Fully_Associated_Input.size())
+    while(this -> global_iterator < Fully_Associated_Input.size())
     {
         
-        std::cout << Fully_Associated_Input[inputIterator];
+        std::cout << Fully_Associated_Input[this -> global_iterator];
         
         std::cin >> data;
         
-        verifyFullyAssociativeInput(data,inputIterator);
+        verifyFullyAssociativeInput(data);
         
-        inputIterator += 1;
+        this -> global_iterator += 1;
     }
     
-    // Reset isBanner variable
-    isBanner = false;
-    
-    // Reset inputIterator
-    inputIterator = 0;
 }
 
 // -------------------------------------------------------------------------------------------
@@ -133,45 +121,31 @@ void Cache :: SetAssociative()
         
         Set_Associative_Menu(3),
         
-        Set_Associative_Menu(4),
-        
-        Set_Associative_Menu(5)
+        Set_Associative_Menu(4)
     };
     
     // Select option
     input data;
-    
-    // Determines if banner should be displayed
-    static bool isBanner = true;
-    
-    // Iterate through each input
-    static iterator inputIterator = 0;
-    
-    // Set Associative Cache Banner
-    if(isBanner)
-    {
-        std::cout << "\n----------- Set Associative Cache ------------\n";
-        
-        isBanner = false;
-    }
-    
+
+    std::cout << "\n----------- Set Associative Cache ------------\n";
+
     // Traverse through input values
-    while(inputIterator < Set_Associated_Input.size())
+    while(this -> global_iterator < Set_Associated_Input.size())
     {
-        std::cout << Set_Associated_Input[inputIterator];
+        std::cout << Set_Associated_Input[this -> global_iterator];
         
         std::cin >> data;
         
-        verifySetAssociativeInput(data,inputIterator);
+        verifySetAssociativeInput(data);
         
-        inputIterator += 1;
+        this -> global_iterator += 1;
     }
     
-    // Reset isBanner variable
-    isBanner = false;
-    
+    // Automatically set # of ways to 2
+    this -> ways = 2;
+
     // Reset inputIterator
-    inputIterator = 0;
+    this -> global_iterator = 0;
 }
 
 // -------------------------------------------------------------------------------------------
@@ -191,45 +165,30 @@ void Cache :: DirectMapped()
     // Select option
     input data;
     
-    // Determines if banner should be displayed
-    static bool isBanner = true;
-    
-    // Iterate through each input
-    static iterator inputIterator = 0;
-    
-    // Direct Mapped Cache Banner
-    if(isBanner)
-    {
-        std::cout << "\n------------ Direct Mapped Cache -------------\n";
-        
-        isBanner = false;
-    }
+    std::cout << "\n------------ Direct Mapped Cache -------------\n";
     
     // Traverse through input values
-    while(inputIterator < Direct_Mapped_Input.size())
+    while(this -> global_iterator < Direct_Mapped_Input.size())
     {
-        std::cout << Direct_Mapped_Input[inputIterator];
+        std::cout << Direct_Mapped_Input[this -> global_iterator];
         
         std::cin >> data;
         
-        verifyDirectMappedInput(data, inputIterator);
+        verifyDirectMappedInput(data);
         
-        inputIterator += 1;
+        this -> global_iterator += 1;
     }
     
-    // Reset isBanner variable
-    isBanner = false;
-    
     // Reset inputIterator
-    inputIterator = 0;
+    this -> global_iterator = 0;
 }
 
 // -------------------------------------------------------------------------------------------
 // Verify fully associative cache input
-void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
+void Cache :: verifyFullyAssociativeInput(unit data)
 {
     
-    switch(InputEnum(inputIterator+ 1))
+    switch(FullyAssociativeInput(this -> global_iterator + 1))
     {
             case CACHE_SIZE:
             
@@ -238,7 +197,7 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
                 {
                     std::cerr << "\n------------------- Error --------------------\n\nCache size must be 64 or 32 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                     
-                    inputIterator -= 1;
+                    this -> global_iterator -= 1;
                     
                     break;
                     
@@ -254,24 +213,30 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
                 {
                     std::cerr << "\n------------------- Error --------------------\n\nBlock size must be 8, 4 or 2 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                     
-                    inputIterator -= 1;
+                    this -> global_iterator -= 1;
                     
                     break;
                     
                 }
-                    
+                    // Assign block size
                     this -> blockSize = data;
-                    
+
+                    // Block quantity = ( block size / cache size )
+                    this -> blockQuantity = this -> cacheSize / this -> blockSize;
+            
+                    // Assign offset size
+                    this -> offsetSize = std::floor(log2(blockSize));
+        
                     break;
 
-            
+
         case MAIN_MEMORY:
         
         if(data != 16 && data != 8)
         {
             std::cerr << "\n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n------------------------------------------------\n";
             
-            inputIterator -= 1;
+            this -> global_iterator -= 1;
             
             break;
             
@@ -289,7 +254,7 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n------------------- Error --------------------\n\nAmount of ways must be 2 or 3\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
                 
@@ -305,12 +270,12 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n--------------------- Error ----------------------\n\nIncorrect option\n\nPlease re-enter from the following menu:\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
             }
             
-                this -> algorithm = CachingEnum(data);
+                this -> placementPolicy = CachingEnum(data);
                 
                 break;
             
@@ -323,10 +288,10 @@ void Cache :: verifyFullyAssociativeInput(unit data, iterator & inputIterator)
 
 // -------------------------------------------------------------------------------------------
 // Verify set associative cache input
-void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
+void Cache :: verifySetAssociativeInput(unit data)
 {
     
-    switch(InputEnum(inputIterator+ 1))
+    switch(SetAssociativeInput(this -> global_iterator + 1))
     {
             case CACHE_SIZE:
             
@@ -335,7 +300,7 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
                 {
                     std::cerr << "\n------------------- Error --------------------\n\nCache size must be 64 or 32 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                     
-                    inputIterator -= 1;
+                    this -> global_iterator -= 1;
                     
                     break;
                     
@@ -352,49 +317,41 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
                 {
                     std::cerr << "\n------------------- Error --------------------\n\nBlock size must be 8, 4 or 2 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                     
-                    inputIterator -= 1;
+                    this -> global_iterator -= 1;
                     
                     break;
                     
                 }
+                    // Initialize block size
                     this -> blockSize = data;
+            
+                    // Block quantity = ( block size / cache size )
+                    this -> blockQuantity = this -> cacheSize / this -> blockSize;
+            
+                    // Assign offset size
+                    this -> offsetSize = std::floor(log2(blockSize));
+            
+                    // Assign index size
+                    this -> indexSize = (int)std::floor(std::log2(blockQuantity / 2));
                     
                     break;
             
             
-        case MAIN_MEMORY:
+            case MAIN_MEMORY:
         
-        if(data != 16 && data != 8)
-        {
-            std::cerr << "\n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
+            if(data != 16 && data != 8)
+            {
+                std::cerr << "\n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
             
-            inputIterator -= 1;
+                this -> global_iterator -= 1;
             
-            break;
+                break;
             
-        }
+            }
 
             this -> mainMemorySize = data;
             
             break;
-
-        break;
-            
-            case WAYS:
-            
-            if(data != 2 && data != 3)
-            {
-                std::cerr << "\n------------------- Error --------------------\n\nAmount of ways must be 2 or 3\n\nPlease re-enter value:\n\n----------------------------------------------\n";
-                
-                inputIterator -= 1;
-                
-                break;
-            }
-            
-                this -> ways = data;
-                
-                break;
-            
             
             case CACHING_ALGORITHM:
             
@@ -402,12 +359,12 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n--------------------- Error ----------------------\n\nIncorrect option\n\nPlease re-enter from the following menu:\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
             }
 
-                this -> algorithm = CachingEnum(data);
+                this -> placementPolicy = CachingEnum(data);
                 
                 break;
             
@@ -420,9 +377,9 @@ void Cache :: verifySetAssociativeInput(unit data, iterator & inputIterator)
 
 // -------------------------------------------------------------------------------------------
 // Verify set associative cache input
-void Cache :: verifyDirectMappedInput(unit data, iterator & inputIterator)
+void Cache :: verifyDirectMappedInput(unit data)
 {
-    switch(InputEnum(inputIterator+ 1))
+    switch(DirectMappedInput(this -> global_iterator + 1))
     {
             case CACHE_SIZE:
             
@@ -430,7 +387,7 @@ void Cache :: verifyDirectMappedInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n------------------- Error --------------------\n\nCache size must be 64 or 32 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
             }
@@ -446,7 +403,7 @@ void Cache :: verifyDirectMappedInput(unit data, iterator & inputIterator)
             {
                 std::cerr << "\n------------------- Error --------------------\n\nBlock size must be 8, 4 or 2 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
                 
-                inputIterator -= 1;
+                this -> global_iterator -= 1;
                 
                 break;
             }
@@ -461,7 +418,7 @@ void Cache :: verifyDirectMappedInput(unit data, iterator & inputIterator)
         {
             std::cerr << "/n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
             
-            inputIterator -= 1;
+            this -> global_iterator -= 1;
             
             break;
         }
@@ -498,7 +455,7 @@ void Cache :: ConfigureWord()
         this -> wordSize = twoBytes[rand() % 2];
     
     // Determine value of wordQuantity
-    this -> wordQuantity = this -> blockSize / this -> wordSize;
+    this -> wordQuantity = (this -> blockSize / this -> wordSize);
     
     // Predefine values of how many words per block if word count = 4
     binary fourWords[] =  {"00", "01", "10", "11"};
@@ -509,27 +466,21 @@ void Cache :: ConfigureWord()
     // Predefine values of how many words per block if word count = 1
     binary oneWord[] = {"Instruction"};
     
-    // Assign binary word values to wordVector dataset
+    // Assign binary word value of 4 to wordVector dataset
     if(this -> wordQuantity == 4)
         for(int i = 0; i < sizeof(fourWords) / sizeof(fourWords[0]); i++)
             wordVector.push_back(fourWords[i]);
     
     
+    // Assign binary word value of 2 to wordVector dataset
     else if(this -> wordQuantity == 2)
         for(int i = 0; i < sizeof(twoWords) / sizeof(twoWords[0]); i++)
             wordVector.push_back(twoWords[i]);
-    
+        
+    // Assign binary word value of 1 to wordVector dataset
     else if(this -> wordQuantity == 1)
         for(int i = 0; i < sizeof(oneWord) / sizeof(oneWord[0]); i++)
             wordVector.push_back(oneWord[i]);
-    
-    // Generate binary data and store in vector
-    this -> addressList = GenerateAddresses();
-    
-    // Assign hexadecimal values to address map
-    for(std::vector<binary> :: size_type i = 0; i < addressList.size(); i++)
-        for(std::vector<binary> :: size_type j = 0; j < wordQuantity; j++)
-            addressMap[addressList[i]][wordVector[j]] = GetInstruction();
 
 }
 
@@ -550,7 +501,7 @@ std::string Cache :: Fully_Associative_Menu(input select)
         return "\n4) Enter number of ways (2 or 3): ";
         
     else if(select == 5)
-        return "\n--------------- Caching Algorithms ---------------\n\n1) Last Recently Used\t\t2) Last Frequently Used\n\n3) First In First Out\n\n--------------------------------------------------\n\nSelect: ";
+        return "\n--------------- Caching Algorithms ---------------\n\n1) Least Recently Used\t\t2) Least Frequently Used\n\n3) First In First Out\n\n--------------------------------------------------\n\nSelect: ";
     
     return "";
 }
@@ -567,11 +518,8 @@ std::string Cache :: Set_Associative_Menu(input select)
     
     else if(select == 3)
         return "\n3) Main Memory Size (16 or 8 bits): ";
-    
-    else if(select == 4)
-        return "\n4) Enter number of ways (2 or 3): ";
         
-    else if(select == 5)
+    else if(select == 4)
         return "\n--------------- Caching Algorithms ---------------\n\n1) Last Recently Used\t\t2) Last Frequently Used\n\n3) First In First Out\n\n--------------------------------------------------\n\nSelect: ";
     
     return "";
@@ -594,8 +542,8 @@ std::string Cache :: Direct_Mapped_Menu(input select)
 }
 
 // -------------------------------------------------------------------------------------------
-// Determine input to select
-INPUT Cache :: InputEnum(input number)
+// Determine input to select for Fully Associative Cache
+INPUT Cache :: FullyAssociativeInput(input number)
 {
     if(number == 1)
         return INPUT :: CACHE_SIZE;
@@ -611,6 +559,41 @@ INPUT Cache :: InputEnum(input number)
     
     else if(number == 5)
         return INPUT :: CACHING_ALGORITHM;
+    
+    return INPUT :: INPUT_ERROR;
+}
+
+// -------------------------------------------------------------------------------------------
+// Determine input to select for Set Associative Cache
+INPUT Cache :: SetAssociativeInput(input number)
+{
+    if(number == 1)
+        return INPUT :: CACHE_SIZE;
+    
+    else if(number == 2)
+        return INPUT :: BLOCK_SIZE;
+    
+    else if(number == 3)
+        return INPUT :: MAIN_MEMORY;
+
+    else if(number == 4)
+        return INPUT :: CACHING_ALGORITHM;
+    
+    return INPUT :: INPUT_ERROR;
+}
+
+// -------------------------------------------------------------------------------------------
+// Determine input to select for Fully Associative Cache
+INPUT Cache :: DirectMappedInput(input number)
+{
+    if(number == 1)
+        return INPUT :: CACHE_SIZE;
+    
+    else if(number == 2)
+        return INPUT :: BLOCK_SIZE;
+    
+    else if(number == 3)
+        return INPUT :: MAIN_MEMORY;
     
     return INPUT :: INPUT_ERROR;
 }
@@ -641,12 +624,38 @@ binaryVector Cache :: GenerateAddresses()
     
     // Store all addresses: key = binary address, value = hash value
     binaryVector cacheAddresses;
+    
+    // Declare vector to store predefined tags
+    binaryVector tagVector;
+    
+    // Declare temporary tag value
+    binary tempTag;
+    
+    // Tag size
+    std::size_t tagSize = mainMemorySize - log2(this -> blockSize);
+    
+    // Predefine tags - this makes it so each tag will have multiple addresses in each way
+    for(int i = 0; i < (this -> blockQuantity / 2); i++)
+    {
+        for(int x = 0; x < tagSize; x++)
+        {
+            int randomValue = rand() % 2;
+            
+            tempTag += std::to_string(randomValue);
+        }
+        
+        tagVector.push_back(tempTag);
+        
+        tempTag = "";
+    }
    
     // Amount of addresses should be half the # of slots for demonstration purposes
-    for(int i = 0; i < this -> slots / 2; i++)
+    for(int i = 0; i < this -> blockQuantity / 2; i++)
     {
-                
-        for(int x = 0; x < this -> mainMemorySize; x++)
+        // Assign random tag value to address
+        address = tagVector[rand() % tagVector.size()];
+        
+        for(int x = tagSize; x < this -> mainMemorySize; x++)
         {
             int randomValue = rand() % 2;
             

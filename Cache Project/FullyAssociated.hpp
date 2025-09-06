@@ -3,30 +3,39 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <queue>
 #include "Cache.h"
-#include "Miscellaneous_Data.h"
+#include "Enums.h"
 
 class FullyAssociated : public Cache
 {
     
     // -------------- Typedef used for organizational purposes -------------
     
+    // integer = numerical digit
     // unit = unit of measurements
     // input = variables uesd to select data
     // iterator = traverses through data set
+    // index = represents the index of a data set
     // hashValue = used as hash value for hash table algorithm
-    typedef int unit, input, iterator, hashValue;
+    typedef int integer, unit, input, iterator, index, hashValue;
     
     // binary = binary data stored in each cache block
     // hex = hex data stored in each cache block
     // menu = consist of entire menu
     typedef std::string binary, hex, menu;
     
+    // Used for boolean datatype
+    typedef bool boolean;
+    
     // inputSet = Stores input values, binaryVector = Stores binary values
     typedef std::vector<std::string> inputSet, binaryVector;
     
-    // Key = Address, Value = Hash Value
-    typedef std::vector <std::pair<binary, hashValue>> hashAddressPair;
+    // Key = Tag, Value = address
+    typedef std::vector <std::pair<binary, binary>> hashAddress;
+    
+    // Key = tag, Value = addresses stored in queue
+    typedef std::vector<std::pair<binary,std::queue<binary>>> tagAddress;
     
     // Write file
     typedef std::ofstream file;
@@ -34,112 +43,199 @@ class FullyAssociated : public Cache
     // Key = binary word, hexidecimal instruction
     typedef std::map<binary,hex> wordMap;
     
+    // binaryHexMap = Represents a map inside a map
+    typedef std::map<binary, std::map<binary,hex>> multiMap;
+    
+    // Key = tag, Value = std::vector<std::pair<address, frequenty of address detected in tagTable.second>>
+    typedef std::map<binary, std::vector<std::pair<binary,integer>>> addressDetectorMap;
+    
     // Condenses string into a single variable
     typedef std::ostringstream condensedString;
     
-    
 private:
 
-    // Stores all cache data that works in parallel
-    struct CacheData
+    // Stores each column per row
+    struct Fully_Associative_Structure
     {
         // Constructor
-        CacheData(FullyAssociated & f) :
-        blockSize (f.blockSize), wordSize(f.wordSize),
-        address (f.addressList[std::rand() % f.addressList.size()]),
-        tag (address.substr(0, address.size() - std::floor(log(f.blockSize)))),
-        offset (address.substr(address.size() - std::floor(log(f.blockSize)), address.size())),
-        instructionMap (getInstructions(address,f.addressMap)), hashCode(GenerateHashCode(this -> address))
+        Fully_Associative_Structure (FullyAssociated & f) :
+        blockSize (f.blockSize), wordSize(f.wordSize), addressEvicted(""),
+        address (f.addressList[std::rand() % f.addressList.size()]), wordQuantity(f.wordQuantity),
+        tag (address.substr(0, address.size() - std::floor(log2(f.blockSize)))), instruction(GetInstruction()),
+        offset (address.substr(address.size() - std::floor(log2(f.blockSize)), address.size())),
+        wordCharacters(getWordCharacters(f.wordQuantity)), instructionMap(getInstructionMap(address,f.addressMap)),
+        addressHashCode(GenerateHashCode(this -> address)), tagHashCode(GenerateHashCode(this -> tag))
         {
-            std::cout << "\nAddress = " << this -> address << std::endl;
-            std::cout << "\nHash Code = " << this -> hashCode << std::endl;
-            std::cout << "\nBlock = " << this ->blockSize << std::endl;
-            std::cout << "\nOffset = " << this -> offset << std::endl;
-            std::cout << "\nTag = " << this -> tag << std::endl;
-            std::cout << "\nWord Size = " << this -> wordSize << std::endl << std::endl;
-            for(auto & [binary,hex] : this -> instructionMap)
-            {
-                std::cout << "binary = " << binary << ", hex = " << hex << std::endl;
-            }
-            
-            std::cout << "\n----------------------------------------------------------\n";
+            instruction = GetInstruction();
         }
         
-        // -------------------------- Functions ---------------------------
-        // Ensure the same address contains the identical instructions
-        std::map <binary,hex> getInstructions(binary addr, std::map<binary,std::map<binary,hex>> addressMap)
+        // ----------------------------------------------------------------
+        // Ensure the same address contains identical instructions
+        std::map <binary,hex> getInstructionMap (binary addr, multiMap addressMap)
         {
             std::map <binary,hex> instructions;
             
             if(addressMap.find(addr) != addressMap.end())
             {
-                std::map <binary,hex> tempMap = addressMap[address];
+                std::map <binary,hex> tempMap = addressMap[addr];
                 
                 for(auto & t : tempMap)
                     instructions[t.first] = t.second;
             }
-   
+
             return instructions;
         }
         
         // ----------------------------------------------------------------
         // Generate hash code for each address
-        hashValue GenerateHashCode(binary addr)
+        hashValue GenerateHashCode(binary binaryValue)
         {
-            hashCode = 0;
+            hashValue hashCode = 0;
             
-            for(iterator i = 0; i < addr.size(); i++)
+            for(iterator i = 0; i < binaryValue.size(); i++)
             {
-                if(address[i] ==  '1')
-                    hashCode += pow(2,addr.size() - i - 1);
+                if(binaryValue[i] ==  '1')
+                    hashCode += pow(2,binaryValue.size() - i - 1);
             }
             
             return hashCode;
         }
         
+        // ----------------------------------------------------------------
+        // Find instruction for each address
+        hex GetInstruction()
+        {
+            // Find specific word of address
+            hex word;
+            
+            if(this -> wordQuantity != 1)
+            {
+                word = this -> address.substr( this -> address.size() - this -> wordCharacters, this -> address.size() );
+                
+                return instructionMap[word];
+            }
+            else
+                word = instructionMap["Instruction"];
+
+            
+            return word;
+        }
+        
+        // ----------------------------------------------------------------
+        // Get # of word characters
+        integer getWordCharacters(unit wrdQuantity)
+        {
+            integer numOfCharacters = 0;
+            
+            if(wrdQuantity == 4)
+                numOfCharacters = 2;
+            
+            else if(wrdQuantity == 2)
+                numOfCharacters = 1;
+            
+            else if(wrdQuantity == 1)
+                numOfCharacters = 0;
+            
+            return numOfCharacters;
+        }
+        
         // ------------------------- Binary Data --------------------------
+        
         
          binary address,          // Binary address
         
                 tag,              // Tag in binary form
         
-                offset;           // Offset in binary form
+                offset,           // Offset in binary form
         
-      hashValue hashCode;         // hash code of each address
+                instruction,      // Instruction of address
+        
+                addressEvicted;   // Address evicted from way
+        
+      hashValue tagHashCode,      // hash code of each tag
+        
+                addressHashCode;  // hash code of each address
         
            unit blockSize,        // Size of each block (Bytes)
         
-                wordSize;         // Word count = (block size / word size)
+                wordSize,         // Word count = (block size / word size)
         
-        wordMap instructionMap;   // Key = binary value of word, value = Hex value of each instruction
+                wordQuantity,     // # of words utilized by each address
+                
+                wordCharacters,   // # of characters in a word
+        
+                binaryWord;       // Binary word value
+        
+        wordMap instructionMap;   // Key = binary value of word
+        
+                                  // Value = Hex value of each instruction
                 
     };
+    
+    // ----------------------------- Varaibles ------------------------------
+    
+    hashValue hashIndex;      // Assigned hash index
+    
+    boolean hitOrMiss;        // Determines hit or miss
+    
+    
+    // --------------------------- Enum Variable ----------------------------
+    
+    // Select which hash table to use (address or tag)
+    enum HASH_TABLE table;
 
     // -------------------------- Binary datasets ---------------------------
     
     // Stores all properties located in CacheData structure
-    std::vector <CacheData> cacheStorage;
+    std::vector <Fully_Associative_Structure> Fully_Associative_Vector;
+    
+    // Hash table used to store addresses (Detects hit or miss)
+    // Key = Tag, Value = address
+    hashAddress addressTable;
+    
+    // Hash table used to store multiple ways
+    // Key = tag, value = addresses stored in queue
+    tagAddress tagTable;
+    
+    // Key = tag, Value = std::vector<std::pair<address, frequenty of address detected in tagTable.second>>
+    addressDetectorMap addressDetector;
+    
+    // Declare queue to hold data for each way
+    std::queue <binary> wayQueue;
 
 public:
     
     FullyAssociated(PLACEMENT_POLICY policy) : Cache(policy)
     {
-        Configure();
+        Router();
+        
+        Controller();
     }
     
     ~FullyAssociated() override;
     
-    // ---------------------- Configuration function  -----------------------
+    // ------------------- Router & Controller functions  --------------------
     
-     void Configure();                  // Configure binary data
+     void Router();                     // Configure binary data
+    
+     void Controller();                 // Execute binary data
+    
+    // ----------------------- Hash Table Algorithms -------------------------
+    
+     void HashTable();                  // Performs implementation on hash table
+    
+     void AssignHashIndex();            // Assign addresses to their designated index
+    
+     index GetHashIndex                 // Retreive hash index
+     (hashValue hashCode);
     
     // ------------------- Cache Replacements Algorithms  --------------------
     
-     void LRU();                        // Last Recently Used
+     void Least_Recently_Used();        // Least Recently Used
+     
+     void Least_Frequently_Used();      // Least Frequently Used
     
-     void FIFO();                       // First in First Out
-    
-     void LFU();                        // Least Frequently Used
+     void First_In_First_Out();         // First in First Out
     
     // ---------------------------- Print Results  -----------------------------
     
@@ -149,11 +245,39 @@ public:
     
      void PrintConsole();               // Output results in console
     
-    // --------------------------- Getter Functions ----------------------------
+    // --------------------------- Misc Functions  -----------------------------
+
+     void Title();                       // Display Title
+   
+     void Data();                        // Display data
     
-    // Retreive cacheStorage
-    std::vector <CacheData> getCacheStorage();
+     void Header();                      // Display header
     
+     void CreateHeader                   // Produce column header
+     (COLUMNS c);
+    
+     void Table();                       // Display chart
+    
+     void CreateTable                    // Produce rows and columns in table
+     (COLUMNS c);
+    
+     void PlacementPolicy                // Contains placement policy algorithms
+     (enum HASH_TABLE);
+    
+     std::string toLower                 // Make each string lower case
+     (std::string header);
+    
+     COLUMNS FindHeader                  // Find header for each column
+     (std::string header);
+    
+     COLUMNS FindColumn                  // Find column for each row
+     (std::string column);
+    
+     HASH_TABLE FindTable                // Find addressTable or tagTag hashing formula
+     (std::string table);
+    
+     
 };
 
-#endif 
+#endif
+

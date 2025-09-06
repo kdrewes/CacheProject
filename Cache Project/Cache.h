@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 #include <fstream>
-#include "Miscellaneous_Data.h"
+#include "Enums.h"
 
 // Interface for all cache placement policies
 class Cache
@@ -32,8 +32,11 @@ protected:
     // Write file
     typedef std::ofstream file;
     
-    // binaryHexMap = Represents a map inside a map
+    // multiMap = Represents a map inside a map
     typedef std::map<binary, std::map<binary,hex>> multiMap;
+    
+    // Key = binary tag, values = addresses stored in queue
+    typedef std::map<binary,std::queue<binary>> wayMap;
     
     // Condenses string into a single variable
     typedef std::ostringstream condensedString;
@@ -45,33 +48,48 @@ protected:
     // -------------------------- Numerical data --------------------------
     
      unit cacheSize,          // Total amount of block data (Bytes)
+    
           blockSize,          // Size of each block (Bytes)
+    
           mainMemorySize,     // Size of main memory (Bits)
-          slots,              // slots = cacheSize / blockSize
+    
           offsetSize,         // Offset size  (Bits)
+    
+          addressSize,        // Address size (Bytes)
+    
           ways,               // Total amout of ways
+    
           indexSize,          // Index size (Bits)
+    
           wordSize,           // Word count = (block size / word size)
-          wordQuantity;       // # of words utilized
+    
+          blockQuantity,      // Block quantity = (cache size / block size)
+    
+          wordCharacters,     // # of characters in a word
+    
+          wordQuantity;       // # of words utilized by each address
+          
     
     // -------------------- Miscellaneous variables -------------------------
     
-    enum CACHING_ALGORITHM algorithm;       // Select caching algorithm
+    iterator global_iterator;               // Used as a global iterator
+    
+    enum CACHING_ALGORITHM
+    placementPolicy;                        // Select placement policy algorithm
     
     binaryVector wordVector,                // Contains predifed word in binary form
     
-                 addressTable;              // Store address in hash table
+                 addressList;               // Dataset that stores all existing addresses
     
-    multiMap addressMap;                    // Key = Address, Value = Map ( Key = binary word, Value = Hexadecimal Word )
+        multiMap addressMap;                // Key = Address, Value = Map ( Key = binary word, Value = Hexadecimal Word )
     
-    condensedString console,                // Contains entire string to be printed to console
+          wayMap tagQueueMap;               // Key = Tag in binary, Value = Addresses stored in queue
     
-                    spreadsheet,            // Contains entired string to be print to spreadsheet
+ condensedString console,                   // Contains entire string to be printed to console
     
-                    consoleToFile;          // Contains entire string to be printed to console but will printed to file
+                 spreadsheet,               // Contains entired string to be print to spreadsheet
     
-       binaryVector addressList;            // Dataset that stores all existing addresses
-
+                 consoleToFile;             // Contains entire string to be printed to console but will printed to file
 
 public:
     
@@ -102,19 +120,25 @@ public:
     void DirectMapped();
     
     // Verfies user input for fully associative cache
-    void verifyFullyAssociativeInput(unit data, iterator & inputIterator);
+    void verifyFullyAssociativeInput(unit data);
     
     // Verfies user input for set associative cache
-    void verifySetAssociativeInput(unit data, iterator & inputIterator);
+    void verifySetAssociativeInput(unit data);
     
     // Verfies user input for direct map cache
-    void verifyDirectMappedInput(unit data, iterator & inputIterator);
+    void verifyDirectMappedInput(unit data);
     
     // Establishes word criteria
     void ConfigureWord();
     
-    // Determine input to select
-    INPUT InputEnum(input number);
+    // Determine input to select for Fully Associative Cache
+    INPUT FullyAssociativeInput(input number);
+    
+    // Determine input to select for Set Associative Cache
+    INPUT SetAssociativeInput(input number);
+    
+    // Determine input to select for Direct Mapped Cache
+    INPUT DirectMappedInput(input number);
     
     // Determine caching algorithm to select
     enum CACHING_ALGORITHM CachingEnum(input number);

@@ -7,7 +7,7 @@
 #include "FullyAssociated.hpp"
 #include "SetAssociated.hpp"
 #include "DirectMapped.hpp"
-#include "Miscellaneous_Data.h"
+#include "Enums.h"
 
 // ------------------------- Typedef -------------------------
 
@@ -23,7 +23,7 @@ std::unique_ptr <Cache> FactoryPattern(PLACEMENT_POLICY selection);
 void CachePolicyMenu();
 
 // Determines cache placement policy
-PLACEMENT_POLICY PolicyEnum(int selection);
+PLACEMENT_POLICY PolicyEnum(input selection);
 
 // ---------------------- Global Variable(s) ---------------------
 
@@ -72,6 +72,8 @@ int main(int argc, const char * argv[])
             std::cout << e.what();
         }
     }
+    
+    std::cout << "\n\n\n\n\n";
     
     return 0;
 }
@@ -142,7 +144,7 @@ void CachePolicyMenu()
     
     std::cout <<"----------- Cache Placement Policy -----------\n\n";
     
-    std::cout << "1) Fully Associated\t\t2) Set Associated\n\n3) Direct Mapped\t\t4) Exit\n";
+    std::cout << "1) Fully Associative\t2) Set Associative\n\n3) Direct Mapped\t\t4) Exit\n";
     
     std::cout <<"\n----------------------------------------------\n\n";
     
@@ -150,3 +152,4 @@ void CachePolicyMenu()
     
 }
 // ------------------------------------------------------------
+

@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include "Cache.h"
-#include "Miscellaneous_Data.h"
+#include "Enums.h"
 
 class DirectMapped : public Cache
 {
@@ -17,7 +17,6 @@ class DirectMapped : public Cache
     
     // Binary values
     typedef std::vector<std::string> dataSet;
-    
     
 private:
     
