@@ -2,7 +2,12 @@
 
 DirectMapped :: ~DirectMapped() = default;
 
-void DirectMapped :: Configure()
+void DirectMapped :: Router()
+{
+    
+}
+
+void DirectMapped :: Controller()
 {
     
 }

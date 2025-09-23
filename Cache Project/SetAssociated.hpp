@@ -9,8 +9,6 @@
 class SetAssociated : public Cache
 {
     
-    // ---------------- Typedef for organizational purposes ----------------
-    
     // -------------- Typedef used for organizational purposes -------------
     
     // integer = numerical digit
@@ -286,8 +284,6 @@ public:
     
      HASH_TABLE FindTable                // Find addressTable or tagTag hashing formula
      (std::string table);
-    
-    
     
 };
 

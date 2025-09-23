@@ -73,7 +73,7 @@ int main(int argc, const char * argv[])
         }
     }
     
-    std::cout << "\n\n\n\n\n";
+    std::cout << "\n\n";
     
     return 0;
 }

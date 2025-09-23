@@ -408,7 +408,17 @@ void Cache :: verifyDirectMappedInput(unit data)
                 break;
             }
             
+            // Initialize block size
             this -> blockSize = data;
+            
+            // Block quantity = ( block size / cache size )
+            this -> blockQuantity = this -> cacheSize / this -> blockSize;
+    
+            // Assign offset size
+            this -> offsetSize = std::floor(log2(blockSize));
+    
+            // Assign index size
+            this -> indexSize = (int)std::floor(std::log2(blockQuantity / 2));
             
             break;
             
@@ -416,7 +426,7 @@ void Cache :: verifyDirectMappedInput(unit data)
         
         if(data != 16 && data != 8)
         {
-            std::cerr << "/n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
+            std::cerr << "\n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
             
             this -> global_iterator -= 1;
             
