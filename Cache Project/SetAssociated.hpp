@@ -57,7 +57,7 @@ private:
     struct Set_Associative_Structure
     {
         // Constructor
-        Set_Associative_Structure(SetAssociated& s) :
+        Set_Associative_Structure(SetAssociated & s) :
         blockSize(s.blockSize), wordSize(s.wordSize),addressEvicted(""),
         address(s.addressList[std::rand() % s.addressList.size()]),
         wordQuantity(s.wordQuantity),

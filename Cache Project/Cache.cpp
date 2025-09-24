@@ -481,7 +481,6 @@ void Cache :: ConfigureWord()
         for(int i = 0; i < sizeof(fourWords) / sizeof(fourWords[0]); i++)
             wordVector.push_back(fourWords[i]);
     
-    
     // Assign binary word value of 2 to wordVector dataset
     else if(this -> wordQuantity == 2)
         for(int i = 0; i < sizeof(twoWords) / sizeof(twoWords[0]); i++)
@@ -491,7 +490,6 @@ void Cache :: ConfigureWord()
     else if(this -> wordQuantity == 1)
         for(int i = 0; i < sizeof(oneWord) / sizeof(oneWord[0]); i++)
             wordVector.push_back(oneWord[i]);
-
 }
 
 // -------------------------------------------------------------------------------------------
@@ -710,3 +708,4 @@ hex Cache :: GetInstruction()
     return instruction;
     
 }
+// -------------------------------------------------------------------------------------------

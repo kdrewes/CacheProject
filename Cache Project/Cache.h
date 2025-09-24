@@ -101,10 +101,6 @@ public:
     
     virtual ~Cache() = default;
     
-    // ------------------------- Virtual Functions  --------------------------
-    
-    virtual void Print() = 0;             // Print report
-    
     // --------------------------- Miscellaneous -----------------------------
     
     // Assigns variables to their correct placement policies
@@ -157,6 +153,10 @@ public:
     
     // Retreive hex value instructions
     hex GetInstruction();
+    
+    // ------------------------- Virtual Functions  --------------------------
+    
+    virtual void Print() = 0;             // Print report
     
     // -------------------------------------------------------------------------
 };

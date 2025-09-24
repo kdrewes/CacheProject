@@ -27,5 +27,6 @@ enum COLUMNS
 enum HASH_TABLE
 { ADDRESS_TABLE, TAG_TABLE, INDEX_TABLE, HASH_TABLE_ERROR };
 
-
 #endif
+
+// -------------------------------------------------------------------------

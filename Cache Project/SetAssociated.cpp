@@ -24,17 +24,6 @@ void SetAssociated :: Router()
     // Insert CacheData properties into Fully_Associative_Vector vector
     for(int i = 0; i < this -> blockQuantity; i++)
         Set_Associative_Vector.push_back(Set_Associative_Structure(*this));
-    
-    
-    std::cout << "\nAddress\t\t\tTag\t\t\tIndex\tOffset\n";
-        for(int i = 0; i < Set_Associative_Vector.size(); i++)
-        {
-            std::cout << Set_Associative_Vector[i].address << "\t\t"
-            << Set_Associative_Vector[i].tag << "\t\t"
-            << Set_Associative_Vector[i].setIndex << "\t\t"
-            << Set_Associative_Vector[i].offset << "\n\n";
-        }
-      
 }
 
 // -------------------------------------------------------------------------------------------
