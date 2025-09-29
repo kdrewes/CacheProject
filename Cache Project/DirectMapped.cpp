@@ -850,4 +850,10 @@ HASH_TABLE DirectMapped :: FindTable (std::string table)
 void DirectMapped :: Print()
 {
     std::cout << console.str();
+    
+    file write("testFile.csv");
+    
+    write << spreadsheet.str();
+    
+    write.close();
 }
