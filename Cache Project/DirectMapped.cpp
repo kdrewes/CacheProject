@@ -77,7 +77,7 @@ void DirectMapped :: AssignHashIndex()
             // Assign data to designated hashed subscript of addressTable
             if(addressTable[hashIndex].first.empty() &&  addressTable[hashIndex].second.empty())
             {
-                addressTable[hashIndex] = {Direct_Mapping_Vector[global_iterator].setIndex,Direct_Mapping_Vector[global_iterator].address};
+                addressTable[hashIndex] = { Direct_Mapping_Vector[global_iterator].setIndex,Direct_Mapping_Vector[global_iterator].address };
                 
                 this -> hitOrMiss = false;
             }
@@ -91,8 +91,22 @@ void DirectMapped :: AssignHashIndex()
             
         case INDEX_TABLE:
         {
-            // Select placement policy algorithm
-            //this -> PlacementPolicy(table);
+            // Retrieve hashed index and assign it to tagTable
+            this->hashIndex = GetHashIndex(Direct_Mapping_Vector[global_iterator].indexHashCode);
+            
+            if(indexTable[hashIndex].first.empty() && indexTable[hashIndex].second.empty())
+                indexTable[hashIndex] = { Direct_Mapping_Vector[global_iterator].setIndex, Direct_Mapping_Vector[global_iterator].tag };
+            
+            else
+            {
+               if((indexTable[hashIndex].first != Direct_Mapping_Vector[global_iterator].setIndex) || (indexTable[hashIndex].second != Direct_Mapping_Vector[global_iterator].tag))
+               {
+                   indexTable[hashIndex].first = Direct_Mapping_Vector[global_iterator].setIndex;
+                   
+                   indexTable[hashIndex].second = Direct_Mapping_Vector[global_iterator].tag;
+               }
+                   
+            }
             
             break;
         }
@@ -132,7 +146,7 @@ DirectMapped :: index DirectMapped :: GetHashIndex(hashValue hashCode)
                 {
                     // Determine if address is currently stored in hash table
                     if( (addressTable[hashCode].first == Direct_Mapping_Vector[global_iterator].setIndex) &&
-                       (addressTable[hashCode].second == Direct_Mapping_Vector[global_iterator].address) )
+                       (addressTable[hashCode].second == Direct_Mapping_Vector[global_iterator].address))
                         return hashCode;
                     
                     // Assign value of modified hash code
@@ -182,7 +196,6 @@ DirectMapped :: index DirectMapped :: GetHashIndex(hashValue hashCode)
         {
             throw std::invalid_argument("\n\nError - Invalid table, please re-enter option.\n");
         }
-            
             
     }
     
@@ -337,20 +350,20 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             // Display each tag
             if(this -> mainMemorySize == 8)
             {
-                console << "\t\t Tag";
+                console << "\tTag";
                 
                 spreadsheet << "Tag,";
                 
-                consoleToFile << "\t\t Tag";
+                consoleToFile << "\tTag";
             }
             
             else if(this -> mainMemorySize == 16)
             {
-                console << "\t\t\tTag";
+                console << "\t\tTag";
                 
                 spreadsheet << "Tag,";
                 
-                consoleToFile << "\t\t\tTag";
+                consoleToFile << "\t\tTag";
             }
             
             else
@@ -364,20 +377,20 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             // Display each offset
             if(this -> mainMemorySize == 8)
             {
-                console << "\t\tOffset";
+                console << "\t\t\tOffset";
                 
                 spreadsheet << "Offset,";
                 
-                consoleToFile << "\t\tOffset";
+                consoleToFile << "\t\t\tOffset";
             }
             
             else if(this -> mainMemorySize == 16)
             {
-                console << "\t\t\t\tOffset";
+                console << "\t\t\t\t\tOffset";
                 
                 spreadsheet << "Offset,";
                 
-                consoleToFile << "\t\t\t\tOffset";
+                consoleToFile << "\t\t\t\t\tOffset";
             }
             
             else
@@ -623,22 +636,28 @@ void DirectMapped :: CreateTable(COLUMNS columns)
             
         case INDEX :
         {
-            console << "\t" << this -> Direct_Mapping_Vector[global_iterator].setIndex << "\t|";
+            // Assign value to Hash table object
+            this -> table = FindTable("Index");
             
-            spreadsheet << "=\""   << this -> Direct_Mapping_Vector[global_iterator].setIndex << "\",";
+            // Assign each address to its designated hash index
+            AssignHashIndex();
             
-            consoleToFile << "\t" << this -> Direct_Mapping_Vector[global_iterator].setIndex << "\t|";
+            console << "\t" << this -> indexTable[hashIndex].first << "\t|";
+            
+            spreadsheet << "=\""   << this -> indexTable[hashIndex].first  << "\",";
+            
+            consoleToFile << "\t" << this -> indexTable[hashIndex].first << "\t|";
         }
             
             break;
             
         case TAG :
         {
-            console << "\t" << this -> Direct_Mapping_Vector[global_iterator].tag << "\t|";
+            console << "\t" << indexTable[hashIndex].second << "\t|";
             
-            spreadsheet << "=\""   << this -> Direct_Mapping_Vector[global_iterator].tag << "\",";
+            spreadsheet << "=\""   << indexTable[hashIndex].second << "\",";
             
-            consoleToFile << "\t" << this -> Direct_Mapping_Vector[global_iterator].tag << "\t|";
+            consoleToFile << "\t" << indexTable[hashIndex].second << "\t|";
         }
             
             break;

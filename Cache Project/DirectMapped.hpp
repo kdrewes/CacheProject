@@ -35,8 +35,8 @@ class DirectMapped : public Cache
     // Key = Tag, Value = address
     typedef std::vector <std::pair<binary, binary>> hashAddress;
     
-    // Key = index, Value = addresses stored in queue
-    typedef std::vector<std::pair<binary,std::queue<binary>>> indexAddress;
+    // Key = index, Value = tag
+    typedef std::vector<std::pair<binary,binary>> indexTag;
     
     // Write file
     typedef std::ofstream file;
@@ -205,8 +205,8 @@ private:
     hashAddress addressTable;
     
     // Hash table used to store multiple ways
-    // Key = index, value = addresses stored in queue
-    indexAddress indexTable;
+    // Key = index, value = tag
+    indexTag indexTable;
     
     // Key = tag, Value = std::vector<std::pair<address, frequenty of address detected in tagTable.second>>
     addressDetectorMap addressDetector;
