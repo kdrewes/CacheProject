@@ -142,11 +142,13 @@ PLACEMENT_POLICY PolicyEnum(input selection)
 void CachePolicyMenu()
 {
     
-    std::cout <<"----------- Cache Placement Policy -----------\n\n";
+    std::cout << "\n-----------------------------------------\n";
+    std::cout << std::setw(33) << "Cache Placement Policy\n";
+    std::cout << "-----------------------------------------\n\n";
     
     std::cout << "1) Fully Associative\t2) Set Associative\n\n3) Direct Mapped\t\t4) Exit\n";
     
-    std::cout <<"\n----------------------------------------------\n\n";
+    std::cout <<"\n-----------------------------------------\n\n";
     
     std::cout << "Select: ";
     
