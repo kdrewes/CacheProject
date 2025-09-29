@@ -39,6 +39,11 @@ void DirectMapped :: Router()
 
 void DirectMapped :: Controller()
 {
+    // Display title
+    Title();
+  
+    // Display data
+    Data();
     
 }
 
@@ -51,8 +56,73 @@ void DirectMapped :: HashTable()
     this -> indexTable.resize(addressList.size() * 2);
 }
 
+// -------------------------------------------------------------------------------------------
+// Create Title
+void DirectMapped :: Title()
+{
+    // Display Title
+    console << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
+
+    console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDirect Mapping Placement Policy\n";
+
+    console <<"\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
+
+
+    spreadsheet <<"---------------------------------------------------- Direct Mapping Placement Policy ----------------------------------------------------\n";
+
+
+    consoleToFile << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
+
+    consoleToFile <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDirect Mapping Placement Policy\n";
+
+    consoleToFile <<"\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
+}
+
+// -------------------------------------------------------------------------------------------
+// Produce and display metrics
+void DirectMapped :: Data()
+{
+    
+    console << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "   << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
+    
+    << "\t\t# of Blocks = "                            << this -> blockQuantity                << " Bytes"
+    
+    << "\n\n\t\t\t\t\t\t\t\t\t\tIndex Size = "         << this -> indexSize                    << " Bytes\t\tOffset Size = " << this -> offsetSize  << " Bits"
+    
+    << "\t\tRam Size = "                               << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\t\t\t\t\t\t\t\tWord Size  = "
+    
+    << this -> wordSize                                << " Bytes\t\t# of Words = "            << this -> wordQuantity
+    
+    << " Bytes"                                        << "\t\tTag Size = "                    << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes\n\n";
+    
+    
+    
+    spreadsheet << "\nCache Size," << "Block Size," << "# of Blocks," << "Offset Size,"  << "Ram Size," << "Word Size," << "# of Words," << "Tag Size\n";
+    
+    spreadsheet << this -> cacheSize << " Bytes" << ',' << this -> blockSize << " Bytes"  << ',' << this -> blockQuantity << " Bytes" << ','
+    
+    << this -> offsetSize << " Bits" << ',' << this -> mainMemorySize << " Bytes" << ',' << this -> wordSize << " Bytes" << ',' << this -> wordQuantity << " Bytes"
+    
+    << ',' << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes" << "\n\n";
+    
+    
+    consoleToFile << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "   << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
+    
+    << "\t\t# of Blocks = "                            << this -> blockQuantity                << " Bytes"
+    
+    << "\n\n\t\t\t\t\t\t\t\t\t\tIndex Size = "         << this -> indexSize                    << " Bytes\t\tOffset Size = " << this -> offsetSize  << " Bits"
+    
+    << "\t\tRam Size = "                               << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\t\t\t\t\t\t\t\tWord Size  = "
+    
+    << this -> wordSize                                << " Bytes\t\t# of Words = "            << this -> wordQuantity
+    
+    << " Bytes"                                        << "\t\tTag Size = "                    << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes\n\n";
+    
+}
+
+// -------------------------------------------------------------------------------------------
 
 void DirectMapped :: Print()
 {
-    std::cout << "\nPrint Console for Direct Mapped\n\n";
+    std::cout << console.str();
 }

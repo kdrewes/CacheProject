@@ -238,7 +238,7 @@ void SetAssociated :: Data()
     
     << this -> wordSize                       << " Bytes\t\t# of Words = "            << this -> wordQuantity
     
-    << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n"
+    << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes\n\n"
     
     << "\t\t\t\t\t\t\t\t\t\tIndex Size = "  << this -> indexSize << "\n\n";
     
@@ -250,7 +250,7 @@ void SetAssociated :: Data()
     
     << this -> offsetSize << " Bits" << ',' << this -> mainMemorySize << " Bytes" << ',' << this -> wordSize << " Bytes" << ',' << this -> wordQuantity << " Bytes"
     
-    << ',' << this -> addressSize - std::floor(log2(blockSize)) << " Bytes" << "\n\n";
+    << ',' << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes" << "\n\n";
     
     
     consoleToFile << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
@@ -263,7 +263,7 @@ void SetAssociated :: Data()
     
     << this -> wordSize                             << " Bytes\t\t# of Words = "            << this -> wordQuantity
     
-    << " Bytes"                                     << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n"
+    << " Bytes"                                     << "\t\tTag Size = "                    << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes\n\n"
     
     << "\t\t\t\t\t\t\t\t\t\tIndex Size = "  << this -> indexSize << "\n\n";
     
