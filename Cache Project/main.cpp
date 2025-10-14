@@ -19,8 +19,11 @@ typedef int input;
 // Implement factory pattern to instantiate child class
 std::unique_ptr <Cache> FactoryPattern(PLACEMENT_POLICY selection);
 
+// Allows user to chose between manual or automation option
+void Configuration_Menu(input & selectPolicy);
+
 // Cache Placement Policy Menu
-void CachePolicyMenu();
+void Cache_Policy_Menu(input & selectPolicy);
 
 // Determines cache placement policy
 PLACEMENT_POLICY PolicyEnum(input selection);
@@ -46,11 +49,12 @@ int main(int argc, const char * argv[])
         {
             if(!isPolicySelected)
             {
-                // Display cache placement policy menu
-                CachePolicyMenu();
+                // Allows user to chose between manual or automation option
+                // Configuration_Menu(selectPolicy);
                 
-                // Select policy
-                std::cin >> selectPolicy;
+                // Display cache placement policy menu
+                Cache_Policy_Menu(selectPolicy);
+                
             }
             
             // Implement factory pattern
@@ -136,10 +140,25 @@ PLACEMENT_POLICY PolicyEnum(input selection)
     
     return PLACEMENT_POLICY :: POLICY_ERROR;
 }
-
+// ------------------------------------------------------------
+// Cache Introductory Menu
+void Cache_Introductory_Menu(input & selectPolicy)
+{
+    
+    std::cout << "\n-----------------------------------------\n";
+    std::cout << std::setw(33) << "Cache Simulation Project\n";
+    std::cout << "-----------------------------------------\n\n";
+    
+    std::cout << "1) Manual\n\n2) Automated\n\n3) Help\n";
+    
+    std::cout <<"\n-----------------------------------------\n\n";
+    
+    std::cout << "Select: ";
+    
+}
 // ------------------------------------------------------------
 // Cache Placement Policy Menu
-void CachePolicyMenu()
+void Cache_Policy_Menu(input & selectPolicy)
 {
     
     std::cout << "\n-----------------------------------------\n";
@@ -151,6 +170,9 @@ void CachePolicyMenu()
     std::cout <<"\n-----------------------------------------\n\n";
     
     std::cout << "Select: ";
+    
+    // Select policy
+    std::cin >> selectPolicy;
     
 }
 // ------------------------------------------------------------
