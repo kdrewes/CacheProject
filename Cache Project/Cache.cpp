@@ -31,15 +31,33 @@ typedef std::map<hex,std::queue<binary>> wayMap;
 typedef std::ostringstream condensedString;
 
 // -------------------------------------------------------------------------------------------
-Cache :: Cache(PLACEMENT_POLICY policy)
+Cache :: Cache(PLACEMENT_POLICY policy, CONFIGURATION config)
 {
-    Assign(policy);
+    Assign(policy, config);
 }
 
 // -------------------------------------------------------------------------------------------
 
-void Cache :: Assign(PLACEMENT_POLICY policy)
+void Cache :: Assign(PLACEMENT_POLICY policy, CONFIGURATION config)
 {
+    // Determine configuration
+    switch(config)
+    {
+        case MANUAL:
+            
+            this -> config = config;
+            
+            break;
+            
+        case AUTOMATED:
+            
+            this -> config = config;
+            
+            break;
+            
+    }
+    
+    // Determine policy
     switch(policy)
     {
         case FULLY_ASSOCIATED:

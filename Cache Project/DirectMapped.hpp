@@ -216,7 +216,7 @@ private:
     
 public:
     
-    DirectMapped(PLACEMENT_POLICY policy) : Cache(policy)
+    DirectMapped(PLACEMENT_POLICY policy, CONFIGURATION config) : Cache(policy, config)
     {
         Router();
             

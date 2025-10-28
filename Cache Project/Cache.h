@@ -77,6 +77,8 @@ protected:
     enum CACHING_ALGORITHM
     placementPolicy;                        // Select placement policy algorithm
     
+    enum CONFIGURATION config;              // Determine configuration option
+    
     binaryVector wordVector,                // Contains predifed word in binary form
     
                  addressList;               // Dataset that stores all existing addresses
@@ -97,14 +99,14 @@ public:
     Cache();
     
     // Paramaterized Constructor
-    Cache(PLACEMENT_POLICY policy);
+    Cache(PLACEMENT_POLICY policy, CONFIGURATION config);
     
     virtual ~Cache() = default;
     
     // --------------------------- Miscellaneous -----------------------------
     
     // Assigns variables to their correct placement policies
-    void Assign(PLACEMENT_POLICY policy);
+    void Assign(PLACEMENT_POLICY policy, CONFIGURATION config);
     
     // Assign Fully Associative variables
     void FullyAssociative();

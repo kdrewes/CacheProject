@@ -214,7 +214,7 @@ private:
     
 public:
     
-    SetAssociated(PLACEMENT_POLICY policy) : Cache(policy)
+    SetAssociated(PLACEMENT_POLICY policy, CONFIGURATION config) : Cache(policy, config)
     {
         Router();
         

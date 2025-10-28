@@ -4,6 +4,7 @@
 #include <sstream>
 #include <memory>
 #include "Cache.h"
+#include <limits>
 #include "FullyAssociated.hpp"
 #include "SetAssociated.hpp"
 #include "DirectMapped.hpp"
@@ -17,7 +18,7 @@ typedef int input;
 // ------------------------ Prototypes -----------------------
 
 // Implement factory pattern to instantiate child class
-std::unique_ptr <Cache> FactoryPattern(PLACEMENT_POLICY selection);
+std::unique_ptr <Cache> FactoryPattern(PLACEMENT_POLICY selectPolicy, CONFIGURATION selectConfig);
 
 // Allows user to chose between manual or automation option
 void Configuration_Menu(input & selectPolicy);
@@ -27,6 +28,9 @@ void Cache_Policy_Menu(input & selectPolicy);
 
 // Determines cache placement policy
 PLACEMENT_POLICY PolicyEnum(input selection);
+
+// Determines configuration
+CONFIGURATION ConfigurationEnum(input selection);
 
 // ---------------------- Global Variable(s) ---------------------
 
@@ -42,6 +46,9 @@ int main(int argc, const char * argv[])
     // Select cache placements policy
     input selectPolicy = 0;
     
+    // Select configuration
+    input selectConfig = 0;
+    
     while(true)
     {
         // Input validation
@@ -50,7 +57,7 @@ int main(int argc, const char * argv[])
             if(!isPolicySelected)
             {
                 // Allows user to chose between manual or automation option
-                // Configuration_Menu(selectPolicy);
+                Configuration_Menu(selectConfig);
                 
                 // Display cache placement policy menu
                 Cache_Policy_Menu(selectPolicy);
@@ -59,7 +66,7 @@ int main(int argc, const char * argv[])
             
             // Implement factory pattern
             std::unique_ptr <Cache> cachePtr =
-            FactoryPattern(PolicyEnum(selectPolicy));
+            FactoryPattern(PolicyEnum(selectPolicy), ConfigurationEnum(selectConfig));
             
             // Print report
             cachePtr -> Print();
@@ -84,7 +91,7 @@ int main(int argc, const char * argv[])
 
 // ------------------------------------------------------------
 // Implement factory pattern to instantiate child class
-std::unique_ptr <Cache> FactoryPattern(PLACEMENT_POLICY policy)
+std::unique_ptr <Cache> FactoryPattern(PLACEMENT_POLICY policy, CONFIGURATION config)
 {
     
     switch(policy)
@@ -93,23 +100,22 @@ std::unique_ptr <Cache> FactoryPattern(PLACEMENT_POLICY policy)
             
             isPolicySelected = true;
             
-            return std::unique_ptr <Cache> (new FullyAssociated(policy));
+            return std::unique_ptr <Cache> (new FullyAssociated(policy, config));
             
         case SET_ASSOCIATED:
             
             isPolicySelected = true;
             
-            return std::unique_ptr <Cache> (new SetAssociated(policy));
+            return std::unique_ptr <Cache> (new SetAssociated(policy, config));
             
         case DIRECT_MAPPED:
             
             isPolicySelected = true;
             
-            return std::unique_ptr <Cache> (new DirectMapped(policy));
+            return std::unique_ptr <Cache> (new DirectMapped(policy, config));
             
         case EXIT:
 
-            // Exiting program
             std::cout << "\nExit Program\n\n";
             
             exit(0);
@@ -140,11 +146,27 @@ PLACEMENT_POLICY PolicyEnum(input selection)
     
     return PLACEMENT_POLICY :: POLICY_ERROR;
 }
+
 // ------------------------------------------------------------
-// Cache Introductory Menu
-void Cache_Introductory_Menu(input & selectPolicy)
+// Determines configuration
+CONFIGURATION ConfigurationEnum(input selection)
 {
+    if(selection == 1)
+        return CONFIGURATION :: MANUAL;
     
+    else if(selection == 2)
+        return CONFIGURATION :: AUTOMATED;
+    
+    return CONFIGURATION :: CONFIGURATION_ERROR;
+}
+
+// ------------------------------------------------------------
+// Cache configuration menu
+void Configuration_Menu(input & selectConfig)
+{
+    do
+    {
+        
     std::cout << "\n-----------------------------------------\n";
     std::cout << std::setw(33) << "Cache Simulation Project\n";
     std::cout << "-----------------------------------------\n\n";
@@ -152,12 +174,36 @@ void Cache_Introductory_Menu(input & selectPolicy)
     std::cout << "1) Manual\n\n2) Automated\n\n3) Help\n";
     
     std::cout <<"\n-----------------------------------------\n\n";
-    
+   
     std::cout << "Select: ";
+        
+    std::cin >> selectConfig;
+        
+        if(selectConfig == 3)
+        {
+            std::cout <<"\n-----------------------------------------\n\n";
+            
+            std::cout << "Manual - User manual input cache placement policy and data.\n\n";
+            
+            std::cout << "Automated - Cache placement policy and data is randomly chosen by compiler.\n\n";
+            
+            std::cout << "Press any key to continue...\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.get();
+        }
+        
+        else if(selectConfig != 1 && selectConfig != 2)
+            throw std::invalid_argument("\n\nError - Invalid configuration option\n\nplease re-enter.\n");
+        
+        
+    } while (selectConfig != 1 && selectConfig != 2);
+    
+ 
     
 }
 // ------------------------------------------------------------
-// Cache Placement Policy Menu
+// Cache placement policy menu
 void Cache_Policy_Menu(input & selectPolicy)
 {
     
