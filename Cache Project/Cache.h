@@ -126,6 +126,12 @@ public:
     // Verfies user input for direct map cache
     void verifyDirectMappedInput(unit data);
     
+    // Assign configuration setup
+    void Assign_Configurations(CONFIGURATION config);
+    
+    // Assign policy
+    void Assign_Policy(PLACEMENT_POLICY policy);
+    
     // Establishes word criteria
     void ConfigureWord();
     

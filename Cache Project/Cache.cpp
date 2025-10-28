@@ -41,47 +41,10 @@ Cache :: Cache(PLACEMENT_POLICY policy, CONFIGURATION config)
 void Cache :: Assign(PLACEMENT_POLICY policy, CONFIGURATION config)
 {
     // Determine configuration
-    switch(config)
-    {
-        case MANUAL:
-            
-            this -> config = config;
-            
-            break;
-            
-        case AUTOMATED:
-            
-            this -> config = config;
-            
-            break;
-            
-    }
+    Assign_Configurations(config);
     
     // Determine policy
-    switch(policy)
-    {
-        case FULLY_ASSOCIATED:
-            
-            FullyAssociative();
-            
-            break;
-            
-        case SET_ASSOCIATED:
-            
-            SetAssociative();
-            
-            break;
-            
-        case DIRECT_MAPPED:
-            
-            DirectMapped();
-            
-            break;
-            
-        case POLICY_ERROR:
-            
-            throw std::invalid_argument("\n------------------- Error --------------------\n\nIncorrect option\n\nPlease re-select from the following menu\n\n----------------------------------------------\n");
-    }
+    Assign_Policy(policy);
 }
 
 // -------------------------------------------------------------------------------------------
@@ -458,6 +421,44 @@ void Cache :: verifyDirectMappedInput(unit data)
             case INPUT_ERROR:
             
             std::cerr << "\n--------------------- Error ----------------------\n\nIncorrect input\n\nPlease re-enter a valid option\n\n--------------------------------------------------\n";
+    }
+}
+
+// -------------------------------------------------------------------------------------------
+// Assign configuration setup
+void Cache :: Assign_Configurations(CONFIGURATION config)
+{
+    this -> config = config;
+}
+
+// -------------------------------------------------------------------------------------------
+
+// Assign policy
+void Cache :: Assign_Policy(PLACEMENT_POLICY policy)
+{
+    switch(policy)
+    {
+        case FULLY_ASSOCIATED:
+            
+            FullyAssociative();
+            
+            break;
+            
+        case SET_ASSOCIATED:
+            
+            SetAssociative();
+            
+            break;
+            
+        case DIRECT_MAPPED:
+            
+            DirectMapped();
+            
+            break;
+            
+        case POLICY_ERROR:
+            
+            throw std::invalid_argument("\n------------------- Error --------------------\n\nIncorrect option\n\nPlease re-select from the following menu\n\n----------------------------------------------\n");
     }
 }
 
