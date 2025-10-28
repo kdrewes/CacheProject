@@ -171,7 +171,7 @@ void Configuration_Menu(input & selectConfig)
     std::cout << std::setw(33) << "Cache Simulation Project\n";
     std::cout << "-----------------------------------------\n\n";
     
-    std::cout << "1) Manual\n\n2) Automated\n\n3) Help\n";
+    std::cout << "\t1) Manual\t\t2) Automated\n\n\t3) Help\t\t\t4) Exit\n";
     
     std::cout <<"\n-----------------------------------------\n\n";
    
@@ -188,13 +188,19 @@ void Configuration_Menu(input & selectConfig)
             std::cout << "Automated - Cache placement policy and data is randomly chosen by compiler.\n\n";
             
             std::cout << "Press any key to continue...\n";
+            
             std::cin.clear();
+            
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            
             std::cin.get();
         }
         
-        else if(selectConfig != 1 && selectConfig != 2)
+        else if(selectConfig != 1 && selectConfig != 2 && selectConfig != 4)
             throw std::invalid_argument("\n\nError - Invalid configuration option\n\nplease re-enter.\n");
+        
+        else if(selectConfig == 4)
+            std::exit(0);
         
         
     } while (selectConfig != 1 && selectConfig != 2);
