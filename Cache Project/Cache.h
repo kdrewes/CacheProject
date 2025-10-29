@@ -121,10 +121,10 @@ public:
     void verifyFullyAssociativeInput(unit & data);
     
     // Verfies user input for set associative cache
-    void verifySetAssociativeInput(unit data);
+    void verifySetAssociativeInput(unit & data);
     
     // Verfies user input for direct map cache
-    void verifyDirectMappedInput(unit data);
+    void verifyDirectMappedInput(unit & data);
     
     // Assign configuration setup
     void Assign_Configurations(CONFIGURATION config);
