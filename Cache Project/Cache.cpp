@@ -511,11 +511,10 @@ void Cache :: verifySetAssociativeInput(unit & data)
                     // Assign offset size
                     this -> offsetSize = std::floor(log2(blockSize));
                     
-                    // Assign value of data
-                    data = this -> blockSize;
+                    // Assign index size
+                    this -> indexSize = (int)std::floor(std::log2(blockQuantity / 2));
                     
                     break;
-                    
             }
             
             break;
