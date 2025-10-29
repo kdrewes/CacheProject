@@ -24,7 +24,7 @@ std::unique_ptr <Cache> FactoryPattern(PLACEMENT_POLICY selectPolicy, CONFIGURAT
 void Configuration_Menu(input & selectPolicy);
 
 // Cache Placement Policy Menu
-void Cache_Policy_Menu(input & selectPolicy);
+void Cache_Policy_Menu(input & selectPolicy, input selectConfig);
 
 // Determines cache placement policy
 PLACEMENT_POLICY PolicyEnum(input selection);
@@ -60,8 +60,7 @@ int main(int argc, const char * argv[])
                 Configuration_Menu(selectConfig);
                 
                 // Display cache placement policy menu
-                Cache_Policy_Menu(selectPolicy);
-                
+                Cache_Policy_Menu(selectPolicy, selectConfig);
             }
             
             // Implement factory pattern
@@ -93,36 +92,80 @@ int main(int argc, const char * argv[])
 // Implement factory pattern to instantiate child class
 std::unique_ptr <Cache> FactoryPattern(PLACEMENT_POLICY policy, CONFIGURATION config)
 {
-    
-    switch(policy)
+    switch(config)
     {
-        case FULLY_ASSOCIATED:
+        case MANUAL:
             
-            isPolicySelected = true;
-            
-            return std::unique_ptr <Cache> (new FullyAssociated(policy, config));
-            
-        case SET_ASSOCIATED:
-            
-            isPolicySelected = true;
-            
-            return std::unique_ptr <Cache> (new SetAssociated(policy, config));
-            
-        case DIRECT_MAPPED:
-            
-            isPolicySelected = true;
-            
-            return std::unique_ptr <Cache> (new DirectMapped(policy, config));
-            
-        case EXIT:
+            switch(policy)
+            {
+                case FULLY_ASSOCIATED:
+                    
+                    isPolicySelected = true;
+                    
+                    return std::unique_ptr <Cache> (new FullyAssociated(policy, config));
+                    
+                case SET_ASSOCIATED:
+                    
+                    isPolicySelected = true;
+                    
+                    return std::unique_ptr <Cache> (new SetAssociated(policy, config));
+                    
+                case DIRECT_MAPPED:
+                    
+                    isPolicySelected = true;
+                    
+                    return std::unique_ptr <Cache> (new DirectMapped(policy, config));
+                    
+                case EXIT:
 
-            std::cout << "\nExit Program\n\n";
+                    std::cout << "\nExit Program\n\n";
+                    
+                    exit(0);
+                    
+                case POLICY_ERROR:
+                
+                    throw std::invalid_argument("\nError - Incorrect option\n\nPlease re-select from the following menu\n\n");
+            }
             
-            exit(0);
+            break;
             
-        case POLICY_ERROR:
-        
-            throw std::invalid_argument("\nError - Incorrect option\n\nPlease re-select from the following menu\n\n");
+        case AUTOMATED:
+            
+            int policyArray [] = {1,2,3};
+            
+            switch(policy = PolicyEnum(policyArray[rand() % 3]))
+            {
+                case FULLY_ASSOCIATED:
+                    
+                    isPolicySelected = true;
+                    
+                    return std::unique_ptr <Cache> (new FullyAssociated(policy, config));
+                    
+                case SET_ASSOCIATED:
+                    
+                    isPolicySelected = true;
+                    
+                    return std::unique_ptr <Cache> (new SetAssociated(policy, config));
+                    
+                case DIRECT_MAPPED:
+                    
+                    isPolicySelected = true;
+                    
+                    return std::unique_ptr <Cache> (new DirectMapped(policy, config));
+                    
+                case EXIT:
+
+                    std::cout << "\nExit Program\n\n";
+                    
+                    exit(0);
+                    
+                case POLICY_ERROR:
+                
+                    throw std::invalid_argument("\nError - Incorrect option\n\nPlease re-select from the following menu\n\n");
+            }
+            
+            break;
+            
     }
     
     return nullptr;
@@ -210,21 +253,23 @@ void Configuration_Menu(input & selectConfig)
 }
 // ------------------------------------------------------------
 // Cache placement policy menu
-void Cache_Policy_Menu(input & selectPolicy)
+void Cache_Policy_Menu(input & selectPolicy, input selectConfig)
 {
-    
-    std::cout << "\n-----------------------------------------\n";
-    std::cout << std::setw(33) << "Cache Placement Policy\n";
-    std::cout << "-----------------------------------------\n\n";
-    
-    std::cout << "1) Fully Associative\t2) Set Associative\n\n3) Direct Mapped\t\t4) Exit\n";
-    
-    std::cout <<"\n-----------------------------------------\n\n";
-    
-    std::cout << "Select: ";
-    
-    // Select policy
-    std::cin >> selectPolicy;
+    if(selectConfig == 1)
+    {
+        std::cout << "\n-----------------------------------------\n";
+        std::cout << std::setw(33) << "Cache Placement Policy\n";
+        std::cout << "-----------------------------------------\n\n";
+        
+        std::cout << "1) Fully Associative\t2) Set Associative\n\n3) Direct Mapped\t\t4) Exit\n";
+        
+        std::cout <<"\n-----------------------------------------\n\n";
+        
+        std::cout << "Select: ";
+        
+        // Select policy
+        std::cin >> selectPolicy;
+    }
     
 }
 // ------------------------------------------------------------

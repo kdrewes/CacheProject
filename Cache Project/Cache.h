@@ -118,7 +118,7 @@ public:
     void DirectMapped();
     
     // Verfies user input for fully associative cache
-    void verifyFullyAssociativeInput(unit data);
+    void verifyFullyAssociativeInput(unit & data);
     
     // Verfies user input for set associative cache
     void verifySetAssociativeInput(unit data);

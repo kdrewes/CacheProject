@@ -528,6 +528,7 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             }
             
             else
+                
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");
             
             break;
