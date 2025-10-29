@@ -24,17 +24,6 @@ void SetAssociated :: Router()
     // Insert CacheData properties into Fully_Associative_Vector vector
     for(int i = 0; i < this -> blockQuantity; i++)
         Set_Associative_Vector.push_back(Set_Associative_Structure(*this));
-    
-    
-    std::cout << "\nAddress\t\t\tTag\t\t\tIndex\tOffset\n";
-        for(int i = 0; i < Set_Associative_Vector.size(); i++)
-        {
-            std::cout << Set_Associative_Vector[i].address << "\t\t"
-            << Set_Associative_Vector[i].tag << "\t\t"
-            << Set_Associative_Vector[i].setIndex << "\t\t"
-            << Set_Associative_Vector[i].offset << "\n\n";
-        }
-      
 }
 
 // -------------------------------------------------------------------------------------------
@@ -249,7 +238,7 @@ void SetAssociated :: Data()
     
     << this -> wordSize                       << " Bytes\t\t# of Words = "            << this -> wordQuantity
     
-    << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n"
+    << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes\n\n"
     
     << "\t\t\t\t\t\t\t\t\t\tIndex Size = "  << this -> indexSize << "\n\n";
     
@@ -261,7 +250,7 @@ void SetAssociated :: Data()
     
     << this -> offsetSize << " Bits" << ',' << this -> mainMemorySize << " Bytes" << ',' << this -> wordSize << " Bytes" << ',' << this -> wordQuantity << " Bytes"
     
-    << ',' << this -> addressSize - std::floor(log2(blockSize)) << " Bytes" << "\n\n";
+    << ',' << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes" << "\n\n";
     
     
     consoleToFile << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
@@ -274,7 +263,7 @@ void SetAssociated :: Data()
     
     << this -> wordSize                             << " Bytes\t\t# of Words = "            << this -> wordQuantity
     
-    << " Bytes"                                     << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n"
+    << " Bytes"                                     << "\t\tTag Size = "                    << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes\n\n"
     
     << "\t\t\t\t\t\t\t\t\t\tIndex Size = "  << this -> indexSize << "\n\n";
     

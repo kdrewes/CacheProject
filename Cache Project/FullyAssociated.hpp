@@ -205,7 +205,7 @@ private:
 
 public:
     
-    FullyAssociated(PLACEMENT_POLICY policy) : Cache(policy)
+    FullyAssociated(PLACEMENT_POLICY policy, CONFIGURATION config) : Cache(policy, config)
     {
         Router();
         

@@ -77,6 +77,8 @@ protected:
     enum CACHING_ALGORITHM
     placementPolicy;                        // Select placement policy algorithm
     
+    enum CONFIGURATION config;              // Determine configuration option
+    
     binaryVector wordVector,                // Contains predifed word in binary form
     
                  addressList;               // Dataset that stores all existing addresses
@@ -97,18 +99,14 @@ public:
     Cache();
     
     // Paramaterized Constructor
-    Cache(PLACEMENT_POLICY policy);
+    Cache(PLACEMENT_POLICY policy, CONFIGURATION config);
     
     virtual ~Cache() = default;
-    
-    // ------------------------- Virtual Functions  --------------------------
-    
-    virtual void Print() = 0;             // Print report
     
     // --------------------------- Miscellaneous -----------------------------
     
     // Assigns variables to their correct placement policies
-    void Assign(PLACEMENT_POLICY policy);
+    void Assign(PLACEMENT_POLICY policy, CONFIGURATION config);
     
     // Assign Fully Associative variables
     void FullyAssociative();
@@ -120,13 +118,19 @@ public:
     void DirectMapped();
     
     // Verfies user input for fully associative cache
-    void verifyFullyAssociativeInput(unit data);
+    void verifyFullyAssociativeInput(unit & data);
     
     // Verfies user input for set associative cache
-    void verifySetAssociativeInput(unit data);
+    void verifySetAssociativeInput(unit & data);
     
     // Verfies user input for direct map cache
-    void verifyDirectMappedInput(unit data);
+    void verifyDirectMappedInput(unit & data);
+    
+    // Assign configuration setup
+    void Assign_Configurations(CONFIGURATION config);
+    
+    // Assign policy
+    void Assign_Policy(PLACEMENT_POLICY policy);
     
     // Establishes word criteria
     void ConfigureWord();
@@ -157,6 +161,10 @@ public:
     
     // Retreive hex value instructions
     hex GetInstruction();
+    
+    // ------------------------- Virtual Functions  --------------------------
+    
+    virtual void Print() = 0;             // Print report
     
     // -------------------------------------------------------------------------
 };

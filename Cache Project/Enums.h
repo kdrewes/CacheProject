@@ -7,6 +7,10 @@
 
 // ------------------------------- Enums --------------------------------
 
+// Configuration in enum format
+enum CONFIGURATION
+{ MANUAL, AUTOMATED, CONFIGURATION_ERROR };
+
 // Cache Placement Policies in enum format
 enum PLACEMENT_POLICY
 { FULLY_ASSOCIATED, SET_ASSOCIATED, DIRECT_MAPPED, EXIT, POLICY_ERROR };
@@ -27,5 +31,6 @@ enum COLUMNS
 enum HASH_TABLE
 { ADDRESS_TABLE, TAG_TABLE, INDEX_TABLE, HASH_TABLE_ERROR };
 
-
 #endif
+
+// -------------------------------------------------------------------------

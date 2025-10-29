@@ -9,8 +9,6 @@
 class SetAssociated : public Cache
 {
     
-    // ---------------- Typedef for organizational purposes ----------------
-    
     // -------------- Typedef used for organizational purposes -------------
     
     // integer = numerical digit
@@ -59,7 +57,7 @@ private:
     struct Set_Associative_Structure
     {
         // Constructor
-        Set_Associative_Structure(SetAssociated& s) :
+        Set_Associative_Structure(SetAssociated & s) :
         blockSize(s.blockSize), wordSize(s.wordSize),addressEvicted(""),
         address(s.addressList[std::rand() % s.addressList.size()]),
         wordQuantity(s.wordQuantity),
@@ -216,7 +214,7 @@ private:
     
 public:
     
-    SetAssociated(PLACEMENT_POLICY policy) : Cache(policy)
+    SetAssociated(PLACEMENT_POLICY policy, CONFIGURATION config) : Cache(policy, config)
     {
         Router();
         
@@ -286,8 +284,6 @@ public:
     
      HASH_TABLE FindTable                // Find addressTable or tagTag hashing formula
      (std::string table);
-    
-    
     
 };
 
