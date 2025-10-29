@@ -144,8 +144,6 @@ void Cache :: SetAssociative()
                 
                 verifySetAssociativeInput(data);
                 
-                std::cout << data << "\n\n";
-                
                 this -> global_iterator += 1;
             }
             
@@ -166,6 +164,8 @@ void Cache :: SetAssociative()
                 std::cout << Set_Associated_Input[this -> global_iterator];
                 
                 verifySetAssociativeInput(data);
+                
+                std::cout << data << "\n\n";
                 
                 this -> global_iterator += 1;
             }
@@ -201,20 +201,45 @@ void Cache :: DirectMapped()
     
     std::cout << "\n------------ Direct Mapped Cache -------------\n";
     
-    // Traverse through input values
-    while(this -> global_iterator < Direct_Mapped_Input.size())
+    switch(config)
     {
-        std::cout << Direct_Mapped_Input[this -> global_iterator];
-        
-        std::cin >> data;
-        
-        verifyDirectMappedInput(data);
-        
-        this -> global_iterator += 1;
+        case MANUAL:
+            
+            // Traverse through input values
+            while(this -> global_iterator < Direct_Mapped_Input.size())
+            {
+                std::cout << Direct_Mapped_Input[this -> global_iterator];
+                
+                std::cin >> data;
+                
+                verifyDirectMappedInput(data);
+                
+                this -> global_iterator += 1;
+            }
+            
+            // Reset inputIterator
+            this -> global_iterator = 0;
+            
+            break;
+         
+        case AUTOMATED:
+            
+            // Traverse through input values
+            while(this -> global_iterator < Direct_Mapped_Input.size())
+            {
+                std::cout << Direct_Mapped_Input[this -> global_iterator];
+
+                verifyDirectMappedInput(data);
+                
+                this -> global_iterator += 1;
+            }
+            
+            // Reset inputIterator
+            this -> global_iterator = 0;
+            
+            break;
+            
     }
-    
-    // Reset inputIterator
-    this -> global_iterator = 0;
 }
 
 // -------------------------------------------------------------------------------------------
@@ -541,10 +566,10 @@ void Cache :: verifySetAssociativeInput(unit & data)
                     
                 case AUTOMATED:
                     
-                    // Declare block size dataset
+                    // Declare memory size dataset
                     int memoryArray [] = {8, 16};
                     
-                    // Assign block size
+                    // Assign memory size
                     this -> mainMemorySize = memoryArray [rand() % 2];
                     
                     // Assign value of data
@@ -586,7 +611,6 @@ void Cache :: verifySetAssociativeInput(unit & data)
                     data = this -> placementPolicy;
                     
                     break;
-                    
             }
             
             break;
@@ -606,57 +630,123 @@ void Cache :: verifyDirectMappedInput(unit & data)
     {
         case CACHE_SIZE:
             
-            if(data != 64 && data != 32)
+            switch(config)
             {
-                std::cerr << "\n------------------- Error --------------------\n\nCache size must be 64 or 32 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
-                
-                this -> global_iterator -= 1;
-                
-                break;
+                case MANUAL:
+                    
+                    if(data != 64 && data != 32)
+                    {
+                        std::cerr << "\n------------------- Error --------------------\n\nCache size must be 64 or 32 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
+                        
+                        this -> global_iterator -= 1;
+                        
+                        break;
+                    }
+                    
+                    this -> cacheSize = data;
+                    
+                    break;
+                    
+                case AUTOMATED:
+                    
+                    // Declare cache size dataset
+                    int cacheSizeArray [] = {32, 64};
+                    
+                    // Assign automated cache size
+                    this -> cacheSize = cacheSizeArray [rand() % 2];
+                    
+                    // Assign value of data
+                    data = this -> cacheSize;
+                    
+                    break;
             }
-            
-            
-            this -> cacheSize = data;
             
             break;
             
         case BLOCK_SIZE:
             
-            if(data != 8 && data != 4 && data != 2)
+            switch(config)
             {
-                std::cerr << "\n------------------- Error --------------------\n\nBlock size must be 8, 4 or 2 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
-                
-                this -> global_iterator -= 1;
-                
-                break;
+                case MANUAL:
+                    
+                    if(data != 8 && data != 4 && data != 2)
+                    {
+                        std::cerr << "\n------------------- Error --------------------\n\nBlock size must be 8, 4 or 2 Bytes\n\nPlease re-enter value:\n\n----------------------------------------------\n";
+                        
+                        this -> global_iterator -= 1;
+                        
+                        break;
+                    }
+                    
+                    // Initialize block size
+                    this -> blockSize = data;
+                    
+                    // Block quantity = ( block size / cache size )
+                    this -> blockQuantity = this -> cacheSize / this -> blockSize;
+                    
+                    // Assign offset size
+                    this -> offsetSize = std::floor(log2(blockSize));
+                    
+                    // Assign index size
+                    this -> indexSize = (int)std::floor(std::log2(blockQuantity / 2));
+                    
+                    break;
+                    
+                case AUTOMATED:
+                    
+                    // Declare block size dataset
+                    int blockSizeArray [] = {2, 4, 8};
+                    
+                    // Assign block size
+                    this -> blockSize = blockSizeArray [rand() % 3];
+                    
+                    // Block quantity = ( block size / cache size )
+                    this -> blockQuantity = this -> cacheSize / this -> blockSize;
+                    
+                    // Assign offset size
+                    this -> offsetSize = std::floor(log2(blockSize));
+                    
+                    // Assign index size
+                    this -> indexSize = (int)std::floor(std::log2(blockQuantity / 2));
+                    
+                    break;
             }
-            
-            // Initialize block size
-            this -> blockSize = data;
-            
-            // Block quantity = ( block size / cache size )
-            this -> blockQuantity = this -> cacheSize / this -> blockSize;
-            
-            // Assign offset size
-            this -> offsetSize = std::floor(log2(blockSize));
-            
-            // Assign index size
-            this -> indexSize = (int)std::floor(std::log2(blockQuantity / 2));
             
             break;
             
         case MAIN_MEMORY:
             
-            if(data != 16 && data != 8)
+            switch(config)
             {
-                std::cerr << "\n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
-                
-                this -> global_iterator -= 1;
-                
-                break;
+                case MANUAL:
+                    
+                    if(data != 16 && data != 8)
+                    {
+                        std::cerr << "\n------------------- Error --------------------\n\nMain memory size must be 16 or 8 Bits\n\nPlease re-enter value:\n\n----------------------------------------------\n";
+                        
+                        this -> global_iterator -= 1;
+                        
+                        break;
+                    }
+                    
+                    // Assignment main memory
+                    this -> mainMemorySize = data;
+                    
+                    break;
+                    
+                case AUTOMATED:
+                    
+                    // Declare memory size dataset
+                    int memoryArray [] = {8, 16};
+                    
+                    // Assign main memory size
+                    this -> mainMemorySize = memoryArray [rand() % 2];
+                    
+                    // Assign value of data
+                    data = this -> mainMemorySize;
+                    
+                    break;
             }
-            
-            this -> mainMemorySize = data;
             
             break;
             
