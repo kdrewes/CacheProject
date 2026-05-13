@@ -25,16 +25,6 @@ void DirectMapped :: Router()
     for(int i = 0; i < this -> blockQuantity; i++)
         Direct_Mapping_Vector.push_back(Direct_Mapping_Structure(*this));
     
-    std::cout << "\nAddress\t\t\tTag\t\t\tIndex\tOffset\n";
-    
-    for(int i = 0; i < Direct_Mapping_Vector.size(); i++)
-    {
-        std::cout << Direct_Mapping_Vector[i].address << "\t\t"
-        << Direct_Mapping_Vector[i].tag << "\t\t"
-        << Direct_Mapping_Vector[i].setIndex << "\t\t"
-        << Direct_Mapping_Vector[i].offset << "\n\n";
-    }
-    
 }
 
 void DirectMapped :: Controller()
