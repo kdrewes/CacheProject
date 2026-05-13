@@ -41,7 +41,6 @@ void DirectMapped :: Controller()
     // Produce and display table
     Table();
     
-    
 }
 
 // -------------------------------------------------------------------------------------------
@@ -85,16 +84,34 @@ void DirectMapped :: AssignHashIndex()
             this->hashIndex = GetHashIndex(Direct_Mapping_Vector[global_iterator].indexHashCode);
             
             if(indexTable[hashIndex].first.empty() && indexTable[hashIndex].second.empty())
+            {
                 indexTable[hashIndex] = { Direct_Mapping_Vector[global_iterator].setIndex, Direct_Mapping_Vector[global_iterator].tag };
+                Direct_Mapping_Vector[global_iterator].addressEvicted.clear();
+            }
             
             else
             {
-               if((indexTable[hashIndex].first != Direct_Mapping_Vector[global_iterator].setIndex) || (indexTable[hashIndex].second != Direct_Mapping_Vector[global_iterator].tag))
+               const binary & incomingSet = Direct_Mapping_Vector[global_iterator].setIndex;
+               const binary & incomingTag = Direct_Mapping_Vector[global_iterator].tag;
+               if((indexTable[hashIndex].first != incomingSet) || (indexTable[hashIndex].second != incomingTag))
                {
-                   indexTable[hashIndex].first = Direct_Mapping_Vector[global_iterator].setIndex;
+                   const bool directMappedConflict =
+                       !indexTable[hashIndex].second.empty()
+                       && indexTable[hashIndex].first == incomingSet
+                       && indexTable[hashIndex].second != incomingTag;
                    
-                   indexTable[hashIndex].second = Direct_Mapping_Vector[global_iterator].tag;
+                   if(directMappedConflict)
+                       Direct_Mapping_Vector[global_iterator].addressEvicted =
+                           std::string("tag ") + indexTable[hashIndex].second;
+                   else
+                       Direct_Mapping_Vector[global_iterator].addressEvicted.clear();
+                   
+                   indexTable[hashIndex].first = incomingSet;
+                   
+                   indexTable[hashIndex].second = incomingTag;
                }
+               else
+                   Direct_Mapping_Vector[global_iterator].addressEvicted.clear();
                    
             }
             

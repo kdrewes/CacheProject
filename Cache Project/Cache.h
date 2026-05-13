@@ -87,11 +87,13 @@ protected:
     
           wayMap tagQueueMap;               // Key = Tag in binary, Value = Addresses stored in queue
     
- condensedString console,                   // Contains entire string to be printed to console
+ condensedString console,                   // Contains entire string printed to console
     
-                 spreadsheet,               // Contains entired string to be print to spreadsheet
+                 spreadsheet,               // Contains entired string printed to spreadsheet
     
-                 consoleToFile;             // Contains entire string to be printed to console but will printed to file
+                 consoleToFile,             // Contains entire string printed to console but will be printed to file
+    
+                 html;                      // Contains html syntax that will produce chart in .html file
 
 public:
     
