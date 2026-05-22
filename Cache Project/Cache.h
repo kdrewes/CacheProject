@@ -93,8 +93,9 @@ protected:
     
                  consoleToFile,             // Contains entire string printed to console but will be printed to file
     
-                 html;                      // Contains html syntax that will produce chart in .html file
-
+                 html,                      // Contains html content used to render chart in .html file
+    
+                 css;                       // Contains cascade styling used in char
 public:
     
     // Default Constructor
