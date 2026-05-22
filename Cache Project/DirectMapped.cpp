@@ -1,5 +1,6 @@
 #include "DirectMapped.hpp"
 
+// Initialize Deconstructor
 DirectMapped :: ~DirectMapped() = default;
 
 void DirectMapped :: Router()
