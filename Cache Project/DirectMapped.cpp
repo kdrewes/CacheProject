@@ -53,7 +53,7 @@ void DirectMapped :: HashTable()
 }
 
 // -------------------------------------------------------------------------------------------
-// Assign hash index to addressTable or tagTable
+// Assign hash index to addressTable or indexTable
 void DirectMapped :: AssignHashIndex()
 {
     switch(table)
@@ -66,13 +66,9 @@ void DirectMapped :: AssignHashIndex()
             // Assign data to designated hashed subscript of addressTable
             if(addressTable[hashIndex].first.empty() &&  addressTable[hashIndex].second.empty())
             {
+                // Assign pair value of index and address to address table
                 addressTable[hashIndex] = { Direct_Mapping_Vector[global_iterator].setIndex,Direct_Mapping_Vector[global_iterator].address };
-                
-                this -> hitOrMiss = false;
             }
-            
-            else
-                this -> hitOrMiss = true;
             
             break;
             
@@ -80,38 +76,78 @@ void DirectMapped :: AssignHashIndex()
             
         case INDEX_TABLE:
         {
-            // Retrieve hashed index and assign it to tagTable
+            // Retrieve hashed index and assign it to indexTable
             this->hashIndex = GetHashIndex(Direct_Mapping_Vector[global_iterator].indexHashCode);
             
+            // Declare variable of current set
+            const binary & currentSet = Direct_Mapping_Vector[global_iterator].setIndex;
+            
+            // Declare variable of current tag
+            const binary & currentTag = Direct_Mapping_Vector[global_iterator].tag;
+            
+            // Declare variable of current address
+            const binary & incomingAddress = Direct_Mapping_Vector[global_iterator].address;
+            
+            // Execute condition if set and tag is currently empty
             if(indexTable[hashIndex].first.empty() && indexTable[hashIndex].second.empty())
             {
-                indexTable[hashIndex] = { Direct_Mapping_Vector[global_iterator].setIndex, Direct_Mapping_Vector[global_iterator].tag };
+                // Assign pair value of set and tag to formulate indexTable
+                indexTable[hashIndex] = { currentSet, currentTag };
+                
+                // Assign address to designated set
+                cachedAddressByIndex[currentSet] = incomingAddress;
+                
+                // Reset Direct_Mapping_Vector
                 Direct_Mapping_Vector[global_iterator].addressEvicted.clear();
+                
+                // Reset hitOrMiss booleon variable
+                this -> hitOrMiss = false;
             }
             
+            // Execute condition if indexTable[hashIndex].first or indexTable[hashIndex].second is currently occupied
             else
             {
-               const binary & incomingSet = Direct_Mapping_Vector[global_iterator].setIndex;
-               const binary & incomingTag = Direct_Mapping_Vector[global_iterator].tag;
-               if((indexTable[hashIndex].first != incomingSet) || (indexTable[hashIndex].second != incomingTag))
-               {
-                   const bool directMappedConflict =
-                       !indexTable[hashIndex].second.empty()
-                       && indexTable[hashIndex].first == incomingSet
-                       && indexTable[hashIndex].second != incomingTag;
-                   
-                   if(directMappedConflict)
-                       Direct_Mapping_Vector[global_iterator].addressEvicted =
-                           std::string("tag ") + indexTable[hashIndex].second;
-                   else
-                       Direct_Mapping_Vector[global_iterator].addressEvicted.clear();
-                   
-                   indexTable[hashIndex].first = incomingSet;
-                   
-                   indexTable[hashIndex].second = incomingTag;
-               }
-               else
-                   Direct_Mapping_Vector[global_iterator].addressEvicted.clear();
+                // Declare a hit has occurred if the current set and tag are currently stored in cache
+                const bool directMappedHit = indexTable[hashIndex].first == currentSet && indexTable[hashIndex].second == currentTag;
+                
+                // Execute if hit occurs
+                if(directMappedHit)
+                {
+                    // Clear previous evictioned address
+                    Direct_Mapping_Vector[global_iterator].addressEvicted.clear();
+                    
+                    // Confirm a hit occured
+                    this -> hitOrMiss = true;
+                }
+                
+                // Execute condition if a direct mapped miss occurs
+                else
+                {
+                    // Declare variable to determine if current set is currently stored in cache but current tag is not stored in cache
+                    const bool directMappedConflict = !indexTable[hashIndex].second.empty() && indexTable[hashIndex].first == currentSet && indexTable[hashIndex].second != currentTag;
+                    
+                    // Execute condition if current index is currently stored in cache
+                    if(directMappedConflict && cachedAddressByIndex.find(currentSet) != cachedAddressByIndex.end())
+                        
+                        // Replace previous evicted address with current evicted address
+                        Direct_Mapping_Vector[global_iterator].addressEvicted = cachedAddressByIndex[currentSet];
+                    
+                    else
+                        // Clear previous evicted address if current address is not being replaced
+                        Direct_Mapping_Vector[global_iterator].addressEvicted.clear();
+                    
+                    // Include current set in indexTable
+                    indexTable[hashIndex].first = currentSet;
+                    
+                    // Include current tag in indexTable
+                    indexTable[hashIndex].second = currentTag;
+                    
+                    // Include address in cachedAddressByIndex map
+                    cachedAddressByIndex[currentSet] = incomingAddress;
+                    
+                    // Reset hitOrMiss variable
+                    this -> hitOrMiss = false;
+                }
                    
             }
             

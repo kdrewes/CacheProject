@@ -1069,7 +1069,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                 std::vector<std::pair<binary, int>> addressDetectorVec = addressDetector[tagTable[hashIndex].first];
 
                 // Determine whether address is found
-                bool addressFound = false;
+                boolean addressFound = false;
 
                 // If cache is not full
                 if (binaryQueue.size() < this->ways)
