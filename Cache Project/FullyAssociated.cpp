@@ -39,6 +39,9 @@ void FullyAssociated :: Router()
 // Execute binary data
 void FullyAssociated :: Controller()
 {
+    // Execute document skeleton of html
+    HTML();
+    
     // Display title
     Title();
     
@@ -184,7 +187,6 @@ FullyAssociated :: index FullyAssociated :: GetHashIndex(hashValue hashCode)
             throw std::invalid_argument("\n\nError - Invalid table, please re-enter option.\n");
         }
             
-            
     }
     
     return hashCode;
@@ -203,33 +205,68 @@ void FullyAssociated :: Print()
 }
 
 // -------------------------------------------------------------------------------------------
-
-void FullyAssociated::PrintFile()
+// Execute document skeleton of html
+void FullyAssociated :: HTML()
 {
-    
+    html << "<!DOCTYPE html>";
+    html << R"(<html lang="en">)";
+    html << "<head>";
+    html << R"(<meta charset="UTF-8">)";
+    html << R"(<meta name="viewport" content="width=device-width, initial-scale=1.0">)";
+    html << "<title>Cache Project</title>";
+    html << R"(<link rel="stylesheet" href="stylesheet.css">)";
+    html << "</head>";
+    html << "<body>";
+    html << R"(<div class="background">)";
+    html << R"(<div class="foundation">)";
 }
-
 
 // -------------------------------------------------------------------------------------------
 // Create Title
 void FullyAssociated :: Title()
 {
+    
+    // ------------------------ Create title for html ------------------------
+    
+    if(placementPolicy == CACHING_ALGORITHM :: LRU)
+    {
+        html << R"(<div class="header">)";
+        html <<  "Fully Associative Placement Policy - LRU";
+        html << "</div>";
+    }
+    
+    else if(placementPolicy == CACHING_ALGORITHM :: LFU)
+    {
+        html << R"(<div class="header">)";
+        html <<  "Fully Associative Placement Policy - LFU";
+        html << "</div>";
+    }
+    
+    else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
+    {
+        html << R"(<div class="header">)";
+        html <<  "Fully Associative Placement Policy - FIFO";
+        html << "</div>";
+    }
+    
+    // ------------------------ Create title for console ------------------------
+
     // Display Title
     console << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
     
     if(placementPolicy == CACHING_ALGORITHM :: LRU)
         console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - LRU\n";
-    
+        
     else if(placementPolicy == CACHING_ALGORITHM :: LFU)
         console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - LFU\n";
+
     
     else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
         console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - FIFO\n";
     
-    
-    
     console <<"\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
     
+    // ------------------------ Create title for spreadsheet ------------------------
     
     if(placementPolicy == CACHING_ALGORITHM :: LRU)
         spreadsheet <<"---------------------------------------------------- Fully Associative Placement Policy - LRU ----------------------------------------------------\n";
@@ -240,6 +277,7 @@ void FullyAssociated :: Title()
     else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
         spreadsheet <<"---------------------------------------------------- Fully Associative Placement Policy - FIFO ----------------------------------------------------\n";
     
+    // ------------------------ Create title for console to file ------------------------
     
     consoleToFile << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
     
@@ -259,6 +297,30 @@ void FullyAssociated :: Title()
 // Produce and display metrics
 void FullyAssociated :: Data()
 {
+    // ------------------------ Create data for html ------------------------
+    
+    html << R"(<div class="cache">)";
+    html << R"(<div class="data">)";
+    html << "<table>";
+    html << "<tr>";
+    html << "<td>Cache Size = " << this -> cacheSize << " Bytes" << "</td>";
+    html << "<td>Block Size = " << this -> blockSize << " Bytes" << "</td>";
+    html << "<td># of Blocks = " <<  this -> blockQuantity << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "<tr>";
+    html << "<td># of Ways = " << this -> ways << " Bytes" << "</td>";
+    html << "<td>Offset Size = " << this -> offsetSize  << " Bits" << "</td>";
+    html << "<td>Ram Size = " <<  this -> mainMemorySize << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "<tr>";
+    html << "<td>Word Size = " << this -> wordSize << " Bytes" << "</td>";
+    html << "<td>Word Quantity = " << this -> wordQuantity  << " Bytes" << "</td>";
+    html << "<td>Tag Size= " <<  this -> addressSize - std::floor(log2(blockSize)) << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "</table>";
+    html << "</div>";
+    
+    // ------------------------ Create data for console ------------------------
     
     console << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
     
@@ -273,6 +335,7 @@ void FullyAssociated :: Data()
     << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n";
     
     
+    // ------------------------ data title for spreadsheet ------------------------
     
     spreadsheet << "\nCache Size," << "Block Size," << "# of Blocks," << "# of Ways," << "Offset Size,"  << "Ram Size," << "Word Size," << "# of Words," << "Tag Size\n";
     
@@ -282,6 +345,8 @@ void FullyAssociated :: Data()
     
     << ',' << this -> addressSize - std::floor(log2(blockSize)) << " Bytes" << "\n\n";
     
+    
+    // ------------------------ data title for console file ------------------------
     
     consoleToFile << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
     

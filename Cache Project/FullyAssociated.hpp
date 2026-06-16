@@ -246,6 +246,8 @@ public:
      void PrintConsole();               // Output results in console
     
     // --------------------------- Misc Functions  -----------------------------
+    
+     void HTML();                        // Execute document skeleton of html
 
      void Title();                       // Display Title
    
