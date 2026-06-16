@@ -249,7 +249,7 @@ public:
     
      void HTML();                        // Execute document skeleton of html
     
-    void CSS();                          // Include CSS logic
+     void CSS();                          // Include CSS logic
     
      void EndHTML();                     // End html logic
 

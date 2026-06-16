@@ -201,11 +201,20 @@ FullyAssociated :: index FullyAssociated :: GetHashIndex(hashValue hashCode)
 // -------------------------------------------------------------------------------------------
 void FullyAssociated :: Print()
 {
+    // Produce microsoft word file
+    file write("testFile.doc");
+    
+    // Write to file
+    write << console.str();
+
     // Write to console
     std::cout << console.str();
     
+    // Close file
+    write.close();
+    
     // Produce excel spreadsheet file
-    file write("testFile.csv");
+    write.open("testFile.csv");
     
     // Write to spreadsheet
     write << spreadsheet.str();
@@ -387,18 +396,6 @@ void FullyAssociated :: CSS()
 }
 
 // -------------------------------------------------------------------------------------------
-// End html logic
-void FullyAssociated :: EndHTML()
-{
-    html <<  "</table>";
-    html << "</div>";
-    html << "</div>";
-    html << "</div>";
-    html << "</body>";
-    html << "</html>";
-}
-
-// -------------------------------------------------------------------------------------------
 // Create Title
 void FullyAssociated :: Title()
 {
@@ -428,7 +425,6 @@ void FullyAssociated :: Title()
     
     // ------------------------ Create title for console ------------------------
 
-    // Display Title
     console << "\n\n\n\n\n\n\n\n" << std::setw(75) << "------------------------------------------------------------------------------\n";
     
     if(placementPolicy == CACHING_ALGORITHM :: LRU)
@@ -550,7 +546,6 @@ void FullyAssociated :: Header()
     html << "<tr>";
     
     // Display Header banner
-    
     console << "\n\t\t------------------------------------------------------------ Fully Associative Cache Table ------------------------------------------------------------\n\n";
 
     spreadsheet << "------------------------------------------------------ Fully Associative Cache Table ------------------------------------------------------\n\n";
@@ -839,7 +834,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             {
                 if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
                 {
-                    
                     html << "<th>Instruction</th>";
                     
                     console << "\t\tInstruction";
@@ -946,6 +940,19 @@ void FullyAssociated :: Table()
 }
 
 // -------------------------------------------------------------------------------------------
+// End html logic
+void FullyAssociated :: EndHTML()
+{
+    html << "</table>";
+    html << "</div>";
+    html << "</div>";
+    html << "</div>";
+    html << "</body>";
+    html << "</html>";
+}
+
+
+// -------------------------------------------------------------------------------------------
 // Produce rows and columns in table
 void FullyAssociated :: CreateTable(COLUMNS columns)
 {
@@ -1018,8 +1025,11 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                     if (!tagTable[hashIndex].second.empty())
                     {
                         html << "<td>" << tagTable[hashIndex].second.front() << "</td>";
+                        
                         console << "  " << tagTable[hashIndex].second.front() << " |";
+                        
                         spreadsheet << "=\"" << tagTable[hashIndex].second.front() << "\",";
+                        
                         consoleToFile <<  "  " << tagTable[hashIndex].second.front() << " |";
                         
                         tagTable[hashIndex].second.pop();
@@ -1153,6 +1163,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 consoleToFile << '\t' << '\t' << '\t' << '\t' << '-' << '\n';
             }
             
+            // End html row
             html << "</tr>";
             
             break;
