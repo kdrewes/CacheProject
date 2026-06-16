@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Yanone+Kaffeesatz:wght@200..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');@import url('https://fonts.googleapis.com/css2?family=Anaheim:wght@400..800&display=swap');
 
+/*------------------------------------------------------*/
 
 body
 {
@@ -8,6 +9,8 @@ body
   margin: 0;
   padding: 0;
 }
+
+/*------------------------------------------------------*/
 
 .background 
 {
@@ -18,30 +21,74 @@ body
   background-repeat: no-repeat;
   min-height: 1000px;
   animation: opacityEffect 2s ease-out forwards;
-
-
 }
 
-.content
+/*------------------------------------------------------*/
+
+.foundation {
+  width: fit-content;
+}
+
+/*------------------------------------------------------*/
+
+.header
 {
- width: fit-content;
+  height: 35px;
+  background: rgba(0, 0, 0, 1);
+  transform: translate(500px,260px);
+  border-radius: 5px;
+  text-align: center;
+  font-size: 20px;
+  color: white;
+  opacity: 0;
+  font-family: "Anonymous Pro";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: opacityEffect 1.7s ease-out 1.2s forwards;
+}
+
+/*------------------------------------------------------*/
+
+.data
+{
+  margin-top: 3px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.data td
+{
+  background-color: transparent;
+  border: none;
+}
+
+/*------------------------------------------------------*/
+
+.data table 
+{
+  width: 100%;
+}
+/*------------------------------------------------------*/
+
+.cache
+{
  height: auto;
-/*margin: 0px auto; */
  padding-top: 200px;
- font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
  animation: opacityEffect 1.5s ease-out forwards,
             slideFromTop 1.2s ease-out forwards;
-
 }
+
+/*------------------------------------------------------*/
 
 table 
 {
-  border-collapse: collapse;
-  border: solid rgb(255, 255, 255, 0.5) 0px;
+  border-spacing: 0;
   border-radius: 5px;
   overflow: hidden;
 }
 
+/*------------------------------------------------------*/
 
 th 
 {
@@ -49,20 +96,30 @@ th
   font-family: "Anonymous Pro";
   padding: 8px 8px;
   text-align: left;
-  background-color: rgba(89, 89, 89, 0.1);
+  background-color: rgba(0, 0, 0);
   color: white;
 }
 
+/*------------------------------------------------------*/
+
 td
 {
-  border-bottom: solid rgb(209, 209, 209,0.5) 1px;
+  border-bottom: solid rgba(255, 255, 255, 0.5) 1px;
   padding: 6px 13px 6px 13px;
   font-size: 12px;
   font-family: "Anonymous Pro";
   background-color:rgba(255, 255, 255, .2);
-
-  
 }
+
+/*------------------------------------------------------*/
+
+p 
+{
+  font-family: "Anonymous Pro";
+  text-align: center;
+}
+
+/*------------------------------------------------------*/
 
 /* Animations */
 @keyframes opacityEffect{
@@ -76,6 +133,7 @@ td
     }
 }
 
+/*------------------------------------------------------*/
 
 @keyframes slideFromTop{
 
@@ -87,3 +145,5 @@ td
         transform: translate(500px,70px)
     }
 }
+
+/*------------------------------------------------------*/

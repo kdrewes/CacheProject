@@ -1,0 +1,12 @@
+---------------------------------------------------- Fully Associative Placement Policy - LRU ----------------------------------------------------
+
+Cache Size,Block Size,# of Blocks,# of Ways,Offset Size,Ram Size,Word Size,# of Words,Tag Size
+32 Bytes,8 Bytes,4 Bytes,2 Bytes,3 Bits,8 Bytes,2 Bytes,4 Bytes,5 Bytes
+
+------------------------------------------------------ Fully Associative Cache Table ------------------------------------------------------
+
+Address,Tag,Data[0],Data[1],Offset,H/M,="00",="01",="10",="11",Instruction,Address(es) Evicted
+="11010001",="11010",="11010001",="-",="001",="Miss",="0x47AFAA5E",="0xD9D6AEED",="0xD7DEC97B",="0xEAE23DFA",="0xD9D6AEED",-
+="01111110",="01111",="01111110",="-",="110",="Miss",="0x68A5CE3E",="0xF3CEF7D4",="0xA81FCF9A",="0xDCDE5DD8",="0xA81FCF9A",-
+="01111110",="01111",="01111110",="-",="110",="Hit",="0x68A5CE3E",="0xF3CEF7D4",="0xA81FCF9A",="0xDCDE5DD8",="0xA81FCF9A",-
+="01111110",="01111",="01111110",="-",="110",="Hit",="0x68A5CE3E",="0xF3CEF7D4",="0xA81FCF9A",="0xDCDE5DD8",="0xA81FCF9A",-
