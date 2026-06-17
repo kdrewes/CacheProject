@@ -138,6 +138,9 @@ public:
     // Establishes word criteria
     void ConfigureWord();
     
+    // Clear condensed strings
+    void ClearString();
+    
     // Determine input to select for Fully Associative Cache
     INPUT FullyAssociativeInput(input number);
     

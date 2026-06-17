@@ -199,49 +199,6 @@ FullyAssociated :: index FullyAssociated :: GetHashIndex(hashValue hashCode)
 }
 
 // -------------------------------------------------------------------------------------------
-void FullyAssociated :: Print()
-{
-    // Produce microsoft word file
-    file write("testFile.doc");
-    
-    // Write to file
-    write << console.str();
-
-    // Write to console
-    std::cout << console.str();
-    
-    // Close file
-    write.close();
-    
-    // Produce excel spreadsheet file
-    write.open("testFile.csv");
-    
-    // Write to spreadsheet
-    write << spreadsheet.str();
-    
-    // Close file
-    write.close();
-    
-    // Produce html file
-    write.open("index.html");
-    
-    // Write to html.index
-    write << html.str();
-    
-    // Close file
-    write.close();
-    
-    // Produce css file
-    write.open("stylesheet.css");
-    
-    // Write to html.index
-    write << css.str();
-    
-    // Close file
-    write.close();
-}
-
-// -------------------------------------------------------------------------------------------
 // Execute document skeleton of html
 void FullyAssociated :: HTML()
 {
@@ -488,7 +445,7 @@ void FullyAssociated :: Data()
     html << "<tr>";
     html << "<td>Word Size = " << this -> wordSize << " Bytes" << "</td>";
     html << "<td>Word Quantity = " << this -> wordQuantity  << " Bytes" << "</td>";
-    html << "<td>Tag Size= " <<  this -> addressSize - std::floor(log2(blockSize)) << " Bytes" << "</td>";
+    html << "<td>Tag Size= " <<  this -> addressSize - std::floor(log2(this -> blockSize)) << " Bytes" << "</td>";
     html << "</tr>";
     html << "</table>";
     html << "</div>";
@@ -506,7 +463,6 @@ void FullyAssociated :: Data()
     << this -> wordSize                       << " Bytes\t\t# of Words = "            << this -> wordQuantity
     
     << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n";
-    
     
     // ------------------------ data title for spreadsheet ------------------------
     
@@ -555,7 +511,6 @@ void FullyAssociated :: Header()
     // Display header
     for(int i = 0; i < sizeof(header) / sizeof(header[0]); i++)
         CreateHeader(FindHeader(header[i]));
-    
 }
 // -------------------------------------------------------------------------------------------
 // Produce column header
@@ -589,7 +544,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             }
             else
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");
-            
             
             break;
             
@@ -912,7 +866,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             else
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");
             
-            
             // End html header logic
             html << "</tr>";
             
@@ -938,19 +891,6 @@ void FullyAssociated :: Table()
         for(int j = 0; j < sizeof(table) / sizeof(table[0]); j++)
             CreateTable(FindColumn(table[j]));
 }
-
-// -------------------------------------------------------------------------------------------
-// End html logic
-void FullyAssociated :: EndHTML()
-{
-    html << "</table>";
-    html << "</div>";
-    html << "</div>";
-    html << "</div>";
-    html << "</body>";
-    html << "</html>";
-}
-
 
 // -------------------------------------------------------------------------------------------
 // Produce rows and columns in table
@@ -1153,7 +1093,6 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             
             else
             {
-                
                 html << "<td>" << '-' << "</td>";
                 
                 console << '\t' << '\t' << '\t' << '\t' << '-' << '\n';
@@ -1174,6 +1113,19 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             throw std::invalid_argument("\n\nError - incorrect column header\n\nPlease correct command\n\n");
     }
 }
+
+// -------------------------------------------------------------------------------------------
+// End html logic
+void FullyAssociated :: EndHTML()
+{
+    html << "</table>";
+    html << "</div>";
+    html << "</div>";
+    html << "</div>";
+    html << "</body>";
+    html << "</html>";
+}
+
 // -------------------------------------------------------------------------------------------
 // Contains each placement policy algoirthm
 void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
@@ -1622,3 +1574,45 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     }
     
 // -------------------------------------------------------------------------------------------
+// Print report
+void FullyAssociated :: Print()
+{
+    // Produce microsoft word file
+    file write("testFile.doc");
+    
+    // Write to file
+    write << console.str();
+
+    // Write to console
+    std::cout << console.str();
+    
+    // Close file
+    write.close();
+    
+    // Produce excel spreadsheet file
+    write.open("testFile.csv");
+    
+    // Write to spreadsheet
+    write << spreadsheet.str();
+    
+    // Close file
+    write.close();
+    
+    // Produce html file
+    write.open("index.html");
+    
+    // Write to html.index
+    write << html.str();
+    
+    // Close file
+    write.close();
+    
+    // Produce css file
+    write.open("stylesheet.css");
+    
+    // Write to html.index
+    write << css.str();
+    
+    // Close file
+    write.close();
+}

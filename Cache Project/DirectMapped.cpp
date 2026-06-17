@@ -30,6 +30,12 @@ void DirectMapped :: Router()
 
 void DirectMapped :: Controller()
 {
+    // Execute document skeleton of html
+    HTML();
+    
+    // Execute css syntax
+    CSS();
+    
     // Display title
     Title();
   
@@ -41,6 +47,9 @@ void DirectMapped :: Controller()
        
     // Produce and display table
     Table();
+    
+    // End HTML logic
+    EndHTML();
     
 }
 
@@ -245,19 +254,184 @@ DirectMapped :: index DirectMapped :: GetHashIndex(hashValue hashCode)
     
     return hashCode;
 }
+// -------------------------------------------------------------------------------------------
+// Execute document skeleton of html
+void DirectMapped :: HTML()
+{
+    html << "<!DOCTYPE html>";
+    html << R"(<html lang="en">)";
+    html << "<head>";
+    html << R"(<meta charset="UTF-8">)";
+    html << R"(<meta name="viewport" content="width=device-width, initial-scale=1.0">)";
+    html << "<title>Cache Project</title>";
+    html << R"(<link rel="stylesheet" href="stylesheet.css">)";
+    html << "</head>";
+    html << "<body>";
+    html << R"(<div class="background">)";
+    html << R"(<div class="foundation">)";
+}
+
+// -------------------------------------------------------------------------------------------
+// Include CSS logic
+void DirectMapped :: CSS()
+{
+    css << "@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Yanone+Kaffeesatz:wght@200..700&display=swap');";
+    css << "@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');";
+    css << "@import url('https://fonts.googleapis.com/css2?family=Anaheim:wght@400..800&display=swap');";
+
+    // ------------------------------------------------------
+    css << "body";
+    css << "{";
+    css << "  background: rgb(230, 230, 230);";
+    css << "  margin: 0;";
+    css << "  padding: 0;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".background ";
+    css << "{";
+    css << "  background: linear-gradient(to top,rgba(0, 0, 0, 0.7),rgba(255, 255, 255, 0.5)),";
+    css << "  url(\"blue.jpg\");";
+    css << "  background-size: cover;";
+    css << "  background-position:center;";
+    css << "  background-repeat: no-repeat;";
+    css << "  min-height: 1000px;";
+    css << "  animation: opacityEffect 2s ease-out forwards;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".foundation {";
+    css << "  width: fit-content;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".header";
+    css << "{";
+    css << "  height: 35px;";
+    css << "  background: rgba(0, 0, 0, 1);";
+    css << "  transform: translate(350px,200px);";
+    css << "  border-radius: 5px;";
+    css << "  text-align: center;";
+    css << "  font-size: 20px;";
+    css << "  color: white;";
+    css << "  opacity: 0;";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  display: flex;";
+    css << "  justify-content: center;";
+    css << "  align-items: center;";
+    css << "  animation: opacityEffect 1.7s ease-out 1.2s forwards;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".data";
+    css << "{";
+    css << "  margin-top: 3px;";
+    css << "  margin-bottom: 25px;";
+    css << "  text-align: center;";
+    css << "}";
+
+    css << ".data td";
+    css << "{";
+    css << "  background-color: transparent;";
+    css << "  border: none;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".data table ";
+    css << "{";
+    css << "  width: 100%;";
+    css << "}";
+
+    css << ".cache";
+    css << "{";
+    css << " height: auto;";
+    css << " padding-top: 200px;";
+    css << " animation: opacityEffect 1.5s ease-out forwards,";
+    css << "            slideFromTop 1.2s ease-out forwards;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "table ";
+    css << "{";
+    css << "  border-spacing: 0;";
+    css << "  border-radius: 5px;";
+    css << "  overflow: hidden;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "th ";
+    css << "{";
+    css << "  font-size: 13px;";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  padding: 8px 8px;";
+    css << "  text-align: left;";
+    css << "  background-color: rgba(0, 0, 0);";
+    css << "  color: white;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "td";
+    css << "{";
+    css << "  border-bottom: solid rgba(255, 255, 255, 0.5) 1px;";
+    css << "  padding: 6px 13px 6px 13px;";
+    css << "  font-size: 12px;";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  background-color:rgba(255, 255, 255, .2);";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "p ";
+    css << "{";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  text-align: center;";
+    css << "}";
+
+    // ------------------------------------------------------
+    // Animations
+    css << "@keyframes opacityEffect{";
+    css << "    0%{";
+    css << "        opacity: 0;";
+    css << "    }";
+    css << "    100%{";
+    css << "        opacity: 1;";
+    css << "    }";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "@keyframes slideFromTop{";
+    css << "    0%{";
+    css << "       transform: translate(350px,-460px);";
+    css << "    }";
+    css << "    100%{";
+    css << "        transform: translate(350px,10px);";
+    css << "    }";
+    css << "}";
+}
+
 
 // -------------------------------------------------------------------------------------------
 // Create Title
 void DirectMapped :: Title()
 {
-    // Display Title
+    
+    // ------------------------ Create title for html ------------------------
+
+        html << R"(<div class="header">)";
+    
+        html <<  "Direct Mapping Placement Policy";
+    
+        html << "</div>";
+    
+    // ------------------------ Create title for console ------------------------
+    
     console << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
 
     console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDirect Mapping Placement Policy\n";
 
     console <<"\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
 
-
+    // ------------------------ Create title for spreadsheet ------------------------
+    
     spreadsheet <<"---------------------------------------------------- Direct Mapping Placement Policy ----------------------------------------------------\n";
 
 
@@ -272,6 +446,30 @@ void DirectMapped :: Title()
 // Produce and display metrics
 void DirectMapped :: Data()
 {
+    // ------------------------ Create data for html ------------------------
+    
+    html << R"(<div class="cache">)";
+    html << R"(<div class="data">)";
+    html << "<table>";
+    html << "<tr>";
+    html << "<td>Cache Size = " << this -> cacheSize << " Bytes" << "</td>";
+    html << "<td>Block Size = " << this -> blockSize << " Bytes" << "</td>";
+    html << "<td># of Blocks = " <<  this -> blockQuantity << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "<tr>";
+    html << "<td> Index Size = " << this -> indexSize << " Bytes" << "</td>";
+    html << "<td>Offset Size = " << this -> offsetSize  << " Bits" << "</td>";
+    html << "<td>Ram Size = " <<  this -> mainMemorySize << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "<tr>";
+    html << "<td>Word Size = " << this -> wordSize << " Bytes" << "</td>";
+    html << "<td>Word Quantity = " << this -> wordQuantity  << " Bytes" << "</td>";
+    html << "<td>Tag Size= " <<  this -> addressSize - this -> indexSize - std::floor(log2(this -> blockSize)) << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "</table>";
+    html << "</div>";
+    
+    // ------------------------ Create data for console ------------------------
     
     console << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "   << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
     
@@ -286,6 +484,7 @@ void DirectMapped :: Data()
     << " Bytes"                                        << "\t\tTag Size = "                    << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes\n\n";
     
     
+    // ------------------------ data title for spreadsheet ------------------------
     
     spreadsheet << "\nCache Size," << "Block Size," << "# of Blocks," << "Offset Size,"  << "Ram Size," << "Word Size," << "# of Words," << "Tag Size\n";
     
@@ -295,6 +494,8 @@ void DirectMapped :: Data()
     
     << ',' << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes" << "\n\n";
     
+    
+    // ------------------------ data title for console file ------------------------
     
     consoleToFile << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "   << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
     
@@ -307,7 +508,6 @@ void DirectMapped :: Data()
     << this -> wordSize                                << " Bytes\t\t# of Words = "            << this -> wordQuantity
     
     << " Bytes"                                        << "\t\tTag Size = "                    << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes\n\n";
-    
 }
 
 // -------------------------------------------------------------------------------------------
@@ -316,6 +516,10 @@ void DirectMapped :: Header()
 {
     // Predefine header
     std::string header[] = { "Address", "Index", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
+    
+    // Include html logic
+    html << "<table>";
+    html << "<tr>";
     
     // Display Header banner
     console << "\n\t\t------------------------------------------------------------ Direct Mapping Cache Table ------------------------------------------------------------\n\n";
@@ -327,7 +531,6 @@ void DirectMapped :: Header()
     // Display header
     for(int i = 0; i < sizeof(header) / sizeof(header[0]); i++)
         CreateHeader(FindHeader(header[i]));
-    
 }
 
 // -------------------------------------------------------------------------------------------
@@ -341,6 +544,7 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             // Display each address
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Address</th>";
                 
                 console << "\t\t\t\t\t\t\tAddress";
                 
@@ -351,6 +555,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Address</th>";
+                
                 console << "\t\t\t\t\t\t\tAddress\t";
                 
                 spreadsheet << "Address,";
@@ -360,7 +566,6 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             else
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");
             
-            
             break;
             
         case INDEX :
@@ -368,6 +573,7 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             // Display each address
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Set #</th>";
                 
                 console << "\t\tSet #";
                 
@@ -378,12 +584,15 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Set #</th>";
+                
                 console << "\t\t\tSet #\t";
                 
                 spreadsheet << "Set #,";
                 
                 consoleToFile << "\t\t\tSet #";
             }
+            
             else
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");
             
@@ -394,6 +603,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             // Display each tag
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Tag</th>";
+                
                 console << "\tTag";
                 
                 spreadsheet << "Tag,";
@@ -403,6 +614,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Tag</th>";
+                
                 console << "\t\tTag";
                 
                 spreadsheet << "Tag,";
@@ -421,6 +634,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             // Display each offset
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Offset</th>";
+                
                 console << "\t\t\tOffset";
                 
                 spreadsheet << "Offset,";
@@ -430,6 +645,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Offset</th>";
+                
                 console << "\t\t\t\t\tOffset";
                 
                 spreadsheet << "Offset,";
@@ -447,6 +664,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             // Display whether each address has a hit or miss
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>H/M</th>";
+                
                 console << "\t\tH/M\t";
                 
                 spreadsheet << "H/M,";
@@ -456,6 +675,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>H/M</th>";
+                
                 console << "\t\tH/M";
                 
                 spreadsheet << "H/M,";
@@ -480,6 +701,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
                         // Display each individual word in binary format
                         for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
+                            html << "<th>" << wordVector[i] << "</th>";
+                            
                             console << "\t\t" << wordVector[i];
                             
                             spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -494,6 +717,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
                         {
                             if(i == 0)
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << "\t" << wordVector[i] << "\t\t\t\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -502,6 +727,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
                             }
                             else
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << wordVector[i] << "\t\t ";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -523,6 +750,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
                         
                         for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
+                            html << "<th>" << wordVector[i] << "</th>";
+                            
                             console << "\t\t  " << wordVector[i];
                             
                             spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -537,6 +766,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
                         {
                             if(i == 0)
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << "\t\t\t\t" << wordVector[i] << "\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -545,6 +776,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
                             }
                             else
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << wordVector[i] << "\t\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -569,6 +802,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             {
                 if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\t\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -577,6 +812,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
                 }
                 else
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -589,6 +826,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             {
                 if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\t\t\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -597,6 +836,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
                 }
                 else
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\t\t\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -615,6 +856,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             // Display if there were any evictions
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Address(es) Evicted</th>";
+                
                 console << "\t\t\tAddress(es) Evicted\n\n";
                 
                 spreadsheet << "Address(es) Evicted\n";
@@ -624,6 +867,8 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Address(es) Evicted</th>";
+                
                 console << "\t\t\tAddress(es) Evicted\n\n";
                 
                 spreadsheet << "Address(es) Evicted\n";
@@ -633,6 +878,9 @@ void DirectMapped :: CreateHeader(COLUMNS c)
             
             else
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");
+            
+            // End html header logic
+            html << "</tr>";
             
             break;
             
@@ -647,6 +895,9 @@ void DirectMapped :: Table()
 {
     // Predefine table
     std::string table[] = { "Address", "Index", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
+    
+    // Include html logic
+    html << "<tr>";
     
     // Traverse through each category for each individual subscript of Fully_Associative_Vector
     for(this -> global_iterator = 0; this -> global_iterator < Direct_Mapping_Vector.size(); this -> global_iterator++)
@@ -669,6 +920,8 @@ void DirectMapped :: CreateTable(COLUMNS columns)
             AssignHashIndex();
             
             // Insert address data to each ostringstream variable
+            html << "<td>" << Direct_Mapping_Vector[global_iterator].address << "</td>";
+            
             console << "\t\t\t\t\t\t\t" << Direct_Mapping_Vector[global_iterator].address << " | ";
             
             spreadsheet << "=\""  << Direct_Mapping_Vector[global_iterator].address << "\",";
@@ -686,6 +939,8 @@ void DirectMapped :: CreateTable(COLUMNS columns)
             // Assign each address to its designated hash index
             AssignHashIndex();
             
+            html << "<td>" << this -> indexTable[hashIndex].first << "</td>";
+            
             console << "\t" << this -> indexTable[hashIndex].first << "\t|";
             
             spreadsheet << "=\""   << this -> indexTable[hashIndex].first  << "\",";
@@ -697,6 +952,8 @@ void DirectMapped :: CreateTable(COLUMNS columns)
             
         case TAG :
         {
+            html << "<td>" << this -> indexTable[hashIndex].second << "</td>";
+            
             console << "\t" << indexTable[hashIndex].second << "\t|";
             
             spreadsheet << "=\""   << indexTable[hashIndex].second << "\",";
@@ -708,6 +965,7 @@ void DirectMapped :: CreateTable(COLUMNS columns)
             
         case OFFSET :
         {
+            html << "<td>" << this -> Direct_Mapping_Vector[global_iterator].offset << "</td>";
             
             console << "\t  " << this -> Direct_Mapping_Vector[global_iterator].offset << " \t| ";
             
@@ -722,6 +980,8 @@ void DirectMapped :: CreateTable(COLUMNS columns)
         {
             if(hitOrMiss)
             {
+                html << "<td>" << "Hit" << "</td>";
+                
                 console << "\tHit \t| ";
                 
                 spreadsheet << "=\""  << "Hit" << "\",";
@@ -733,6 +993,8 @@ void DirectMapped :: CreateTable(COLUMNS columns)
             
             else
             {
+                html << "<td>" << "Miss" << "</td>";
+                
                 console << "\tMiss\t| ";
                 
                 spreadsheet << "=\""  << "Miss" << "\",";
@@ -751,6 +1013,8 @@ void DirectMapped :: CreateTable(COLUMNS columns)
                 // Display each individual instruction in hexadecimal format
                 for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                 {
+                    html << "<td>" << Direct_Mapping_Vector[global_iterator].instructionMap[wordVector[i]] << "</td>";
+                    
                     console << Direct_Mapping_Vector[global_iterator].instructionMap[wordVector[i]] << " | ";
                     
                     spreadsheet << "=\"" << Direct_Mapping_Vector[global_iterator].instructionMap[wordVector[i]] << "\",";
@@ -764,6 +1028,8 @@ void DirectMapped :: CreateTable(COLUMNS columns)
             
         case INSTRUCTION_RETREIVED :
         {
+            html << "<td>" << this -> Direct_Mapping_Vector[global_iterator].instruction << "</td>";
+            
             console << "      " << this -> Direct_Mapping_Vector[global_iterator].instruction << "\t\t|";
             
             spreadsheet << "=\""  << this -> Direct_Mapping_Vector[global_iterator].instruction << "\",";
@@ -777,6 +1043,8 @@ void DirectMapped :: CreateTable(COLUMNS columns)
             
             if(!this -> Direct_Mapping_Vector[global_iterator].addressEvicted.empty())
             {
+                html << "<td>" << this -> Direct_Mapping_Vector[global_iterator].addressEvicted << "</td>";
+                
                 console  << "\t\t\t" << this -> Direct_Mapping_Vector[global_iterator].addressEvicted << '\n';
                 
                 spreadsheet << this -> Direct_Mapping_Vector[global_iterator].addressEvicted << '\n';
@@ -787,6 +1055,8 @@ void DirectMapped :: CreateTable(COLUMNS columns)
             
             else
             {
+                html << "<td>" << '-' << "</td>";
+                
                 console << '\t' << '\t' << '\t' << '\t' << '-' << '\n';
                 
                 spreadsheet << '-' << '\n';
@@ -794,6 +1064,8 @@ void DirectMapped :: CreateTable(COLUMNS columns)
                 consoleToFile << '\t' << '\t' << '\t' << '\t' << '-' << '\n';
             }
             
+            // End html row
+            html << "</tr>";
             
             break;
             
@@ -804,6 +1076,17 @@ void DirectMapped :: CreateTable(COLUMNS columns)
     }
 }
 
+// -------------------------------------------------------------------------------------------
+// End html logic
+void DirectMapped :: EndHTML()
+{
+    html << "</table>";
+    html << "</div>";
+    html << "</div>";
+    html << "</div>";
+    html << "</body>";
+    html << "</html>";
+}
 
 // -------------------------------------------------------------------------------------------
 // Make each string lower case
@@ -893,11 +1176,42 @@ HASH_TABLE DirectMapped :: FindTable (std::string table)
 // -------------------------------------------------------------------------------------------
 void DirectMapped :: Print()
 {
+    // Produce microsoft word file
+    file write("testFile.doc");
+    
+    // Write to file
+    write << console.str();
+
+    // Write to console
     std::cout << console.str();
     
-    file write("testFile.csv");
+    // Close file
+    write.close();
     
+    // Produce excel spreadsheet file
+    write.open("testFile.csv");
+    
+    // Write to spreadsheet
     write << spreadsheet.str();
     
+    // Close file
+    write.close();
+    
+    // Produce html file
+    write.open("index.html");
+    
+    // Write to html.index
+    write << html.str();
+    
+    // Close file
+    write.close();
+    
+    // Produce css file
+    write.open("stylesheet.css");
+    
+    // Write to html.index
+    write << css.str();
+    
+    // Close file
     write.close();
 }
